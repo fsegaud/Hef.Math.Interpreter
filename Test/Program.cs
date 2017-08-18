@@ -6,7 +6,7 @@ namespace Hef.Math.Test
     class Program
     {
         private static readonly Player player = new Player();
-        private static string Format = "{0} -> {1} = {2}";
+        private static string Format = "{0} = {1}";
 
         static void Main(string[] args)
         {
@@ -28,7 +28,7 @@ namespace Hef.Math.Test
 
         private static void Calc(string infix)
         {
-            Console.WriteLine(Program.Format, infix, Hef.Math.Interpreter.InfixToRpn(infix), player.Interpreter.Calculate(infix));
+            Console.WriteLine(Program.Format, infix, player.Interpreter.Calculate(infix));
         }
     }
 
