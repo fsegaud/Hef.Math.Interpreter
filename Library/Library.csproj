@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IInterpreterContext.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

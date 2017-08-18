@@ -50,7 +50,7 @@
 
         private readonly Dictionary<string, double> variables;
 
-        private IContext context;
+        private IInterpreterContext interpreterContext;
 
         private enum OperatorType
         {
@@ -95,10 +95,10 @@
             }
         }
 
-        public Interpreter(IContext context)
+        public Interpreter(IInterpreterContext interpreterContext)
             : this()
         {
-            this.SetContext(context);
+            this.SetContext(interpreterContext);
         }
 
         public void SetVar(string name, double value)
@@ -110,13 +110,9 @@
             }
         }
 
-        public void SetContext(IContext context)
+        public void SetContext(IInterpreterContext interpreterContext)
         {
-            this.context = context;
-            foreach (KeyValuePair<string, double> kvp in context.GetVariables())
-            {
-                this.SetVar(kvp.Key, kvp.Value);
-            }
+            this.interpreterContext = interpreterContext;
         }
 
         private static int ComparePrecedence(string a, string b)
@@ -244,7 +240,7 @@
             return rpn;
         }
 
-        public double CalculateRpn(string rpn)
+        internal double CalculateRpn(string rpn)
         {
             string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
             Stack<double> values = new Stack<double>();
@@ -284,7 +280,7 @@
                     {
                         values.Push(value);
                     }
-                    else if (context.TryGetVariable(token.TrimStart(Interpreter.VarPrefixChar), out value))
+                    else if (this.interpreterContext.TryGetVariable(token.TrimStart(Interpreter.VarPrefixChar), out value))
                     {
                         values.Push(value);
                     }
@@ -386,14 +382,7 @@
             }
         }
 
-        public interface IContext
-        {
-            bool TryGetVariable(string name, out double value);
-
-            Dictionary<string, double> GetVariables();
-        }
-
-        private class OperatorDescriptor
+        private struct OperatorDescriptor
         {
             public readonly Operator Operator;
             public readonly OperatorType Type;
