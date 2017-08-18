@@ -10,6 +10,7 @@ namespace Hef.Math.Test
 
         static void Main(string[] args)
         {
+            Calc("10^2");
             Calc("sqrt4+3*4");
             Calc("(sqrt4+3)*4");
             Calc("5 * !1");
@@ -31,7 +32,7 @@ namespace Hef.Math.Test
         }
     }
 
-    public class Player : Hef.Math.Interpreter.IContext
+    public class Player : Hef.Math.IInterpreterContext
     {
         public Hef.Math.Interpreter Interpreter
         {
@@ -59,6 +60,16 @@ namespace Hef.Math.Test
             if (name == "XP")
             {
                 value = 24d;
+                return true;
+            }
+            else if (name == "MaxHealth")
+            {
+                value = 100d;
+                return true;
+            }
+            else if (name == "MaxMana")
+            {
+                value = 50d;
                 return true;
             }
 
