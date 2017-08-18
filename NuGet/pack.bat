@@ -1,1 +1,1 @@
-nuget pack Hef.Math.Interpreter.nuspec
+nuget pack Hef.Math.Interpreter.nuspec -Exclude "*.exe;*.bat"
