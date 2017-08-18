@@ -366,12 +366,30 @@
                             break;
 
                         case OperatorType.Unary:
-                            left = values.Pop();
+                            {
+                                if (values.Count < 1)
+                                {
+                                    throw new System.InvalidOperationException(
+                                        string.Format("Operator '{0}' ({1}) is unary.", token, Interpreter.operators[token].Operator));
+                                }
+
+                                left = values.Pop();
+                            }
+
                             break;
 
                         case OperatorType.Binary:
-                            right = values.Pop();
-                            left = values.Pop();
+                            {
+                                if (values.Count < 2)
+                                {
+                                    throw new System.InvalidOperationException(
+                                        string.Format("Operator '{0}' ({1}) is binary.", token, Interpreter.operators[token].Operator));
+                                }
+
+                                right = values.Pop();
+                                left = values.Pop();
+                            }
+
                             break;
                     }
 
