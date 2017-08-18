@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Hef.Math.Interpreter</id>
+    <version>0.1.0-alpha</version>
+    <title>Hef.Math.Interpreter</title>
+    <authors>fseg</authors>
+    <owners>fseg</owners>
+    <description>TODO</description>
+  </metadata>
+</package>

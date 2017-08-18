@@ -1,0 +1,1 @@
+nuget pack Hef.Math.Interpreter.nuspec
