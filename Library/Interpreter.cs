@@ -5,6 +5,8 @@
 
     public class Interpreter
     {
+        #region Constants
+
         private const string VarPrefixStr       = "$";
         private const char   VarPrefixChar      = '$';
         private const string OpMarkStr          = "_";
@@ -17,6 +19,10 @@
         private const char   ClosingBracketChar = ')';
         private const string WhiteSpaceStr      = " ";
         private const char   WhiteSpaceChar     = ' ';
+
+        #endregion
+
+        #region Static
 
         private static Random Random;
 
@@ -48,9 +54,16 @@
             {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)}
         };
 
-        private readonly Dictionary<string, double> variables;
+        #endregion
 
+        #region Members
+
+        private readonly Dictionary<string, double> variables;
         private IInterpreterContext interpreterContext;
+
+        #endregion
+
+        #region Enumerations
 
         private enum OperatorType
         {
@@ -85,6 +98,10 @@
             Dice
         }
 
+        #endregion
+
+        #region Constructors
+
         public Interpreter()
         {
             this.variables = new Dictionary<string, double>();
@@ -101,6 +118,10 @@
             this.SetContext(interpreterContext);
         }
 
+        #endregion
+
+        #region Public Functions
+
         public void SetVar(string name, double value)
         {
             if (!this.variables.ContainsKey(name))
@@ -115,6 +136,15 @@
             this.interpreterContext = interpreterContext;
         }
 
+        public double Calculate(string infix)
+        {
+            return this.CalculateRpn(Interpreter.InfixToRpn(infix));
+        }
+
+        #endregion
+
+        #region Private functions
+
         private static int ComparePrecedence(string a, string b)
         {
             return Interpreter.operators[a].Priority - Interpreter.operators[b].Priority;
@@ -125,12 +155,12 @@
             return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
         }
 
-        private static bool IsNum(char c)
+        private static bool IsNumeric(char c)
         {
             return c >= '0' && c <= '9';
         }
 
-        private static int SkipStr(string value, int index)
+        private static int SkipString(string value, int index)
         {
             while (index < value.Length && Interpreter.IsAlpha(value[index]))
             {
@@ -139,19 +169,97 @@
 
             return index;
         }
+        
+        private static double ComputeOperation(double left, double right, Operator op)
+        {
+            switch (op)
+            {
+                case Operator.Add:
+                    return left + right;
 
-        public static string InfixToRpn(string infix)
+                case Operator.Sub:
+                    return left - right;
+
+                case Operator.Mult:
+                    return left * right;
+
+                case Operator.Div:
+                    return left / right;
+
+                case Operator.Mod:
+                    return (int)left % (int)right;
+
+                case Operator.Equal:
+                    return Math.Abs(left - right) < double.Epsilon ? 1f : 0f;
+
+                case Operator.Pow:
+                    return Math.Pow(left, right);
+
+                case Operator.Sqrt:
+                    return Math.Sqrt(left);
+
+                case Operator.Cos:
+                    return Math.Cos(left);
+
+                case Operator.Sin:
+                    return Math.Sin(left);
+
+                case Operator.Abs:
+                    return Math.Abs(left);
+
+                case Operator.Round:
+                    return Math.Round(left);
+
+                case Operator.Neg:
+                    return -left;
+
+                case Operator.PI:
+                    return Math.PI;
+
+                case Operator.Min:
+                    return Math.Min(left, right);
+
+                case Operator.Max:
+                    return Math.Max(left, right);
+
+                case Operator.LT:
+                    return left < right ? 1d : 0d;
+
+                case Operator.LTE:
+                    return left <= right ? 1d : 0d;
+
+                case Operator.GT:
+                    return left > right ? 1d : 0d;
+
+                case Operator.GTE:
+                    return left >= right ? 1d : 0d;
+
+                case Operator.Rand:
+                    return Interpreter.Random.NextDouble();
+
+                case Operator.Dice:
+                    int value = 0;
+                    for (int i = 0; i < left; ++i)
+                        value += Interpreter.Random.Next(1, (int)right + 1);
+                    return value;
+
+                default:
+                    throw new InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
+            }
+        }
+
+        private static string InfixToRpn(string infix)
         {
             for (int idx = 0; idx < infix.Length; ++idx)
             {
                 if (infix[idx] == Interpreter.VarPrefixChar)
                 {
-                    idx = Interpreter.SkipStr(infix, idx + 2);
+                    idx = Interpreter.SkipString(infix, idx + 2);
                 }
                 else if (Interpreter.IsAlpha(infix[idx]))
                 {
                     infix = infix.Insert(idx, Interpreter.LongOpMark0Str);
-                    idx = Interpreter.SkipStr(infix, idx + 2);
+                    idx = Interpreter.SkipString(infix, idx + 2);
                     infix = infix.Insert(idx, Interpreter.LongOpMark1Str);
                 }
             }
@@ -240,7 +348,7 @@
             return rpn;
         }
 
-        internal double CalculateRpn(string rpn)
+        private double CalculateRpn(string rpn)
         {
             string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
             Stack<double> values = new Stack<double>();
@@ -267,7 +375,7 @@
                             break;
                     }
 
-                    values.Push(Interpreter.DoOperation(left, right, Interpreter.operators[token].Operator));
+                    values.Push(Interpreter.ComputeOperation(left, right, Interpreter.operators[token].Operator));
                 }
                 else
                 {
@@ -299,88 +407,9 @@
             return values.Pop();
         }
 
-        public double Calculate(string infix)
-        {
-            return this.CalculateRpn(Interpreter.InfixToRpn(infix));
-        }
+        #endregion
 
-        private static double DoOperation(double left, double right, Operator op)
-        {
-            switch (op)
-            {
-                case Operator.Add:
-                    return left + right;
-
-                case Operator.Sub:
-                    return left - right;
-
-                case Operator.Mult:
-                    return left * right;
-
-                case Operator.Div:
-                    return left / right;
-
-                case Operator.Mod:
-                    return (int)left % (int)right;
-
-                case Operator.Equal:
-                    return Math.Abs(left - right) < double.Epsilon ? 1f : 0f;
-
-                case Operator.Pow:
-                    return Math.Pow(left, right);
-
-                case Operator.Sqrt:
-                    return Math.Sqrt(left);
-
-                case Operator.Cos:
-                    return Math.Cos(left);
-
-                case Operator.Sin:
-                    return Math.Sin(left);
-
-                case Operator.Abs:
-                    return Math.Abs(left);
-
-                case Operator.Round:
-                    return Math.Round(left);
-
-                case Operator.Neg:
-                    return -left;
-
-                case Operator.PI:
-                    return Math.PI;
-
-                case Operator.Min:
-                    return Math.Min(left, right);
-
-                case Operator.Max:
-                    return Math.Max(left, right);
-
-                case Operator.LT:
-                    return left < right ? 1d : 0d;
-
-                case Operator.LTE:
-                    return left <= right ? 1d : 0d;
-
-                case Operator.GT:
-                    return left > right ? 1d : 0d;
-
-                case Operator.GTE:
-                    return left >= right ? 1d : 0d;
-
-                case Operator.Rand:
-                    return Interpreter.Random.NextDouble();
-
-                case Operator.Dice:
-                    int value = 0;
-                    for (int i = 0; i < left; ++i)
-                        value += Interpreter.Random.Next(1, (int)right + 1);
-                    return value;
-
-                default:
-                    throw new InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
-            }
-        }
+        #region Inner Types
 
         private struct OperatorDescriptor
         {
@@ -395,5 +424,7 @@
                 this.Priority = priority;
             }
         }
+
+        #endregion
     }
 }
