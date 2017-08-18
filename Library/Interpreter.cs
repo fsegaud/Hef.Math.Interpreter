@@ -25,6 +25,9 @@ namespace Hef.Math
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// An interpreter able to resolve a mathmatical formula.
+    /// </summary>
     public class Interpreter
     {
         #region Constants
@@ -145,10 +148,10 @@ namespace Hef.Math
         #region Public Functions
 
         /// <summary>
-        /// 
+        /// Sets a variable to be used in the formula.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="name">The variable name.</param>
+        /// <param name="value">The variable value.</param>
         public void SetVar(string name, double value)
         {
             if (!this.variables.ContainsKey(name))
@@ -159,18 +162,18 @@ namespace Hef.Math
         }
 
         /// <summary>
-        /// 
+        /// Sets an interpreter context to be use un variables resolution.
         /// </summary>
-        /// <param name="interpreterContext"></param>
+        /// <param name="interpreterContext">An object that implements Hef.Math.IInterpreterContext.</param>
         public void SetContext(IInterpreterContext interpreterContext)
         {
             this.interpreterContext = interpreterContext;
         }
 
         /// <summary>
-        /// 
+        /// Compute the formula passed as argument.
         /// </summary>
-        /// <param name="infix"></param>
+        /// <param name="infix">The formula to resolve.</param>
         /// <returns></returns>
         public double Calculate(string infix)
         {
