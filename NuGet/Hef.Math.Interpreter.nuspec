@@ -3,9 +3,18 @@
   <metadata>
     <id>Hef.Math.Interpreter</id>
     <version>0.1.0-alpha</version>
-    <title>Hef.Math.Interpreter</title>
     <authors>fseg</authors>
     <owners>fseg</owners>
+    <licenseUrl>https://raw.githubusercontent.com/fsegaud/Hef.Math.Interpreter/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/fsegaud/Hef.Math.Interpreter</projectUrl>
+    <!-- <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl> -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>TODO</description>
+    <!-- <releaseNotes>TODO</releaseNotes> -->
+    <copyright>Copyright 2017 François Ségaud</copyright>
+    <tags>Math Interpreter</tags>
+    <!-- <dependencies> -->
+      <!-- <dependency id="SampleDependency" version="1.0" /> -->
+    <!-- </dependencies> -->
   </metadata>
 </package>
