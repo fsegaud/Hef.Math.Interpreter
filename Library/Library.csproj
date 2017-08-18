@@ -7,7 +7,7 @@
     <ProjectGuid>{AF018C78-9DA0-4E2E-AF8F-8E34798C7776}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hef.Math.Interpreter</RootNamespace>
+    <RootNamespace>Hef.Math</RootNamespace>
     <AssemblyName>Hef.Math.Interpreter</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
