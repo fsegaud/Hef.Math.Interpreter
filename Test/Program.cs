@@ -20,9 +20,6 @@
 // SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace Hef.Math.Test
 {
     class Program
@@ -50,7 +47,7 @@ namespace Hef.Math.Test
 
         private static void Calc(string infix)
         {
-            Console.WriteLine(Program.Format, infix, player.Interpreter.Calculate(infix));
+            System.Console.WriteLine(Program.Format, infix, player.Interpreter.Calculate(infix));
         }
     }
 
@@ -65,15 +62,6 @@ namespace Hef.Math.Test
         public Player()
         {
             this.Interpreter = new Hef.Math.Interpreter(this);
-        }
-
-        public Dictionary<string, double> GetVariables()
-        {
-            return new Dictionary<string, double>()
-                {
-                    {"MaxHealth", 100},
-                    {"MaxMana", 50}
-                };
         }
 
         public bool TryGetVariable(string name, out double value)

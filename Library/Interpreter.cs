@@ -22,9 +22,6 @@
 
 namespace Hef.Math
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// An interpreter able to resolve a mathmatical formula.
     /// </summary>
@@ -49,13 +46,13 @@ namespace Hef.Math
 
         #region Static
 
-        private static Random Random;
+        private static System.Random Random;
 
         #endregion
 
         #region Members
 
-        private readonly Dictionary<string, double> variables;
+        private readonly System.Collections.Generic.Dictionary<string, double> variables;
         private IInterpreterContext interpreterContext;
 
         #endregion
@@ -75,11 +72,11 @@ namespace Hef.Math
 
         public Interpreter()
         {
-            this.variables = new Dictionary<string, double>();
+            this.variables = new System.Collections.Generic.Dictionary<string, double>();
 
             if (Interpreter.Random == null)
             {
-                Interpreter.Random = new Random();
+                Interpreter.Random = new System.Random();
             }
         }
 
@@ -212,8 +209,8 @@ namespace Hef.Math
             infix = System.Text.RegularExpressions.Regex.Replace(infix.Replace(Interpreter.OpMarkStr, string.Empty), @"\s+", " ");
 
             string[] tokens = infix.Split(Interpreter.WhiteSpaceChar);
-            List<string> list = new List<string>();     //TODO: static
-            Stack<string> stack = new Stack<string>();  //TODO: static
+            System.Collections.Generic.List<string> list = new System.Collections.Generic.List<string>();     //TODO: static
+            System.Collections.Generic.Stack<string> stack = new System.Collections.Generic.Stack<string>();  //TODO: static
 
             for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
             {
@@ -271,7 +268,7 @@ namespace Hef.Math
         private double CalculateRpn(string rpn)
         {
             string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
-            Stack<double> values = new Stack<double>();
+            System.Collections.Generic.Stack<double> values = new System.Collections.Generic.Stack<double>();
 
             for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
             {
@@ -334,14 +331,14 @@ namespace Hef.Math
                     }
                     else
                     {
-                        throw new InvalidOperationException(string.Format("Error parsing '{0}'", token));
+                        throw new System.InvalidOperationException(string.Format("Error parsing '{0}'", token));
                     }
                 }
             }
 
             if (values.Count != 1)
             {
-                throw new InvalidOperationException("Cannot calculate formula");
+                throw new System.InvalidOperationException("Cannot calculate formula");
             }
 
             return values.Pop();

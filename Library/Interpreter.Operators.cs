@@ -22,14 +22,12 @@
 
 namespace Hef.Math
 {
-    using System;
-    using System.Collections.Generic;
-
     public partial class Interpreter
     {
         #region Static
 
-        private static readonly Dictionary<string, OperatorDescriptor> operators = new Dictionary<string, OperatorDescriptor>
+        private static readonly System.Collections.Generic.Dictionary<string, OperatorDescriptor> operators
+            = new System.Collections.Generic.Dictionary<string, OperatorDescriptor>
         {
             {"+",       new OperatorDescriptor(Operator.Add,   OperatorType.Binary,    2) },
             {"-",       new OperatorDescriptor(Operator.Sub,   OperatorType.Binary,    2) },
@@ -111,37 +109,37 @@ namespace Hef.Math
                     return (int)left % (int)right;
 
                 case Operator.Equal:
-                    return Math.Abs(left - right) < double.Epsilon ? 1f : 0f;
+                    return System.Math.Abs(left - right) < double.Epsilon ? 1f : 0f;
 
                 case Operator.Pow:
-                    return Math.Pow(left, right);
+                    return System.Math.Pow(left, right);
 
                 case Operator.Sqrt:
-                    return Math.Sqrt(left);
+                    return System.Math.Sqrt(left);
 
                 case Operator.Cos:
-                    return Math.Cos(left);
+                    return System.Math.Cos(left);
 
                 case Operator.Sin:
-                    return Math.Sin(left);
+                    return System.Math.Sin(left);
 
                 case Operator.Abs:
-                    return Math.Abs(left);
+                    return System.Math.Abs(left);
 
                 case Operator.Round:
-                    return Math.Round(left);
+                    return System.Math.Round(left);
 
                 case Operator.Neg:
                     return -left;
 
                 case Operator.PI:
-                    return Math.PI;
+                    return System.Math.PI;
 
                 case Operator.Min:
-                    return Math.Min(left, right);
+                    return System.Math.Min(left, right);
 
                 case Operator.Max:
-                    return Math.Max(left, right);
+                    return System.Math.Max(left, right);
 
                 case Operator.LT:
                     return left < right ? 1d : 0d;
@@ -170,7 +168,7 @@ namespace Hef.Math
                     }
 
                 default:
-                    throw new InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
+                    throw new System.InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
             }
         }
 
