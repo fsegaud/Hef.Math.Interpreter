@@ -22,13 +22,10 @@
 
 namespace Hef.Math
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// An interpreter able to resolve a mathmatical formula.
     /// </summary>
-    public class Interpreter
+    public partial class Interpreter
     {
         #region Constants
 
@@ -49,41 +46,13 @@ namespace Hef.Math
 
         #region Static
 
-        private static Random Random;
-
-        private static readonly Dictionary<string, OperatorDescriptor> operators = new Dictionary<string, OperatorDescriptor>
-        {
-            {"+",       new OperatorDescriptor(Operator.Add,   OperatorType.Binary,    2) },
-            {"-",       new OperatorDescriptor(Operator.Sub,   OperatorType.Binary,    2) },
-            {"*",       new OperatorDescriptor(Operator.Mult,  OperatorType.Binary,    5) },
-            {"/",       new OperatorDescriptor(Operator.Div,   OperatorType.Binary,    5) },
-            {"%",       new OperatorDescriptor(Operator.Mod,   OperatorType.Binary,    10)},
-            {"^",       new OperatorDescriptor(Operator.Pow,   OperatorType.Binary,    15)},
-            {"sqrt",    new OperatorDescriptor(Operator.Sqrt,  OperatorType.Unary,     15)},
-            {"cos",     new OperatorDescriptor(Operator.Cos,   OperatorType.Unary,     12)},
-            {"sin",     new OperatorDescriptor(Operator.Sin,   OperatorType.Unary,     12)},
-            {"abs",     new OperatorDescriptor(Operator.Abs,   OperatorType.Unary,     8) },
-            {"round",   new OperatorDescriptor(Operator.Round, OperatorType.Unary,     8) },
-            {"!",       new OperatorDescriptor(Operator.Neg,   OperatorType.Unary,     50)},
-            {"pi",      new OperatorDescriptor(Operator.PI,    OperatorType.Const,     90)},
-            {"min",     new OperatorDescriptor(Operator.Min,   OperatorType.Binary,    80)},
-            {"max",     new OperatorDescriptor(Operator.Max,   OperatorType.Binary,    90)},
-            {"==",      new OperatorDescriptor(Operator.Equal, OperatorType.Binary,    0) },
-            {"eq",      new OperatorDescriptor(Operator.Equal, OperatorType.Binary,    0) },
-            {"lt",      new OperatorDescriptor(Operator.LT,    OperatorType.Binary,    0) },
-            {"lte",     new OperatorDescriptor(Operator.LTE,   OperatorType.Binary,    0) },
-            {"gt",      new OperatorDescriptor(Operator.GT,    OperatorType.Binary,    0) },
-            {"gte",     new OperatorDescriptor(Operator.GTE,   OperatorType.Binary,    0) },
-            {"rand",    new OperatorDescriptor(Operator.Rand,  OperatorType.Const,     90)},
-            {"d",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
-            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)}
-        };
+        private static System.Random Random;
 
         #endregion
 
         #region Members
 
-        private readonly Dictionary<string, double> variables;
+        private readonly System.Collections.Generic.Dictionary<string, double> variables;
         private IInterpreterContext interpreterContext;
 
         #endregion
@@ -97,43 +66,17 @@ namespace Hef.Math
             Binary
         }
 
-        private enum Operator
-        {
-            Add = 0,
-            Sub,
-            Mult,
-            Div,
-            Mod,
-            Equal,
-            Pow,
-            Sqrt,
-            Cos,
-            Sin,
-            Abs,
-            Round,
-            Neg,
-            PI,
-            Min,
-            Max,
-            LT,
-            LTE,
-            GT,
-            GTE,
-            Rand,
-            Dice
-        }
-
         #endregion
 
         #region Constructors
 
         public Interpreter()
         {
-            this.variables = new Dictionary<string, double>();
+            this.variables = new System.Collections.Generic.Dictionary<string, double>();
 
             if (Interpreter.Random == null)
             {
-                Interpreter.Random = new Random();
+                Interpreter.Random = new System.Random();
             }
         }
 
@@ -186,6 +129,16 @@ namespace Hef.Math
 
         private static int ComparePrecedence(string a, string b)
         {
+            if (!Interpreter.operators.ContainsKey(a))
+            {
+                throw new System.Exception(string.Format("Operator '{0}' is not registered.", a));
+            }
+
+            if (!Interpreter.operators.ContainsKey(b))
+            {
+                throw new System.Exception(string.Format("Operator '{0}' is not registered.", b));
+            }
+
             return Interpreter.operators[a].Priority - Interpreter.operators[b].Priority;
         }
 
@@ -209,124 +162,46 @@ namespace Hef.Math
             return index;
         }
         
-        private static double ComputeOperation(double left, double right, Operator op)
-        {
-            switch (op)
-            {
-                case Operator.Add:
-                    return left + right;
-
-                case Operator.Sub:
-                    return left - right;
-
-                case Operator.Mult:
-                    return left * right;
-
-                case Operator.Div:
-                    return left / right;
-
-                case Operator.Mod:
-                    return (int)left % (int)right;
-
-                case Operator.Equal:
-                    return Math.Abs(left - right) < double.Epsilon ? 1f : 0f;
-
-                case Operator.Pow:
-                    return Math.Pow(left, right);
-
-                case Operator.Sqrt:
-                    return Math.Sqrt(left);
-
-                case Operator.Cos:
-                    return Math.Cos(left);
-
-                case Operator.Sin:
-                    return Math.Sin(left);
-
-                case Operator.Abs:
-                    return Math.Abs(left);
-
-                case Operator.Round:
-                    return Math.Round(left);
-
-                case Operator.Neg:
-                    return -left;
-
-                case Operator.PI:
-                    return Math.PI;
-
-                case Operator.Min:
-                    return Math.Min(left, right);
-
-                case Operator.Max:
-                    return Math.Max(left, right);
-
-                case Operator.LT:
-                    return left < right ? 1d : 0d;
-
-                case Operator.LTE:
-                    return left <= right ? 1d : 0d;
-
-                case Operator.GT:
-                    return left > right ? 1d : 0d;
-
-                case Operator.GTE:
-                    return left >= right ? 1d : 0d;
-
-                case Operator.Rand:
-                    return Interpreter.Random.NextDouble();
-
-                case Operator.Dice:
-                    int value = 0;
-                    for (int i = 0; i < left; ++i)
-                        value += Interpreter.Random.Next(1, (int)right + 1);
-                    return value;
-
-                default:
-                    throw new InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
-            }
-        }
-
         private static string InfixToRpn(string infix)
         {
-            for (int idx = 0; idx < infix.Length; ++idx)
+            for (int index = 0; index < infix.Length; ++index)
             {
-                if (infix[idx] == Interpreter.VarPrefixChar)
+                if (infix[index] == Interpreter.VarPrefixChar)
                 {
-                    idx = Interpreter.SkipString(infix, idx + 2);
+                    index = Interpreter.SkipString(infix, index + 2);
                 }
-                else if (Interpreter.IsAlpha(infix[idx]))
+                else if (Interpreter.IsAlpha(infix[index]))
                 {
-                    infix = infix.Insert(idx, Interpreter.LongOpMark0Str);
-                    idx = Interpreter.SkipString(infix, idx + 2);
-                    infix = infix.Insert(idx, Interpreter.LongOpMark1Str);
+                    infix = infix.Insert(index, Interpreter.LongOpMark0Str);
+                    index = Interpreter.SkipString(infix, index + 2);
+                    infix = infix.Insert(index, Interpreter.LongOpMark1Str);
                 }
             }
 
             // Add blank spaces where needed.
-            for (int idx = 0; idx < infix.Length; ++idx)
+            for (int index = 0; index < infix.Length; ++index)
             {
-                if (Interpreter.operators.ContainsKey(infix[idx].ToString()) || infix[idx] == Interpreter.OpMarkChar
-                    || infix[idx] == Interpreter.OpenBracketChar || infix[idx] == Interpreter.ClosingBracketChar)
+                if (Interpreter.operators.ContainsKey(infix[index].ToString()) || infix[index] == Interpreter.OpMarkChar
+                    || infix[index] == Interpreter.OpenBracketChar || infix[index] == Interpreter.ClosingBracketChar)
                 {
-                    if (idx != 0 && infix[idx - 1] != Interpreter.WhiteSpaceChar)
+                    if (index != 0 && infix[index - 1] != Interpreter.WhiteSpaceChar)
                     {
-                        infix = infix.Insert(idx, Interpreter.WhiteSpaceStr);
+                        infix = infix.Insert(index, Interpreter.WhiteSpaceStr);
                     }
 
                     // Handle long operators.
-                    int jdx = idx;
-                    if (infix[idx] == Interpreter.OpMarkChar)
+                    int jndex = index;
+                    if (infix[index] == Interpreter.OpMarkChar)
                     {
-                        jdx = infix.IndexOf(Interpreter.OpMarkChar, idx + 1);
+                        jndex = infix.IndexOf(Interpreter.OpMarkChar, index + 1);
                     }
 
-                    if (jdx != infix.Length - 1 && infix[jdx + 1] != Interpreter.OpMarkChar)
+                    if (jndex != infix.Length - 1 && infix[jndex + 1] != Interpreter.OpMarkChar)
                     {
-                        infix = infix.Insert(jdx + 1, Interpreter.WhiteSpaceStr);
+                        infix = infix.Insert(jndex + 1, Interpreter.WhiteSpaceStr);
                     }
 
-                    idx = jdx;
+                    index = jndex;
                 }
             }
 
@@ -334,11 +209,13 @@ namespace Hef.Math
             infix = System.Text.RegularExpressions.Regex.Replace(infix.Replace(Interpreter.OpMarkStr, string.Empty), @"\s+", " ");
 
             string[] tokens = infix.Split(Interpreter.WhiteSpaceChar);
-            List<string> list = new List<string>();     //TODO: static
-            Stack<string> stack = new Stack<string>();  //TODO: static
+            System.Collections.Generic.List<string> list = new System.Collections.Generic.List<string>();     //TODO: static
+            System.Collections.Generic.Stack<string> stack = new System.Collections.Generic.Stack<string>();  //TODO: static
 
-            foreach (string token in tokens)
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
             {
+                string token = tokens[tokenIndex];
+
                 if (string.IsNullOrEmpty(token) || token == Interpreter.WhiteSpaceStr)
                 {
                     continue;
@@ -384,16 +261,19 @@ namespace Hef.Math
             }
 
             string rpn = string.Join(Interpreter.WhiteSpaceStr, list.ToArray());
+
             return rpn;
         }
 
         private double CalculateRpn(string rpn)
         {
             string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
-            Stack<double> values = new Stack<double>();
+            System.Collections.Generic.Stack<double> values = new System.Collections.Generic.Stack<double>();
 
-            foreach (string token in tokens)
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
             {
+                string token = tokens[tokenIndex];
+
                 if (Interpreter.operators.ContainsKey(token))
                 {
                     double right = 0d;
@@ -451,14 +331,14 @@ namespace Hef.Math
                     }
                     else
                     {
-                        throw new InvalidOperationException(string.Format("Error parsing '{0}'", token));
+                        throw new System.InvalidOperationException(string.Format("Error parsing '{0}'", token));
                     }
                 }
             }
 
             if (values.Count != 1)
             {
-                throw new InvalidOperationException("Cannot calculate formula");
+                throw new System.InvalidOperationException("Cannot calculate formula");
             }
 
             return values.Pop();

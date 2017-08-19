@@ -20,78 +20,99 @@
 // SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace Hef.Math.Test
 {
     class Program
     {
-        private static readonly Player player = new Player();
-        private static string Format = "{0} = {1}";
+        private static Player player;
+        private static Hef.Math.Interpreter interpreter;
 
         static void Main(string[] args)
         {
-            Calc("10^2");
-            Calc("sqrt4+3*4");
-            Calc("(sqrt4+3)*4");
-            Calc("5 * !1");
-            Calc("abs !1");
-            Calc("sin(1+2)");
-            Calc("sin1+2");
-            Calc("sin1*cos2+cos1*sin2");
-            Calc("(2 * 5 == 10) * 5");
-            Calc("$MaxHealth + $MaxMana * 2 + $XP");
-            Calc("min 4 6");
-            Calc("(4 gte 4)");
-            Calc("round (rand * 10 + 90)");
-            Calc("1d4+1 + 1D6+1");
+            double foo = 40d;
+            double bar = 2d;
+
+            player = new Player();
+            interpreter = new Interpreter(player);
+            interpreter.SetVar("Foo", foo);
+            interpreter.SetVar("bar", bar);
+
+            bool success = true;
+
+            success &= Calc("'1", -1d);
+            success &= Calc("1-1", 1d - 1d);
+            success &= Calc("!1", 0d);
+            success &= Calc("!0", 1d);
+            success &= Calc("!2", 0d);
+            success &= Calc("!0.5", 0d);
+            success &= Calc("2 + 2", 2 + 2d);
+            success &= Calc("2+2", 2d + 2d);
+            success &= Calc("(2+2)", 2d + 2d);
+            success &= Calc("sqrt4+3*4", System.Math.Sqrt(4) + 3 * 4);
+            success &= Calc("(sqrt4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
+            success &= Calc("5 * '1", 5 * -1d);
+            success &= Calc("abs '1", System.Math.Abs(-1d));
+            success &= Calc("sin(1+2)", System.Math.Sin(1 + 2));
+            success &= Calc("sin1+2", System.Math.Sin(1) + 2);
+            success &= Calc("sin1*cos2+cos1*sin2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
+            success &= Calc("(2 * 5 == 10) * 5", (2d * 5d == 10 ? 1d : 0d) * 5d);
+            success &= Calc("min 4 6", System.Math.Min(4d, 6d));
+            success &= Calc("max 4 6", System.Math.Max(4d, 6d));
+            success &= Calc("(4 gte 4)", 4d >= 4d ? 1d : 0d);
+            success &= Calc("(4 gte 3)", 4d >= 3d ? 1d : 0d);
+            success &= Calc("(3 gte 4)", 3d >= 4d ? 1d : 0d);
+            success &= Calc("$Health / $MaxHealth", player.GetHealth() / player.MaxHealth);
+            success &= Calc("$bar", bar);
+            success &= Calc("$Foo + $bar", foo + bar);
+            success &= Calc("round (rand * 10 + 90)");
+            success &= Calc("1d4+1 + 1D6+1");
+
+            System.Console.WriteLine("OVERALL RESULT: " + success);
         }
 
-        private static void Calc(string infix)
+        private static bool Calc(string infix)
         {
-            Console.WriteLine(Program.Format, infix, player.Interpreter.Calculate(infix));
+            System.Console.WriteLine("{0} = {1} (nocheck)", infix, interpreter.Calculate(infix));
+
+            return true;
+        }
+
+        private static bool Calc(string infix, double intendedResult)
+        {
+            double result = interpreter.Calculate(infix);
+            bool match = System.Math.Abs(intendedResult - result) < double.Epsilon;
+            System.Console.WriteLine("{0} = {1} -> {2}", infix, result, match);
+
+            return match;
         }
     }
 
     public class Player : Hef.Math.IInterpreterContext
     {
-        public Hef.Math.Interpreter Interpreter
+        public double MaxHealth
         {
-            get;
-            private set;
+            get
+            {
+                return 50d;
+            }
         }
 
-        public Player()
+        public double GetHealth()
         {
-            this.Interpreter = new Hef.Math.Interpreter(this);
-        }
-
-        public Dictionary<string, double> GetVariables()
-        {
-            return new Dictionary<string, double>()
-                {
-                    {"MaxHealth", 100},
-                    {"MaxMana", 50}
-                };
+            return 50d;
         }
 
         public bool TryGetVariable(string name, out double value)
         {
             value = 0d;
-            if (name == "XP")
+            if (name == "Health")
             {
-                value = 24d;
+                value = this.GetHealth();
                 return true;
             }
             else if (name == "MaxHealth")
             {
-                value = 100d;
-                return true;
-            }
-            else if (name == "MaxMana")
-            {
-                value = 50d;
+                value = this.MaxHealth;
                 return true;
             }
 
