@@ -27,6 +27,9 @@ namespace Hef.Math.Test
         private static Player player;
         private static Hef.Math.Interpreter interpreter;
 
+        private static Player player;
+        private static Hef.Math.Interpreter interpreter;
+
         static void Main(string[] args)
         {
             double foo = 40d;
