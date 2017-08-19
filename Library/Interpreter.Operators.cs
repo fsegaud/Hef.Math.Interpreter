@@ -52,7 +52,8 @@ namespace Hef.Math
             {"gte",     new OperatorDescriptor(Operator.GTE,   OperatorType.Binary,    0) },
             {"rand",    new OperatorDescriptor(Operator.Rand,  OperatorType.Const,     90)},
             {"d",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
-            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)}
+            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
+            {"'",       new OperatorDescriptor(Operator.Minus, OperatorType.Unary,     99)}
 
             /* Add your own operator description here ... */
         };
@@ -84,7 +85,8 @@ namespace Hef.Math
             GT,
             GTE,
             Rand,
-            Dice
+            Dice,
+            Minus
 
             /* Add your own operator here ... */
         }
@@ -134,7 +136,8 @@ namespace Hef.Math
                     return System.Math.Round(left);
 
                 case Operator.Neg:
-                    return -left;
+                    //return -left;
+                    return System.Math.Abs(left) < double.Epsilon ? 1d : 0d;
 
                 case Operator.PI:
                     return System.Math.PI;
@@ -170,6 +173,9 @@ namespace Hef.Math
 
                         return value;
                     }
+
+                case Operator.Minus:
+                    return -left;
 
                 /* Add your own operator computations here ... */
 
