@@ -132,6 +132,16 @@ namespace Hef.Math
 
         private static int ComparePrecedence(string a, string b)
         {
+            if (!Interpreter.operators.ContainsKey(a))
+            {
+                throw new System.Exception(string.Format("Operator '{0}' is not registered.", a));
+            }
+
+            if (!Interpreter.operators.ContainsKey(b))
+            {
+                throw new System.Exception(string.Format("Operator '{0}' is not registered.", b));
+            }
+
             return Interpreter.operators[a].Priority - Interpreter.operators[b].Priority;
         }
 
@@ -155,48 +165,46 @@ namespace Hef.Math
             return index;
         }
         
-        
-
         private static string InfixToRpn(string infix)
         {
-            for (int idx = 0; idx < infix.Length; ++idx)
+            for (int index = 0; index < infix.Length; ++index)
             {
-                if (infix[idx] == Interpreter.VarPrefixChar)
+                if (infix[index] == Interpreter.VarPrefixChar)
                 {
-                    idx = Interpreter.SkipString(infix, idx + 2);
+                    index = Interpreter.SkipString(infix, index + 2);
                 }
-                else if (Interpreter.IsAlpha(infix[idx]))
+                else if (Interpreter.IsAlpha(infix[index]))
                 {
-                    infix = infix.Insert(idx, Interpreter.LongOpMark0Str);
-                    idx = Interpreter.SkipString(infix, idx + 2);
-                    infix = infix.Insert(idx, Interpreter.LongOpMark1Str);
+                    infix = infix.Insert(index, Interpreter.LongOpMark0Str);
+                    index = Interpreter.SkipString(infix, index + 2);
+                    infix = infix.Insert(index, Interpreter.LongOpMark1Str);
                 }
             }
 
             // Add blank spaces where needed.
-            for (int idx = 0; idx < infix.Length; ++idx)
+            for (int index = 0; index < infix.Length; ++index)
             {
-                if (Interpreter.operators.ContainsKey(infix[idx].ToString()) || infix[idx] == Interpreter.OpMarkChar
-                    || infix[idx] == Interpreter.OpenBracketChar || infix[idx] == Interpreter.ClosingBracketChar)
+                if (Interpreter.operators.ContainsKey(infix[index].ToString()) || infix[index] == Interpreter.OpMarkChar
+                    || infix[index] == Interpreter.OpenBracketChar || infix[index] == Interpreter.ClosingBracketChar)
                 {
-                    if (idx != 0 && infix[idx - 1] != Interpreter.WhiteSpaceChar)
+                    if (index != 0 && infix[index - 1] != Interpreter.WhiteSpaceChar)
                     {
-                        infix = infix.Insert(idx, Interpreter.WhiteSpaceStr);
+                        infix = infix.Insert(index, Interpreter.WhiteSpaceStr);
                     }
 
                     // Handle long operators.
-                    int jdx = idx;
-                    if (infix[idx] == Interpreter.OpMarkChar)
+                    int jndex = index;
+                    if (infix[index] == Interpreter.OpMarkChar)
                     {
-                        jdx = infix.IndexOf(Interpreter.OpMarkChar, idx + 1);
+                        jndex = infix.IndexOf(Interpreter.OpMarkChar, index + 1);
                     }
 
-                    if (jdx != infix.Length - 1 && infix[jdx + 1] != Interpreter.OpMarkChar)
+                    if (jndex != infix.Length - 1 && infix[jndex + 1] != Interpreter.OpMarkChar)
                     {
-                        infix = infix.Insert(jdx + 1, Interpreter.WhiteSpaceStr);
+                        infix = infix.Insert(jndex + 1, Interpreter.WhiteSpaceStr);
                     }
 
-                    idx = jdx;
+                    index = jndex;
                 }
             }
 
@@ -207,8 +215,10 @@ namespace Hef.Math
             List<string> list = new List<string>();     //TODO: static
             Stack<string> stack = new Stack<string>();  //TODO: static
 
-            foreach (string token in tokens)
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
             {
+                string token = tokens[tokenIndex];
+
                 if (string.IsNullOrEmpty(token) || token == Interpreter.WhiteSpaceStr)
                 {
                     continue;
@@ -254,6 +264,7 @@ namespace Hef.Math
             }
 
             string rpn = string.Join(Interpreter.WhiteSpaceStr, list.ToArray());
+
             return rpn;
         }
 
@@ -262,8 +273,10 @@ namespace Hef.Math
             string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
             Stack<double> values = new Stack<double>();
 
-            foreach (string token in tokens)
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
             {
+                string token = tokens[tokenIndex];
+
                 if (Interpreter.operators.ContainsKey(token))
                 {
                     double right = 0d;

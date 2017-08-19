@@ -159,10 +159,15 @@ namespace Hef.Math
                     return Interpreter.Random.NextDouble();
 
                 case Operator.Dice:
-                    int value = 0;
-                    for (int i = 0; i < left; ++i)
-                        value += Interpreter.Random.Next(1, (int)right + 1);
-                    return value;
+                    {
+                        int value = 0;
+                        for (int i = 0; i < left; ++i)
+                        {
+                            value += Interpreter.Random.Next(1, (int)right + 1);
+                        }
+
+                        return value;
+                    }
 
                 default:
                     throw new InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
