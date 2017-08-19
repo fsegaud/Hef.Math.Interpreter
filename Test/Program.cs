@@ -24,62 +24,86 @@ namespace Hef.Math.Test
 {
     class Program
     {
-        private static readonly Player player = new Player();
         private static string Format = "{0} = {1}";
+
+        private static Player player;
+        private static Hef.Math.Interpreter interpreter;
 
         static void Main(string[] args)
         {
-            Calc("10^2");
-            Calc("sqrt4+3*4");
-            Calc("(sqrt4+3)*4");
-            Calc("5 * !1");
-            Calc("abs !1");
-            Calc("sin(1+2)");
-            Calc("sin1+2");
-            Calc("sin1*cos2+cos1*sin2");
-            Calc("(2 * 5 == 10) * 5");
-            Calc("$MaxHealth + $MaxMana * 2 + $XP");
-            Calc("min 4 6");
-            Calc("(4 gte 4)");
+            player = new Player();
+            interpreter = new Interpreter(player);
+            interpreter.SetVar("Foo", 40d);
+            interpreter.SetVar("bar", 2d);
+
+            Calc("'1", -1d);
+            Calc("1-1", 0d);
+            Calc("!1", 0d);
+            Calc("!0", 1d);
+            Calc("!2", 0d);
+            Calc("!0.5", 0D);
+            Calc("2 + 2", 4);
+            Calc("2+2", 4);
+            Calc("(2+2)", 4);
+            Calc("sqrt4+3*4", 14d);
+            Calc("(sqrt4+3)*4", 20d);
+            Calc("5 * '1", -5d);
+            Calc("abs '1", 1d);
+            Calc("sin(1+2)", System.Math.Sin(1 + 2));
+            Calc("sin1+2", System.Math.Sin(1) + 2);
+            Calc("sin1*cos2+cos1*sin2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
+            Calc("(2 * 5 == 10) * 5", 5d);
+            Calc("min 4 6", 4d);
+            Calc("max 4 6", 6d);
+            Calc("(4 gte 4)", 1d);
+            Calc("(4 gte 3)", 1d);
+            Calc("(3 gte 4)", 0d);
+            Calc("$Health / $MaxHealth", .5d);
+            Calc("$bar", 2d);
+            Calc("$Foo + $bar", 42d);
             Calc("round (rand * 10 + 90)");
             Calc("1d4+1 + 1D6+1");
         }
 
         private static void Calc(string infix)
         {
-            System.Console.WriteLine(Program.Format, infix, player.Interpreter.Calculate(infix));
+            System.Console.WriteLine("{0} = {1}", infix, interpreter.Calculate(infix));
+        }
+
+        private static void Calc(string infix, double intendedResult)
+        {
+            double result = interpreter.Calculate(infix);
+            bool match = System.Math.Abs(intendedResult - result) < double.Epsilon;
+            System.Console.WriteLine("{0} = {1} -> {2}", infix, result, match);
         }
     }
 
     public class Player : Hef.Math.IInterpreterContext
     {
-        public Hef.Math.Interpreter Interpreter
+        public double MaxHealth
         {
-            get;
-            private set;
+            get
+            {
+                return 50d;
+            }
         }
 
-        public Player()
+        public double GetHealth()
         {
-            this.Interpreter = new Hef.Math.Interpreter(this);
+            return 50d;
         }
 
         public bool TryGetVariable(string name, out double value)
         {
             value = 0d;
-            if (name == "XP")
+            if (name == "Health")
             {
-                value = 24d;
+                value = this.GetHealth();
                 return true;
             }
             else if (name == "MaxHealth")
             {
-                value = 100d;
-                return true;
-            }
-            else if (name == "MaxMana")
-            {
-                value = 50d;
+                value = this.MaxHealth;
                 return true;
             }
 
