@@ -53,6 +53,8 @@ namespace Hef.Math
             {"rand",    new OperatorDescriptor(Operator.Rand,  OperatorType.Const,     90)},
             {"d",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
             {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)}
+
+            /* Add your own operator description here ... */
         };
 
         #endregion
@@ -83,6 +85,8 @@ namespace Hef.Math
             GTE,
             Rand,
             Dice
+
+            /* Add your own operator here ... */
         }
 
         #endregion
@@ -166,6 +170,8 @@ namespace Hef.Math
 
                         return value;
                     }
+
+                /* Add your own operator computations here ... */
 
                 default:
                     throw new System.InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
