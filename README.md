@@ -52,7 +52,7 @@ interpreter.SetVar("bar", 2d);
 double result = interpreter.Calculate("($foo + $bar) * 2"); // -> 6
 ```
 
-The following example highlights the use of `Hef.Math.IInterpreterContext`, that allow the interpreter to access variables provided by other obejects.
+The following example highlights the use of `Hef.Math.IInterpreterContext`, that allow the interpreter to access variables provided by other objects.
 
 ```csharp
 Interpreter interpreter = new Interpreter(new Player());
