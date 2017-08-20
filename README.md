@@ -89,7 +89,7 @@ The interpreter handles the basic mathmatical operations. If you need more, ever
  
 The following example show the implementation of an operator that halves an operand. Its symbol will be `#`.
 
-```
+```csharp
 private enum Operator
 {
     /* ... */
