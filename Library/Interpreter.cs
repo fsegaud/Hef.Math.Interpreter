@@ -325,7 +325,8 @@ namespace Hef.Math
                     {
                         values.Push(value);
                     }
-                    else if (this.interpreterContext.TryGetVariable(token.TrimStart(Interpreter.VarPrefixChar), out value))
+                    else if (this.interpreterContext != null &&
+                        this.interpreterContext.TryGetVariable(token.TrimStart(Interpreter.VarPrefixChar), out value))
                     {
                         values.Push(value);
                     }
