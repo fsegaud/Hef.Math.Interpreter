@@ -23,12 +23,12 @@ git clone https://github.com/fsegaud/Hef.Math.Interpreter.git
 
 #### NuGet Package
 
-You can also install the correpsonding _NuGet_ package at [http://nuget.org/Hef.Math.Interpreter](http://nuget.org/Hef.Math.Interpreter)
+You can also install the correpsonding _NuGet_ package at [https://www.nuget.org/packages/Hef.Math.Interpreter](https://www.nuget.org/packages/Hef.Math.Interpreter)
 
 Or install it using the _NuGet_ console.
 
 ```
-Install-Package Hef.Math.Interperter
+Install-Package Hef.Math.Interpreter -Version 0.1.0-alpha 
 ```
 
 ### Examples
