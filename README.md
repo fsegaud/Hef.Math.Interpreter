@@ -1,6 +1,6 @@
 # Hef.Math.Interpreter
 
-This interpreter takes a math formula as input, breaks it into a chain of values and operations, and outputs a numeric result.
+An interpreter that takes a math formula (string) as input, breaks it into a chain of values and operations, and outputs a numeric result.
 It also handles variable declarations as key/value pairs.
 
 ## Getting Started
@@ -35,7 +35,7 @@ Install-Package Hef.Math.Interpreter -Version 0.1.0-alpha
 
 The interpreter accepts multiple formula coding conventions. You can uses spaces, or not. You can use parenthesis, or not. It's up to you.
 
-Here is the simplest exemple.
+Here is the simplest example.
 
 ```csharp
 Interpreter interpreter = new Interpreter();
