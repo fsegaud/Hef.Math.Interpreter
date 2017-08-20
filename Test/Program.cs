@@ -39,8 +39,9 @@ namespace Hef.Math.Test
 
             bool success = true;
 
-            success &= Calc("'1", -1d);
+            success &= Calc("±1", -1d);
             success &= Calc("1-1", 1d - 1d);
+            success &= Calc("1-±1", 1d - -1d);
             success &= Calc("!1", 0d);
             success &= Calc("!0", 1d);
             success &= Calc("!2", 0d);
@@ -50,8 +51,8 @@ namespace Hef.Math.Test
             success &= Calc("(2+2)", 2d + 2d);
             success &= Calc("sqrt4+3*4", System.Math.Sqrt(4) + 3 * 4);
             success &= Calc("(sqrt4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
-            success &= Calc("5 * '1", 5 * -1d);
-            success &= Calc("abs '1", System.Math.Abs(-1d));
+            success &= Calc("5 * ±1", 5 * -1d);
+            success &= Calc("abs ±1", System.Math.Abs(-1d));
             success &= Calc("sin(1+2)", System.Math.Sin(1 + 2));
             success &= Calc("sin1+2", System.Math.Sin(1) + 2);
             success &= Calc("sin1*cos2+cos1*sin2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));

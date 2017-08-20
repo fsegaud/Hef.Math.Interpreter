@@ -29,6 +29,7 @@ namespace Hef.Math
         private static readonly System.Collections.Generic.Dictionary<string, OperatorDescriptor> operators
             = new System.Collections.Generic.Dictionary<string, OperatorDescriptor>
         {
+            {"±",       new OperatorDescriptor(Operator.Sign,  OperatorType.Unary,     99)},
             {"+",       new OperatorDescriptor(Operator.Add,   OperatorType.Binary,    2) },
             {"-",       new OperatorDescriptor(Operator.Sub,   OperatorType.Binary,    2) },
             {"*",       new OperatorDescriptor(Operator.Mult,  OperatorType.Binary,    5) },
@@ -52,8 +53,7 @@ namespace Hef.Math
             {"gte",     new OperatorDescriptor(Operator.GTE,   OperatorType.Binary,    0) },
             {"rand",    new OperatorDescriptor(Operator.Rand,  OperatorType.Const,     90)},
             {"d",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
-            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
-            {"'",       new OperatorDescriptor(Operator.Minus, OperatorType.Unary,     99)}
+            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)}
 
             /* Add your own operator description here ... */
         };
@@ -64,7 +64,8 @@ namespace Hef.Math
 
         private enum Operator
         {
-            Add = 0,
+            Sign = 0,
+            Add,
             Sub,
             Mult,
             Div,
@@ -85,8 +86,7 @@ namespace Hef.Math
             GT,
             GTE,
             Rand,
-            Dice,
-            Minus
+            Dice
 
             /* Add your own operator here ... */
         }
@@ -99,6 +99,9 @@ namespace Hef.Math
         {
             switch (op)
             {
+                case Operator.Sign:
+                    return -left;
+
                 case Operator.Add:
                     return left + right;
 
@@ -173,9 +176,6 @@ namespace Hef.Math
 
                         return value;
                     }
-
-                case Operator.Minus:
-                    return -left;
 
                 /* Add your own operator computations here ... */
 
