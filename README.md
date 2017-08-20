@@ -81,7 +81,39 @@ class Player : Hef.Math.IInterpreterContext
 
 ### How To Define Additional Operations
 
-==`// TODO`==
+The interpreter handles the basic mathmatical operations. If you need more, everything you have to do is open the _Interpreter.Operators.cs_ file, and implement the following steps :
+
+1. Add your new operator to the `Operator` enum.
+2. Add the corresponding `OperatorDescriptor` in the `operators` dictionary, along with its type and priority.
+3. Implement the operation code in the `ComputeOperation()` function.
+ 
+The following example show the implementation of an operator that halves an operand. Its symbol will be `#`.
+
+```
+private enum Operator
+{
+    /* ... */
+    Half
+}
+
+operators = new System.Collections.Generic.Dictionary<string, OperatorDescriptor>
+{
+    /* ... */
+    { "#", new OperatorDescriptor(Operator.Half, OperatorType.Unary, 50) }
+}
+
+private static double ComputeOperation(double left, double right, Operator op)
+{
+    switch (op)
+    {
+        /* ... */
+        case Operator.Half:
+            return left  * .5d;
+    }
+}
+```
+
+> **DO** make a pull request if you want. More operators makes the interpreter better :smile:
 
 ## License
 
