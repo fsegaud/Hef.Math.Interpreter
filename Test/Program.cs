@@ -49,6 +49,7 @@ namespace Hef.Math.Test
             success &= Calc("2 + 2", 2 + 2d);
             success &= Calc("2+2", 2d + 2d);
             success &= Calc("(2+2)", 2d + 2d);
+
             success &= Calc("sqrt4+3*4", System.Math.Sqrt(4) + 3 * 4);
             success &= Calc("(sqrt4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
             success &= Calc("5 * ±1", 5 * -1d);
@@ -67,6 +68,7 @@ namespace Hef.Math.Test
             success &= Calc("$Foo + $bar", foo + bar);
             success &= Calc("round (rand * 10 + 90)");
             success &= Calc("1d4+1 + 1D6+1");
+
             success &= Calc("true", 1d);
             success &= Calc("false", 0d);
             success &= Calc("!true", 0d);
@@ -79,6 +81,17 @@ namespace Hef.Math.Test
             success &= Calc("true | false", 1d);
             success &= Calc("false | true", 1d);
             success &= Calc("false | false", 0d);
+
+            success &= Calc("degrad 0", 0d);
+            success &= Calc("degrad 90", System.Math.PI * .5d);
+            success &= Calc("degrad 180", System.Math.PI);
+            success &= Calc("degrad 270", System.Math.PI * 1.5d);
+            success &= Calc("degrad 360", System.Math.PI * 2d);
+            success &= Calc("raddeg (0)", 0d);
+            success &= Calc("raddeg (pi * 0.5)", 90d);
+            success &= Calc("raddeg (pi)", 180d);
+            success &= Calc("raddeg (pi * 1.5)", 270d);
+            success &= Calc("raddeg (pi * 2)", 360d);
 
             System.Console.WriteLine("OVERALL RESULT: " + success);
         }

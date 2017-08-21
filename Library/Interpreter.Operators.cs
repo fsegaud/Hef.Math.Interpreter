@@ -29,37 +29,46 @@ namespace Hef.Math
         private static readonly System.Collections.Generic.Dictionary<string, OperatorDescriptor> operators
             = new System.Collections.Generic.Dictionary<string, OperatorDescriptor>
         {
-            {"±",       new OperatorDescriptor(Operator.Sign,  OperatorType.Unary,     99)},
-            {"+",       new OperatorDescriptor(Operator.Add,   OperatorType.Binary,    2) },
-            {"-",       new OperatorDescriptor(Operator.Sub,   OperatorType.Binary,    2) },
-            {"*",       new OperatorDescriptor(Operator.Mult,  OperatorType.Binary,    5) },
-            {"/",       new OperatorDescriptor(Operator.Div,   OperatorType.Binary,    5) },
-            {"%",       new OperatorDescriptor(Operator.Mod,   OperatorType.Binary,    10)},
-            {"^",       new OperatorDescriptor(Operator.Pow,   OperatorType.Binary,    15)},
-            {"sqrt",    new OperatorDescriptor(Operator.Sqrt,  OperatorType.Unary,     15)},
-            {"cos",     new OperatorDescriptor(Operator.Cos,   OperatorType.Unary,     12)},
-            {"sin",     new OperatorDescriptor(Operator.Sin,   OperatorType.Unary,     12)},
-            {"abs",     new OperatorDescriptor(Operator.Abs,   OperatorType.Unary,     8) },
-            {"round",   new OperatorDescriptor(Operator.Round, OperatorType.Unary,     8) },
-            {"!",       new OperatorDescriptor(Operator.Neg,   OperatorType.Unary,     50)},
-            {"pi",      new OperatorDescriptor(Operator.PI,    OperatorType.Const,     90)},
-            {"min",     new OperatorDescriptor(Operator.Min,   OperatorType.Binary,    80)},
-            {"max",     new OperatorDescriptor(Operator.Max,   OperatorType.Binary,    90)},
-            {"==",      new OperatorDescriptor(Operator.Equal, OperatorType.Binary,    0) },
-            {"eq",      new OperatorDescriptor(Operator.Equal, OperatorType.Binary,    0) },
-            {"lt",      new OperatorDescriptor(Operator.LT,    OperatorType.Binary,    0) },
-            {"lte",     new OperatorDescriptor(Operator.LTE,   OperatorType.Binary,    0) },
-            {"gt",      new OperatorDescriptor(Operator.GT,    OperatorType.Binary,    0) },
-            {"gte",     new OperatorDescriptor(Operator.GTE,   OperatorType.Binary,    0) },
-            {"rand",    new OperatorDescriptor(Operator.Rand,  OperatorType.Const,     90)},
-            {"d",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
-            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
-            {"true",    new OperatorDescriptor(Operator.True,  OperatorType.Const,     90)},
-            {"false",   new OperatorDescriptor(Operator.False, OperatorType.Const,     90)},
-            {"&",       new OperatorDescriptor(Operator.And,   OperatorType.Binary,    0) },
-            {"and",     new OperatorDescriptor(Operator.And,   OperatorType.Binary,    0) },
-            {"|",       new OperatorDescriptor(Operator.Or,    OperatorType.Binary,    0) },
-            {"or",      new OperatorDescriptor(Operator.Or,    OperatorType.Binary,    0) },
+            {"±",       new OperatorDescriptor(Operator.Sign,    OperatorType.Unary,     99)},
+            {"+",       new OperatorDescriptor(Operator.Add,     OperatorType.Binary,    2) },
+            {"-",       new OperatorDescriptor(Operator.Sub,     OperatorType.Binary,    2) },
+            {"*",       new OperatorDescriptor(Operator.Mult,    OperatorType.Binary,    5) },
+            {"/",       new OperatorDescriptor(Operator.Div,     OperatorType.Binary,    5) },
+            {"%",       new OperatorDescriptor(Operator.Mod,     OperatorType.Binary,    10)},
+            {"^",       new OperatorDescriptor(Operator.Pow,     OperatorType.Binary,    15)},
+            {"sqrt",    new OperatorDescriptor(Operator.Sqrt,    OperatorType.Unary,     15)},
+            {"cos",     new OperatorDescriptor(Operator.Cos,     OperatorType.Unary,     12)},
+            {"sin",     new OperatorDescriptor(Operator.Sin,     OperatorType.Unary,     12)},
+            {"tan",     new OperatorDescriptor(Operator.Tan,     OperatorType.Unary,     12)},
+            {"acos",    new OperatorDescriptor(Operator.Acos,    OperatorType.Unary,     12)},
+            {"asin",    new OperatorDescriptor(Operator.Asin,    OperatorType.Unary,     12)},
+            {"atan",    new OperatorDescriptor(Operator.Atan,    OperatorType.Unary,     12)},
+            {"cosh",    new OperatorDescriptor(Operator.Cosh,    OperatorType.Unary,     12)},
+            {"sinh",    new OperatorDescriptor(Operator.Sinh,    OperatorType.Unary,     12)},
+            {"tanh",    new OperatorDescriptor(Operator.Tanh,    OperatorType.Unary,     12)},
+            {"degrad",  new OperatorDescriptor(Operator.Deg2Rad, OperatorType.Unary,     11)},
+            {"raddeg",  new OperatorDescriptor(Operator.Rad2Deg, OperatorType.Unary,     11)},
+            {"abs",     new OperatorDescriptor(Operator.Abs,     OperatorType.Unary,     8) },
+            {"round",   new OperatorDescriptor(Operator.Round,   OperatorType.Unary,     8) },
+            {"!",       new OperatorDescriptor(Operator.Neg,     OperatorType.Unary,     50)},
+            {"pi",      new OperatorDescriptor(Operator.PI,      OperatorType.Const,     90)},
+            {"min",     new OperatorDescriptor(Operator.Min,     OperatorType.Binary,    80)},
+            {"max",     new OperatorDescriptor(Operator.Max,     OperatorType.Binary,    90)},
+            {"==",      new OperatorDescriptor(Operator.Equal,   OperatorType.Binary,    0) },
+            {"eq",      new OperatorDescriptor(Operator.Equal,   OperatorType.Binary,    0) },
+            {"lt",      new OperatorDescriptor(Operator.LT,      OperatorType.Binary,    0) },
+            {"lte",     new OperatorDescriptor(Operator.LTE,     OperatorType.Binary,    0) },
+            {"gt",      new OperatorDescriptor(Operator.GT,      OperatorType.Binary,    0) },
+            {"gte",     new OperatorDescriptor(Operator.GTE,     OperatorType.Binary,    0) },
+            {"rand",    new OperatorDescriptor(Operator.Rand,    OperatorType.Const,     90)},
+            {"d",       new OperatorDescriptor(Operator.Dice,    OperatorType.Binary,    90)},
+            {"D",       new OperatorDescriptor(Operator.Dice,    OperatorType.Binary,    90)},
+            {"true",    new OperatorDescriptor(Operator.True,    OperatorType.Const,     90)},
+            {"false",   new OperatorDescriptor(Operator.False,   OperatorType.Const,     90)},
+            {"&",       new OperatorDescriptor(Operator.And,     OperatorType.Binary,    0) },
+            {"and",     new OperatorDescriptor(Operator.And,     OperatorType.Binary,    0) },
+            {"|",       new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    0) },
+            {"or",      new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    0) },
 
             /* Add your own operator description here ... */
         };
@@ -81,6 +90,15 @@ namespace Hef.Math
             Sqrt,
             Cos,
             Sin,
+            Tan,
+            Cosh,
+            Sinh,
+            Tanh,
+            Acos,
+            Asin,
+            Atan,
+            Deg2Rad,
+            Rad2Deg,
             Abs,
             Round,
             Neg,
@@ -141,6 +159,33 @@ namespace Hef.Math
 
                 case Operator.Sin:
                     return System.Math.Sin(left);
+
+                case Operator.Tan:
+                    return System.Math.Tan(left);
+
+                case Operator.Acos:
+                    return System.Math.Acos(left);
+
+                case Operator.Asin:
+                    return System.Math.Asin(left);
+
+                case Operator.Atan:
+                    return System.Math.Atan(left);
+
+                case Operator.Cosh:
+                    return System.Math.Cosh(left);
+
+                case Operator.Sinh:
+                    return System.Math.Sinh(left);
+
+                case Operator.Tanh:
+                    return System.Math.Tanh(left);
+
+                case Operator.Deg2Rad:
+                    return (left * System.Math.PI) / 180d;
+
+                case Operator.Rad2Deg:
+                    return (left * 180d) / System.Math.PI;
 
                 case Operator.Abs:
                     return System.Math.Abs(left);

@@ -41,10 +41,19 @@
 
 ### Trigonometry
 
-| Symbol | Operation | Comment | Version |
-|:------:|-----------|---------|:-------:|
-| `cos`  | Cosinus   |         | 0.1.0   |
-| `sin`  | Sinus     |         | 0.1.0   |
+| Symbol   | Operation          | Comment                     | Version |
+|:--------:|--------------------|-----------------------------|:-------:|
+| `cos`    | Cosine             |                             | 0.1.0   |
+| `sin`    | Sine               |                             | 0.1.0   |
+| `tan`    | Tangent            |                             | 0.1.0   |
+| `acos`   | Arccosine          |                             | 0.1.1   |
+| `asin`   | Arcsine            |                             | 0.1.1   |
+| `atan`   | Arctangent         |                             | 0.1.1   |
+| `cosh`   | Hyperbolic Cosine  |                             | 0.1.1   |
+| `sinh`   | Hyperbolic Sine    |                             | 0.1.1   |
+| `tanh`   | Hyperbolic Tangent |                             | 0.1.1   |
+| `degrad` | Deg2Rad            | Converts degrees to radians | 0.1.1   |
+| `raddeg` | Rad2Deg            | Converts radians to degrees | 0.1.1   |
 
 ### Randomization
 
