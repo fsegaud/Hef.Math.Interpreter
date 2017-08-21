@@ -35,6 +35,8 @@ Install-Package Hef.Math.Interpreter -Version 0.1.0-alpha
 
 The interpreter accepts multiple formula coding conventions. You can uses spaces, or not. You can use parenthesis, or not. It's up to you.
 
+The complete list of handled operations is available [here](https://github.com/fsegaud/Hef.Math.Interpreter/blob/dev-0.1.1-alpha/Operations.md).
+
 Here is the simplest example.
 
 ```csharp
