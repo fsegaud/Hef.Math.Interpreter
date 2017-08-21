@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>Hef.Math.Interpreter</id>
-    <version>0.1.0-alpha</version>
+    <version>0.1.1-alpha</version>
     <authors>François Ségaud</authors>
     <owners>fseg</owners>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/fsegaud/Hef.Math.Interpreter</projectUrl>
     <!-- <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl> -->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This interpreter takes a math formula as input, breaks it into a chain of values and operations, and outputs a numeric result. It also handles variable declarations as key/value pairs.</description>
+    <description>An Interpreter that takes a math formula (string) as input, and outputs a numeric result.</description>
     <!-- <releaseNotes>TODO</releaseNotes> -->
     <copyright>Copyright 2017 François Ségaud</copyright>
     <tags>math interpreter c# csharp .net</tags>
@@ -17,4 +17,8 @@
       <!-- <dependency id="SampleDependency" version="1.0" /> -->
     <!-- </dependencies> -->
   </metadata>
+  <files>
+      <file src="..\Library\bin\Release\*.dll" target="lib" />
+      <file src="..\*.md" target="doc" />
+  </files>
 </package>
