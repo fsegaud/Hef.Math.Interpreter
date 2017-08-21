@@ -67,6 +67,18 @@ namespace Hef.Math.Test
             success &= Calc("$Foo + $bar", foo + bar);
             success &= Calc("round (rand * 10 + 90)");
             success &= Calc("1d4+1 + 1D6+1");
+            success &= Calc("true", 1d);
+            success &= Calc("false", 0d);
+            success &= Calc("!true", 0d);
+            success &= Calc("!false", 1d);
+            success &= Calc("true & true", 1d);
+            success &= Calc("true & false", 0d);
+            success &= Calc("false & true", 0d);
+            success &= Calc("false & false", 0d);
+            success &= Calc("true | true", 1d);
+            success &= Calc("true | false", 1d);
+            success &= Calc("false | true", 1d);
+            success &= Calc("false | false", 0d);
 
             System.Console.WriteLine("OVERALL RESULT: " + success);
         }

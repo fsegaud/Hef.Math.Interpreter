@@ -53,7 +53,13 @@ namespace Hef.Math
             {"gte",     new OperatorDescriptor(Operator.GTE,   OperatorType.Binary,    0) },
             {"rand",    new OperatorDescriptor(Operator.Rand,  OperatorType.Const,     90)},
             {"d",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
-            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)}
+            {"D",       new OperatorDescriptor(Operator.Dice,  OperatorType.Binary,    90)},
+            {"true",    new OperatorDescriptor(Operator.True,  OperatorType.Const,     90)},
+            {"false",   new OperatorDescriptor(Operator.False, OperatorType.Const,     90)},
+            {"&",       new OperatorDescriptor(Operator.And,   OperatorType.Binary,    0) },
+            {"and",     new OperatorDescriptor(Operator.And,   OperatorType.Binary,    0) },
+            {"|",       new OperatorDescriptor(Operator.Or,    OperatorType.Binary,    0) },
+            {"or",      new OperatorDescriptor(Operator.Or,    OperatorType.Binary,    0) },
 
             /* Add your own operator description here ... */
         };
@@ -86,7 +92,11 @@ namespace Hef.Math
             GT,
             GTE,
             Rand,
-            Dice
+            Dice,
+            True,
+            False,
+            And,
+            Or
 
             /* Add your own operator here ... */
         }
@@ -118,7 +128,7 @@ namespace Hef.Math
                     return (int)left % (int)right;
 
                 case Operator.Equal:
-                    return System.Math.Abs(left - right) < double.Epsilon ? 1f : 0f;
+                    return System.Math.Abs(left - right) < double.Epsilon ? TRUE : FALSE;
 
                 case Operator.Pow:
                     return System.Math.Pow(left, right);
@@ -140,7 +150,7 @@ namespace Hef.Math
 
                 case Operator.Neg:
                     //return -left;
-                    return System.Math.Abs(left) < double.Epsilon ? 1d : 0d;
+                    return System.Math.Abs(left) < double.Epsilon ? TRUE : FALSE;
 
                 case Operator.PI:
                     return System.Math.PI;
@@ -152,16 +162,16 @@ namespace Hef.Math
                     return System.Math.Max(left, right);
 
                 case Operator.LT:
-                    return left < right ? 1d : 0d;
+                    return left < right ? TRUE : FALSE;
 
                 case Operator.LTE:
-                    return left <= right ? 1d : 0d;
+                    return left <= right ? TRUE : FALSE;
 
                 case Operator.GT:
-                    return left > right ? 1d : 0d;
+                    return left > right ? TRUE : FALSE;
 
                 case Operator.GTE:
-                    return left >= right ? 1d : 0d;
+                    return left >= right ? TRUE : FALSE;
 
                 case Operator.Rand:
                     return Interpreter.Random.NextDouble();
@@ -176,6 +186,18 @@ namespace Hef.Math
 
                         return value;
                     }
+
+                case Operator.True:
+                    return 1d;
+
+                case Operator.False:
+                    return 0d;
+
+                case Operator.And:
+                    return BoolToDouble(DoubleToBool(left) && DoubleToBool(right));
+
+                case Operator.Or:
+                    return BoolToDouble(DoubleToBool(left) || DoubleToBool(right));
 
                 /* Add your own operator computations here ... */
 

@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="IInterpreterContext.cs" />
     <Compile Include="Interpreter.cs" />
+    <Compile Include="Interpreter.Helper.cs" />
     <Compile Include="Interpreter.Operators.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
