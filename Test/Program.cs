@@ -24,6 +24,9 @@ namespace Hef.Math.Test
 {
     class Program
     {
+        private const double FALSE = 0d;
+        private const double TRUE = 1d;
+
         private static Player player;
         private static Hef.Math.Interpreter interpreter;
 
@@ -39,77 +42,131 @@ namespace Hef.Math.Test
 
             bool success = true;
 
-            success &= Calc("±1", -1d);
-            success &= Calc("1-1", 1d - 1d);
-            success &= Calc("1-±1", 1d - -1d);
-            success &= Calc("!1", 0d);
-            success &= Calc("!0", 1d);
-            success &= Calc("!2", 0d);
-            success &= Calc("!0.5", 0d);
-            success &= Calc("2 + 2", 2 + 2d);
-            success &= Calc("2+2", 2d + 2d);
-            success &= Calc("(2+2)", 2d + 2d);
+            // Old tests.
+            success &= Test("±1", -1d);
+            success &= Test("1-1", 1d - 1d);
+            success &= Test("1-±1", 1d - -1d);
+            success &= Test("2 + 2", 2 + 2d);
+            success &= Test("2+2", 2d + 2d);
+            success &= Test("(2+2)", 2d + 2d);
+            success &= Test("sqrt4+3*4", System.Math.Sqrt(4) + 3 * 4);
+            success &= Test("(sqrt4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
+            success &= Test("5 * ±1", 5 * -1d);
+            success &= Test("abs ±1", System.Math.Abs(-1d));
+            success &= Test("sin(1+2)", System.Math.Sin(1 + 2));
+            success &= Test("sin1+2", System.Math.Sin(1) + 2);
+            success &= Test("sin1*cos2+cos1*sin2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
+            success &= Test("(2 * 5 == 10) * 5", (2d * 5d == 10 ? 1d : 0d) * 5d);
+            success &= Test("min 4 6", System.Math.Min(4d, 6d));
+            success &= Test("max 4 6", System.Math.Max(4d, 6d));
+            success &= Test("(4 gte 4)", 4d >= 4d ? 1d : 0d);
+            success &= Test("(4 gte 3)", 4d >= 3d ? 1d : 0d);
+            success &= Test("(3 gte 4)", 3d >= 4d ? 1d : 0d);
+            success &= Test("$Health / $MaxHealth", player.GetHealth() / player.MaxHealth);
+            success &= Test("$bar", bar);
+            success &= Test("$Foo + $bar", foo + bar);
+            success &= Test("round (rand * 10 + 90)");
+            success &= Test("1d4+1 + 1D6+1");
 
-            success &= Calc("sqrt4+3*4", System.Math.Sqrt(4) + 3 * 4);
-            success &= Calc("(sqrt4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
-            success &= Calc("5 * ±1", 5 * -1d);
-            success &= Calc("abs ±1", System.Math.Abs(-1d));
-            success &= Calc("sin(1+2)", System.Math.Sin(1 + 2));
-            success &= Calc("sin1+2", System.Math.Sin(1) + 2);
-            success &= Calc("sin1*cos2+cos1*sin2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
-            success &= Calc("(2 * 5 == 10) * 5", (2d * 5d == 10 ? 1d : 0d) * 5d);
-            success &= Calc("min 4 6", System.Math.Min(4d, 6d));
-            success &= Calc("max 4 6", System.Math.Max(4d, 6d));
-            success &= Calc("(4 gte 4)", 4d >= 4d ? 1d : 0d);
-            success &= Calc("(4 gte 3)", 4d >= 3d ? 1d : 0d);
-            success &= Calc("(3 gte 4)", 3d >= 4d ? 1d : 0d);
-            success &= Calc("$Health / $MaxHealth", player.GetHealth() / player.MaxHealth);
-            success &= Calc("$bar", bar);
-            success &= Calc("$Foo + $bar", foo + bar);
-            success &= Calc("round (rand * 10 + 90)");
-            success &= Calc("1d4+1 + 1D6+1");
+            // Comparison.
+            success &= Test("1 == 0", BoolToDouble(1d == 0d));
+            success &= Test("1 == 1", BoolToDouble(1d == 1d));
+            success &= Test("1 eq 0", BoolToDouble(1d == 0d));
+            success &= Test("1 eq 1", BoolToDouble(1d == 1d));
+            success &= Test("1 gt 0", BoolToDouble(1d > 0d));
+            success &= Test("1 gt 1", BoolToDouble(1d > 1d));
+            success &= Test("1 gt 2", BoolToDouble(1d > 2d));
+            success &= Test("1 gte 0", BoolToDouble(1d >= 0d));
+            success &= Test("1 gte 1", BoolToDouble(1d >= 1d));
+            success &= Test("1 gte 2", BoolToDouble(1d >= 2d));
+            success &= Test("1 lt 0", BoolToDouble(1d < 0d));
+            success &= Test("1 lt 1", BoolToDouble(1d < 1d));
+            success &= Test("1 lt 2", BoolToDouble(1d < 2d));
+            success &= Test("1 lte 0", BoolToDouble(1d <= 0d));
+            success &= Test("1 lte 1", BoolToDouble(1d <= 1d));
+            success &= Test("1 lte 2", BoolToDouble(1d <= 2d));
 
-            success &= Calc("true", 1d);
-            success &= Calc("false", 0d);
-            success &= Calc("!true", 0d);
-            success &= Calc("!false", 1d);
-            success &= Calc("true & true", 1d);
-            success &= Calc("true & false", 0d);
-            success &= Calc("false & true", 0d);
-            success &= Calc("false & false", 0d);
-            success &= Calc("true | true", 1d);
-            success &= Calc("true | false", 1d);
-            success &= Calc("false | true", 1d);
-            success &= Calc("false | false", 0d);
+            // Boolean.
+            success &= Test("!1", FALSE);
+            success &= Test("!0", TRUE);
+            success &= Test("!2", FALSE);
+            success &= Test("!0.5", FALSE);
+            success &= Test("true", BoolToDouble(true));
+            success &= Test("false", BoolToDouble(false));
+            success &= Test("!true", BoolToDouble(!true));
+            success &= Test("!false", BoolToDouble(!false));
+            success &= Test("true & true", BoolToDouble(true && true));
+            success &= Test("true & false", BoolToDouble(true && false));
+            success &= Test("false & true", BoolToDouble(false && true));
+            success &= Test("false & false", BoolToDouble(false && false));
+            success &= Test("true and true", BoolToDouble(true && true));
+            success &= Test("true and false", BoolToDouble(true && false));
+            success &= Test("false and true", BoolToDouble(false && true));
+            success &= Test("false and false", BoolToDouble(false && false));
+            success &= Test("true | true", BoolToDouble(true || true));
+            success &= Test("true | false", BoolToDouble(true || false));
+            success &= Test("false | true", BoolToDouble(false || true));
+            success &= Test("false | false", BoolToDouble(false || false));
+            success &= Test("true or true", BoolToDouble(true || true));
+            success &= Test("true or false", BoolToDouble(true || false));
+            success &= Test("false or true", BoolToDouble(false || true));
+            success &= Test("false or false", BoolToDouble(false || false));
 
-            success &= Calc("degrad 0", 0d);
-            success &= Calc("degrad 90", System.Math.PI * .5d);
-            success &= Calc("degrad 180", System.Math.PI);
-            success &= Calc("degrad 270", System.Math.PI * 1.5d);
-            success &= Calc("degrad 360", System.Math.PI * 2d);
-            success &= Calc("raddeg (0)", 0d);
-            success &= Calc("raddeg (pi * 0.5)", 90d);
-            success &= Calc("raddeg (pi)", 180d);
-            success &= Calc("raddeg (pi * 1.5)", 270d);
-            success &= Calc("raddeg (pi * 2)", 360d);
+            // Trigonometry.
+            success &= Test("cos 0", System.Math.Cos(0d));
+            success &= Test("cos (pi / 2)", System.Math.Cos(System.Math.PI / 2d));
+            success &= Test("cos pi", System.Math.Cos(System.Math.PI));
+            success &= Test("sin 0", System.Math.Sin(0d));
+            success &= Test("sin (pi / 2)", System.Math.Sin(System.Math.PI / 2d));
+            success &= Test("sin pi", System.Math.Sin(System.Math.PI));
+            success &= Test("acos 0", System.Math.Acos(0d));
+            success &= Test("acos 1", System.Math.Acos(1d));
+            success &= Test("acos ±1", System.Math.Acos(-1d));
+            success &= Test("asin 0", System.Math.Asin(0d));
+            success &= Test("asin 1", System.Math.Asin(1d));
+            success &= Test("asin ±1", System.Math.Asin(-1d));
+            success &= Test("tan 0", System.Math.Tan(0));
+            success &= Test("tan pi", System.Math.Tan(System.Math.PI));
+            success &= Test("tan (pi / 4)", System.Math.Tan(System.Math.PI / 4d));
+            success &= Test("tan (3 * pi / 4)", System.Math.Tan(3 * System.Math.PI / 4d));
+            success &= Test("degrad 0", 0d);
+            success &= Test("degrad 90", System.Math.PI * .5d);
+            success &= Test("degrad 180", System.Math.PI);
+            success &= Test("degrad 270", System.Math.PI * 1.5d);
+            success &= Test("degrad 360", System.Math.PI * 2d);
+            success &= Test("raddeg (0)", 0d);
+            success &= Test("raddeg (pi * 0.5)", 90d);
+            success &= Test("raddeg (pi)", 180d);
+            success &= Test("raddeg (pi * 1.5)", 270d);
+            success &= Test("raddeg (pi * 2)", 360d);
 
-            System.Console.WriteLine("OVERALL RESULT: " + success);
+            System.Console.WriteLine("--------------------\nOVERALL RESULT: " + success);
         }
 
-        private static bool Calc(string infix)
+        private static bool Test(string infix)
         {
             System.Console.WriteLine("{0} = {1} (nocheck)", infix, interpreter.Calculate(infix));
 
             return true;
         }
 
-        private static bool Calc(string infix, double intendedResult)
+        private static bool Test(string infix, double intendedResult)
         {
             double result = interpreter.Calculate(infix);
             bool match = System.Math.Abs(intendedResult - result) < double.Epsilon;
             System.Console.WriteLine("{0} = {1} -> {2}", infix, result, match);
 
             return match;
+        }
+
+        private static bool DoubleToBool(double value)
+        {
+            return System.Math.Abs(value - 1d) < double.Epsilon;
+        }
+
+        private static double BoolToDouble(bool value)
+        {
+            return value ? 1d : 0d;
         }
     }
 
