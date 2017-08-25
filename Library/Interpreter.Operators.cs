@@ -46,8 +46,8 @@ namespace Hef.Math
             {"cosh",    new OperatorDescriptor(Operator.Cosh,    OperatorType.Unary,     12)},
             {"sinh",    new OperatorDescriptor(Operator.Sinh,    OperatorType.Unary,     12)},
             {"tanh",    new OperatorDescriptor(Operator.Tanh,    OperatorType.Unary,     12)},
-            {"degrad",  new OperatorDescriptor(Operator.Deg2Rad, OperatorType.Unary,     11)},
-            {"raddeg",  new OperatorDescriptor(Operator.Rad2Deg, OperatorType.Unary,     11)},
+            {"degrad",  new OperatorDescriptor(Operator.Deg2Rad, OperatorType.Unary,     13)},
+            {"raddeg",  new OperatorDescriptor(Operator.Rad2Deg, OperatorType.Unary,     13)},
             {"abs",     new OperatorDescriptor(Operator.Abs,     OperatorType.Unary,     8) },
             {"round",   new OperatorDescriptor(Operator.Round,   OperatorType.Unary,     8) },
             {"!",       new OperatorDescriptor(Operator.Neg,     OperatorType.Unary,     50)},
@@ -67,8 +67,8 @@ namespace Hef.Math
             {"false",   new OperatorDescriptor(Operator.False,   OperatorType.Const,     90)},
             {"&",       new OperatorDescriptor(Operator.And,     OperatorType.Binary,    0) },
             {"and",     new OperatorDescriptor(Operator.And,     OperatorType.Binary,    0) },
-            {"|",       new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    0) },
-            {"or",      new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    0) },
+            {"|",       new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    1) },
+            {"or",      new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    1) },
 
             /* Add your own operator description here ... */
         };
