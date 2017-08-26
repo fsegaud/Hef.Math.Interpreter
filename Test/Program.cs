@@ -43,7 +43,11 @@ namespace Hef.Math.Test
             interpreter.SetVar("Foo", foo);
             interpreter.SetVar("bar", bar);
             interpreter.SetVar("hundred", hundred);
-            
+
+            Interpreter.TEST_DynamicLoad();
+            interpreter.TEST_Rpn2Node();
+            return;
+
             bool success = true;
 
             // Old tests.

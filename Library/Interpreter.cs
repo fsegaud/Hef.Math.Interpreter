@@ -20,6 +20,9 @@
 // SOFTWARE.
 #endregion
 
+using System;
+using System.Reflection;
+
 namespace Hef.Math
 {
     /// <summary>
@@ -146,7 +149,8 @@ namespace Hef.Math
         /// <returns></returns>
         public double Calculate(string infix)
         {
-            return this.CalculateRpn(Interpreter.InfixToRpn(infix));
+            //return this.CalculateRpn(Interpreter.InfixToRpn(infix));
+            throw new System.NotImplementedException();
         }
 
         #endregion
@@ -191,9 +195,12 @@ namespace Hef.Math
         
         private static string InfixToRpn(string infix)
         {
+            // For cache lookup. Because it might be altered later on.
+            string userInfix = infix;
+
             // Fetch cached rpn if it exists.
             string rpn = null;
-            if (Interpreter.cachedInfixToRpn.TryGetValue(infix, out rpn))
+            if (Interpreter.cachedInfixToRpn.TryGetValue(userInfix, out rpn))
             {
                 System.Console.WriteLine("CACHE_HIT: " + rpn);
                 return rpn;
@@ -253,6 +260,8 @@ namespace Hef.Math
 
             // Trim long op mark and white spaces.
             infix = System.Text.RegularExpressions.Regex.Replace(infix.Replace(Interpreter.OpMarkStr, string.Empty), @"\s+", " ");
+            infix = infix.TrimStart(WhiteSpaceChar);
+            infix = infix.TrimEnd(WhiteSpaceChar);
 
             string[] tokens = infix.Split(Interpreter.WhiteSpaceChar);
             System.Collections.Generic.List<string> list = new System.Collections.Generic.List<string>();     //TODO: static
@@ -309,13 +318,83 @@ namespace Hef.Math
             rpn = string.Join(Interpreter.WhiteSpaceStr, list.ToArray());
 
             // Store in cache for futur use.
-            Interpreter.cachedInfixToRpn.Add(infix, rpn);
+            Interpreter.cachedInfixToRpn.Add(userInfix, rpn);
             System.Console.WriteLine("CACHE_ADD: " + rpn);
 
             return rpn;
         }
 
-        private double CalculateRpn(string rpn)
+        private static Node RpnToNode(string rpn)
+        {
+            string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
+            System.Collections.Generic.Stack<Node> values = new System.Collections.Generic.Stack<Node>();
+
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
+            {
+                string token = tokens[tokenIndex];
+
+                if (Interpreter.operators.ContainsKey(token))
+                {
+                    OperatorDescriptor opeDesc = Interpreter.operators[token];
+
+                    if (opeDesc.NodeType != null)
+                    {
+                        if (opeDesc.NodeType.IsSubclassOf(typeof (ZeroNode)))
+                        {
+                            ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new Type[0]);
+                            if (constructorInfo != null)
+                            {
+                                Node node = (Node) constructorInfo.Invoke(new object[0]);
+                                values.Push(node);
+                            }
+                        }
+
+                        if (opeDesc.NodeType.IsSubclassOf(typeof (UnaryNode)))
+                        {
+                            ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new [] {typeof (Node)});
+                            if (constructorInfo != null)
+                            {
+                                Node node = (Node) constructorInfo.Invoke(new object[] {values.Pop()});
+                                values.Push(node);
+                            }
+                        }
+
+                        if (opeDesc.NodeType.IsSubclassOf(typeof (BinaryNode)))
+                        {
+                            ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new [] {typeof (Node), typeof (Node)});
+                            if (constructorInfo != null)
+                            {
+                                Node node = (Node) constructorInfo.Invoke(new object[] {values.Pop(), values.Pop()});
+                                values.Push(node);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    double value;
+                    if (double.TryParse(token, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture.NumberFormat, out value))
+                    {
+                        Node node = new ValueNode(value);
+                        values.Push(node);
+                    }
+                    else
+                    {
+                        Node node = new VarNode(token);
+                        values.Push(node);
+                    }
+                }
+            }
+
+            if (values.Count != 1)
+            {
+                throw new System.InvalidOperationException("Cannot calculate formula");
+            }
+
+            return values.Pop();
+        }
+
+        /*private double CalculateRpn(string rpn)
         {
             string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
             System.Collections.Generic.Stack<double> values = new System.Collections.Generic.Stack<double>();
@@ -408,7 +487,7 @@ namespace Hef.Math
             }
 
             return values.Pop();
-        }
+        }*/
 
         #endregion
 
@@ -416,15 +495,17 @@ namespace Hef.Math
 
         private struct OperatorDescriptor
         {
-            public readonly Operator Operator;
-            public readonly OperatorType Type;
+            //public readonly Operator Operator;
+            //public readonly OperatorType Type;
             public readonly int Priority;
+            public readonly System.Type NodeType;
 
-            public OperatorDescriptor(Operator op, OperatorType type, int priority)
+            public OperatorDescriptor(/*Operator @operator, OperatorType type,*/ int priority, Type nodeType)
             {
-                this.Operator = op;
-                this.Type = type;
-                this.Priority = priority;
+                //Operator = @operator;
+                //Type = type;
+                Priority = priority;
+                NodeType = nodeType;
             }
         }
 
