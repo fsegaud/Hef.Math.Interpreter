@@ -124,10 +124,17 @@ namespace Hef.Math
         /// Sets an interpreter context to be use un variables resolution.
         /// </summary>
         /// <param name="name">The name of the context..</param>
-        /// <param name="interpreterContext">An object that implements Hef.Math.IInterpreterContext.</param>
+        /// <param name="interpreterContext">An object that implements Hef.Math.IInterpreterContext. Null to re;ove context.</param>
         public void SetContext(string name, IInterpreterContext interpreterContext)
         {
-            this.namedContext.Add(name, interpreterContext);
+            if (interpreterContext == null)
+            {
+                this.namedContext.Remove(name);
+            }
+            else
+            {
+                this.namedContext.Add(name, interpreterContext);
+            }
         }
 
         /// <summary>
