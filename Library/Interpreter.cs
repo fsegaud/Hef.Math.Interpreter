@@ -54,6 +54,9 @@ namespace Hef.Math
         #region Members
 
         private readonly System.Collections.Generic.Dictionary<string, double> variables;
+        private System.Collections.Generic.Dictionary<string, IInterpreterContext> namedContext;
+
+        [System.Obsolete("use Interpreter.namedContext instead.")]
         private IInterpreterContext interpreterContext;
 
         #endregion
@@ -74,6 +77,7 @@ namespace Hef.Math
         public Interpreter()
         {
             this.variables = new System.Collections.Generic.Dictionary<string, double>();
+            this.namedContext = new System.Collections.Generic.Dictionary<string, IInterpreterContext>();
 
             if (Interpreter.Random == null)
             {
@@ -81,6 +85,7 @@ namespace Hef.Math
             }
         }
 
+        [System.Obsolete("Use Interpreter.SetContext(string, IINterpreterContext) instead.")]
         public Interpreter(IInterpreterContext interpreterContext)
             : this()
         {
@@ -109,9 +114,20 @@ namespace Hef.Math
         /// Sets an interpreter context to be use un variables resolution.
         /// </summary>
         /// <param name="interpreterContext">An object that implements Hef.Math.IInterpreterContext.</param>
+        [System.Obsolete("Use Interpreter.SetContext(string, IINterpreterContext) instead.")]
         public void SetContext(IInterpreterContext interpreterContext)
         {
             this.interpreterContext = interpreterContext;
+        }
+
+        /// <summary>
+        /// Sets an interpreter context to be use un variables resolution.
+        /// </summary>
+        /// <param name="name">The name of the context..</param>
+        /// <param name="interpreterContext">An object that implements Hef.Math.IInterpreterContext.</param>
+        public void SetContext(string name, IInterpreterContext interpreterContext)
+        {
+            this.namedContext.Add(name, interpreterContext);
         }
 
         /// <summary>
@@ -155,7 +171,8 @@ namespace Hef.Math
 
         private static int SkipString(string value, int index)
         {
-            while (index < value.Length && Interpreter.IsAlpha(value[index]))
+            // Also alow dots for names context cariable access `$xxx.yyy`.
+            while (index < value.Length && (Interpreter.IsAlpha(value[index]) || value[index] == '.'))
             {
                 ++index;
             }
@@ -186,9 +203,16 @@ namespace Hef.Math
             // Add blank spaces where needed.
             for (int index = 0; index < infix.Length; ++index)
             {
-                if (Interpreter.operators.ContainsKey(infix[index].ToString()) || infix[index] == Interpreter.OpMarkChar
+                if (Interpreter.operators.ContainsKey(infix[index].ToString()) || infix[index] == Interpreter.VarPrefixChar || infix[index] == Interpreter.OpMarkChar
                     || infix[index] == Interpreter.OpenBracketChar || infix[index] == Interpreter.ClosingBracketChar)
                 {
+                    // Ignore variable. It would be a mess to find an operator in the middle of a variable name...
+                    if (infix[index] == Interpreter.VarPrefixChar)
+                    {
+                        index = Interpreter.SkipString(infix, index + 2);
+                        //continue;
+                    }
+
                     if (index != 0 && infix[index - 1] != Interpreter.WhiteSpaceChar)
                     {
                         infix = infix.Insert(index, Interpreter.WhiteSpaceStr);
@@ -334,6 +358,21 @@ namespace Hef.Math
                         this.interpreterContext.TryGetVariable(token.TrimStart(Interpreter.VarPrefixChar), out value))
                     {
                         values.Push(value);
+                    }
+                    else if (System.Text.RegularExpressions.Regex.IsMatch(token, @"\$\w+.\w+"))
+                    {
+                        string contextName = token.Substring(token.IndexOf('$') + 1, token.IndexOf('.') - 1);
+                        string variableName = token.Substring(token.IndexOf('.') + 1);
+
+                        if (this.namedContext.ContainsKey(contextName) &&
+                            this.namedContext[contextName].TryGetVariable(variableName, out value))
+                        {
+                            values.Push(value);
+                        }
+                        else
+                        {
+                            throw new System.InvalidOperationException(string.Format("Error parsing '{0}'", token));
+                        }
                     }
                     else
                     {

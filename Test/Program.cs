@@ -34,12 +34,16 @@ namespace Hef.Math.Test
         {
             double foo = 40d;
             double bar = 2d;
+            double hundred = 100d;
 
             player = new Player();
-            interpreter = new Interpreter(player);
+            interpreter = new Interpreter();
+            interpreter.SetContext("player", new Player());
+            interpreter.SetContext("World", new World());
             interpreter.SetVar("Foo", foo);
             interpreter.SetVar("bar", bar);
-
+            interpreter.SetVar("hundred", hundred);
+            
             bool success = true;
 
             // Old tests.
@@ -62,8 +66,9 @@ namespace Hef.Math.Test
             success &= Test("(4 gte 4)", 4d >= 4d ? 1d : 0d);
             success &= Test("(4 gte 3)", 4d >= 3d ? 1d : 0d);
             success &= Test("(3 gte 4)", 3d >= 4d ? 1d : 0d);
-            success &= Test("$Health / $MaxHealth", player.GetHealth() / player.MaxHealth);
+            success &= Test("$player.Health / $player.MaxHealth", player.GetHealth() / player.MaxHealth);
             success &= Test("$bar", bar);
+            success &= Test("sqrt($hundred^2)", System.Math.Sqrt(hundred * hundred));
             success &= Test("$Foo + $bar", foo + bar);
             success &= Test("round (rand * 10 + 90)");
             success &= Test("1d4+1 + 1D6+1");
@@ -196,7 +201,7 @@ namespace Hef.Math.Test
         {
             get
             {
-                return 50d;
+                return 100d;
             }
         }
 
@@ -216,6 +221,21 @@ namespace Hef.Math.Test
             else if (name == "MaxHealth")
             {
                 value = this.MaxHealth;
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    public class World : Hef.Math.IInterpreterContext
+    {
+        public bool TryGetVariable(string name, out double value)
+        {
+            value = 0d;
+            if (name == "width" || name == "height")
+            {
+                value = 8d;
                 return true;
             }
 
