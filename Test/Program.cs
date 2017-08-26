@@ -140,6 +140,26 @@ namespace Hef.Math.Test
             success &= Test("raddeg (pi * 1.5)", 270d);
             success &= Test("raddeg (pi * 2)", 360d);
 
+            // Writing style and comma separator.
+            success &= Test("min(1,2)", System.Math.Min(1, 2));
+            success &= Test("min(1, 2)", System.Math.Min(1, 2));
+            success &= Test("min(1 2)", System.Math.Min(1, 2));
+            success &= Test("min 1 2", System.Math.Min(1, 2));
+            success &= Test("min 1,2", System.Math.Min(1, 2));
+            success &= Test("min 1, 2", System.Math.Min(1, 2));
+            success &= Test("min1, 2", System.Math.Min(1, 2));
+            success &= Test("min1,2", System.Math.Min(1, 2));
+            success &= Test("min1 2", System.Math.Min(1, 2));
+            success &= Test("min(2,1)", System.Math.Min(1, 2));
+            success &= Test("min(2, 1)", System.Math.Min(1, 2));
+            success &= Test("min(2 1)", System.Math.Min(1, 2));
+            success &= Test("min 2 1", System.Math.Min(1, 2));
+            success &= Test("min 2,1", System.Math.Min(1, 2));
+            success &= Test("min 2, 1", System.Math.Min(1, 2));
+            success &= Test("min2, 1", System.Math.Min(1, 2));
+            success &= Test("min2,1", System.Math.Min(1, 2));
+            success &= Test("min2 1", System.Math.Min(1, 2));
+
             System.Console.WriteLine("--------------------\nOVERALL RESULT: " + success);
         }
 

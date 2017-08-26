@@ -41,6 +41,7 @@ namespace Hef.Math
         private const char   ClosingBracketChar = ')';
         private const string WhiteSpaceStr      = " ";
         private const char   WhiteSpaceChar     = ' ';
+        private const char   CommaSeparatorChar = ',';
 
         #endregion
 
@@ -164,6 +165,10 @@ namespace Hef.Math
         
         private static string InfixToRpn(string infix)
         {
+            // Replace comma separator with white space for function-like use of operators.
+            infix = infix.Replace(Interpreter.CommaSeparatorChar, Interpreter.WhiteSpaceChar);
+
+            // Add operator markers.
             for (int index = 0; index < infix.Length; ++index)
             {
                 if (infix[index] == Interpreter.VarPrefixChar)
