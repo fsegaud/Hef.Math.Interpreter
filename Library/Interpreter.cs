@@ -48,6 +48,7 @@ namespace Hef.Math
         #region Static
 
         private static System.Random Random;
+        private static System.Collections.Generic.Dictionary<string, string> cachedInfixToRpn;
 
         #endregion
 
@@ -74,15 +75,16 @@ namespace Hef.Math
 
         #region Constructors
 
+        static Interpreter()
+        {
+            Interpreter.Random = new System.Random();
+            Interpreter.cachedInfixToRpn = new System.Collections.Generic.Dictionary<string, string>();
+        }
+
         public Interpreter()
         {
             this.variables = new System.Collections.Generic.Dictionary<string, double>();
             this.namedContext = new System.Collections.Generic.Dictionary<string, IInterpreterContext>();
-
-            if (Interpreter.Random == null)
-            {
-                Interpreter.Random = new System.Random();
-            }
         }
 
         [System.Obsolete("Use Interpreter.SetContext(string, IINterpreterContext) instead.")]
@@ -189,6 +191,14 @@ namespace Hef.Math
         
         private static string InfixToRpn(string infix)
         {
+            // Fetch cached rpn if it exists.
+            string rpn = null;
+            if (Interpreter.cachedInfixToRpn.TryGetValue(infix, out rpn))
+            {
+                System.Console.WriteLine("CACHE_HIT: " + rpn);
+                return rpn;
+            }
+
             // Replace comma separator with white space for function-like use of operators.
             infix = infix.Replace(Interpreter.CommaSeparatorChar, Interpreter.WhiteSpaceChar);
 
@@ -296,7 +306,11 @@ namespace Hef.Math
                 list.Add(stack.Pop());
             }
 
-            string rpn = string.Join(Interpreter.WhiteSpaceStr, list.ToArray());
+            rpn = string.Join(Interpreter.WhiteSpaceStr, list.ToArray());
+
+            // Store in cache for futur use.
+            Interpreter.cachedInfixToRpn.Add(infix, rpn);
+            System.Console.WriteLine("CACHE_ADD: " + rpn);
 
             return rpn;
         }
