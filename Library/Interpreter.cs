@@ -20,11 +20,6 @@
 // SOFTWARE.
 #endregion
 
-using System;
-using System.Configuration;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
 namespace Hef.Math
 {
     /// <summary>
@@ -351,7 +346,7 @@ namespace Hef.Math
                     {
                         if (opeDesc.NodeType.IsSubclassOf(typeof (ZeroNode)))
                         {
-                            ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new Type[0]);
+                            System.Reflection.ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new System.Type[0]);
                             if (constructorInfo != null)
                             {
                                 Node node = (Node) constructorInfo.Invoke(new object[0]);
@@ -361,7 +356,7 @@ namespace Hef.Math
 
                         if (opeDesc.NodeType.IsSubclassOf(typeof (UnaryNode)))
                         {
-                            ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new [] {typeof (Node)});
+                            System.Reflection.ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new [] {typeof (Node)});
                             if (constructorInfo != null)
                             {
                                 Node node = (Node) constructorInfo.Invoke(new object[] {values.Pop()});
@@ -371,7 +366,7 @@ namespace Hef.Math
 
                         if (opeDesc.NodeType.IsSubclassOf(typeof (BinaryNode)))
                         {
-                            ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new [] {typeof (Node), typeof (Node)});
+                            System.Reflection.ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new [] {typeof (Node), typeof (Node)});
                             if (constructorInfo != null)
                             {
                                 Node right = values.Pop();
@@ -415,7 +410,7 @@ namespace Hef.Math
             public readonly int Priority;
             public readonly System.Type NodeType;
 
-            public OperatorDescriptor(int priority, Type nodeType)
+            public OperatorDescriptor(int priority, System.Type nodeType)
             {
                 Priority = priority;
                 NodeType = nodeType;

@@ -20,8 +20,6 @@
 // SOFTWARE.
 #endregion
 
-using System;
-
 namespace Hef.Math.Test
 {
     class Program
@@ -184,16 +182,16 @@ namespace Hef.Math.Test
 
             if (match)
             {
-                System.Console.ForegroundColor = ConsoleColor.Green;
+                System.Console.ForegroundColor = System.ConsoleColor.Green;
                 System.Console.WriteLine("{0} = {1} -> {2}", infix, result, match);
             }
             else
             {
-                System.Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.ForegroundColor = System.ConsoleColor.Red;
                 System.Console.WriteLine("{0} = {1} (instead of {3}) -> {2}", infix, result, match, intendedResult);
             }
 
-            System.Console.ForegroundColor = ConsoleColor.Gray;
+            System.Console.ForegroundColor = System.ConsoleColor.Gray;
 
             return match;
         }
