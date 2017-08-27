@@ -20,12 +20,6 @@
 // SOFTWARE.
 #endregion
 
-using System;
-using System.Configuration;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Windows.Forms;
-
 namespace Hef.Math
 {
     // TODO: Move interface somewhere else.
@@ -35,228 +29,6 @@ namespace Hef.Math
 
         private static readonly System.Collections.Generic.Dictionary<string, OperatorDescriptor> operators
             = new System.Collections.Generic.Dictionary<string, OperatorDescriptor>();
-        /*{
-            {"±",       new OperatorDescriptor(Operator.Sign,    OperatorType.Unary,     99, null)},
-            {"+",       new OperatorDescriptor(Operator.Add,     OperatorType.Binary,    2, typeof(AddNode)) },
-            {"-",       new OperatorDescriptor(Operator.Sub,     OperatorType.Binary,    2, null) },
-            {"*",       new OperatorDescriptor(Operator.Mult,    OperatorType.Binary,    5, null) },
-            {"/",       new OperatorDescriptor(Operator.Div,     OperatorType.Binary,    5, null) },
-            {"%",       new OperatorDescriptor(Operator.Mod,     OperatorType.Binary,    10, null)},
-            {"^",       new OperatorDescriptor(Operator.Pow,     OperatorType.Binary,    15, null)},
-            {"sqrt",    new OperatorDescriptor(Operator.Sqrt,    OperatorType.Unary,     15, typeof(SqrtNode))},
-            {"cos",     new OperatorDescriptor(Operator.Cos,     OperatorType.Unary,     12, null)},
-            {"sin",     new OperatorDescriptor(Operator.Sin,     OperatorType.Unary,     12, null)},
-            {"tan",     new OperatorDescriptor(Operator.Tan,     OperatorType.Unary,     12, null)},
-            {"acos",    new OperatorDescriptor(Operator.Acos,    OperatorType.Unary,     12, null)},
-            {"asin",    new OperatorDescriptor(Operator.Asin,    OperatorType.Unary,     12, null)},
-            {"atan",    new OperatorDescriptor(Operator.Atan,    OperatorType.Unary,     12, null)},
-            {"cosh",    new OperatorDescriptor(Operator.Cosh,    OperatorType.Unary,     12, null)},
-            {"sinh",    new OperatorDescriptor(Operator.Sinh,    OperatorType.Unary,     12, null)},
-            {"tanh",    new OperatorDescriptor(Operator.Tanh,    OperatorType.Unary,     12, null)},
-            {"degrad",  new OperatorDescriptor(Operator.Deg2Rad, OperatorType.Unary,     13, null)},
-            {"raddeg",  new OperatorDescriptor(Operator.Rad2Deg, OperatorType.Unary,     13, null)},
-            {"abs",     new OperatorDescriptor(Operator.Abs,     OperatorType.Unary,     8, null) },
-            {"round",   new OperatorDescriptor(Operator.Round,   OperatorType.Unary,     8, null) },
-            {"!",       new OperatorDescriptor(Operator.Neg,     OperatorType.Unary,     50, null)},
-            {"pi",      new OperatorDescriptor(Operator.PI,      OperatorType.Const,     90, typeof(PiNode))},
-            {"min",     new OperatorDescriptor(Operator.Min,     OperatorType.Binary,    80, null)},
-            {"max",     new OperatorDescriptor(Operator.Max,     OperatorType.Binary,    90, null)},
-            {"==",      new OperatorDescriptor(Operator.Equal,   OperatorType.Binary,    0, null) },
-            {"eq",      new OperatorDescriptor(Operator.Equal,   OperatorType.Binary,    0, null) },
-            {"lt",      new OperatorDescriptor(Operator.LT,      OperatorType.Binary,    0, null) },
-            {"lte",     new OperatorDescriptor(Operator.LTE,     OperatorType.Binary,    0, null) },
-            {"gt",      new OperatorDescriptor(Operator.GT,      OperatorType.Binary,    0, null) },
-            {"gte",     new OperatorDescriptor(Operator.GTE,     OperatorType.Binary,    0, null) },
-            {"rand",    new OperatorDescriptor(Operator.Rand,    OperatorType.Const,     90, null)},
-            {"d",       new OperatorDescriptor(Operator.Dice,    OperatorType.Binary,    90, null)},
-            {"D",       new OperatorDescriptor(Operator.Dice,    OperatorType.Binary,    90, null)},
-            {"true",    new OperatorDescriptor(Operator.True,    OperatorType.Const,     90, null)},
-            {"false",   new OperatorDescriptor(Operator.False,   OperatorType.Const,     90, null)},
-            {"&",       new OperatorDescriptor(Operator.And,     OperatorType.Binary,    0, null) },
-            {"and",     new OperatorDescriptor(Operator.And,     OperatorType.Binary,    0, null) },
-            {"|",       new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    1, null) },
-            {"or",      new OperatorDescriptor(Operator.Or,      OperatorType.Binary,    1, null) },
-
-            // Add your own operator description here ...
-        };*/
-
-        #endregion
-
-        #region Enumerations
-
-        /*private enum Operator
-        {
-            Sign = 0,
-            Add,
-            Sub,
-            Mult,
-            Div,
-            Mod,
-            Equal,
-            Pow,
-            Sqrt,
-            Cos,
-            Sin,
-            Tan,
-            Cosh,
-            Sinh,
-            Tanh,
-            Acos,
-            Asin,
-            Atan,
-            Deg2Rad,
-            Rad2Deg,
-            Abs,
-            Round,
-            Neg,
-            PI,
-            Min,
-            Max,
-            LT,
-            LTE,
-            GT,
-            GTE,
-            Rand,
-            Dice,
-            True,
-            False,
-            And,
-            Or
-
-            // Add your own operator here ...
-        }*/
-
-        #endregion
-
-        #region Functions
-
-        /*private static double ComputeOperation(double left, double right, Operator op)
-        {
-            switch (op)
-            {
-                case Operator.Sign:
-                    return -left;
-
-                case Operator.Add:
-                    return left + right;
-
-                case Operator.Sub:
-                    return left - right;
-
-                case Operator.Mult:
-                    return left * right;
-
-                case Operator.Div:
-                    return left / right;
-
-                case Operator.Mod:
-                    return (int)left % (int)right;
-
-                case Operator.Equal:
-                    return System.Math.Abs(left - right) < double.Epsilon ? TRUE : FALSE;
-
-                case Operator.Pow:
-                    return System.Math.Pow(left, right);
-
-                case Operator.Sqrt:
-                    return System.Math.Sqrt(left);
-
-                case Operator.Cos:
-                    return System.Math.Cos(left);
-
-                case Operator.Sin:
-                    return System.Math.Sin(left);
-
-                case Operator.Tan:
-                    return System.Math.Tan(left);
-
-                case Operator.Acos:
-                    return System.Math.Acos(left);
-
-                case Operator.Asin:
-                    return System.Math.Asin(left);
-
-                case Operator.Atan:
-                    return System.Math.Atan(left);
-
-                case Operator.Cosh:
-                    return System.Math.Cosh(left);
-
-                case Operator.Sinh:
-                    return System.Math.Sinh(left);
-
-                case Operator.Tanh:
-                    return System.Math.Tanh(left);
-
-                case Operator.Deg2Rad:
-                    return (left * System.Math.PI) / 180d;
-
-                case Operator.Rad2Deg:
-                    return (left * 180d) / System.Math.PI;
-
-                case Operator.Abs:
-                    return System.Math.Abs(left);
-
-                case Operator.Round:
-                    return System.Math.Round(left);
-
-                case Operator.Neg:
-                    //return -left;
-                    return System.Math.Abs(left) < double.Epsilon ? TRUE : FALSE;
-
-                case Operator.PI:
-                    return System.Math.PI;
-
-                case Operator.Min:
-                    return System.Math.Min(left, right);
-
-                case Operator.Max:
-                    return System.Math.Max(left, right);
-
-                case Operator.LT:
-                    return left < right ? TRUE : FALSE;
-
-                case Operator.LTE:
-                    return left <= right ? TRUE : FALSE;
-
-                case Operator.GT:
-                    return left > right ? TRUE : FALSE;
-
-                case Operator.GTE:
-                    return left >= right ? TRUE : FALSE;
-
-                case Operator.Rand:
-                    return Interpreter.Random.NextDouble();
-
-                case Operator.Dice:
-                    {
-                        int value = 0;
-                        for (int i = 0; i < left; ++i)
-                        {
-                            value += Interpreter.Random.Next(1, (int)right + 1);
-                        }
-
-                        return value;
-                    }
-
-                case Operator.True:
-                    return 1d;
-
-                case Operator.False:
-                    return 0d;
-
-                case Operator.And:
-                    return BoolToDouble(DoubleToBool(left) && DoubleToBool(right));
-
-                case Operator.Or:
-                    return BoolToDouble(DoubleToBool(left) || DoubleToBool(right));
-
-                // Add your own operator computations here ...
-
-                default:
-                    throw new System.InvalidOperationException(string.Format("Operator '{0}' not supported.", op));
-            }
-        }*/
 
         #endregion
 
@@ -290,6 +62,8 @@ namespace Hef.Math
                 this.rightInput = rightInput;
             }
         }
+        
+        #region ZeroNode
 
         private class ValueNode : ZeroNode
         {
@@ -307,7 +81,7 @@ namespace Hef.Math
         }
 
         private class VarNode : ZeroNode
-        { 
+        {
             private string varName;
 
             public VarNode(string varName)
@@ -327,7 +101,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("pi", 99)]
+        [Operator("pi", 90)]
         private class PiNode : ZeroNode
         {
             public override double GetValue(IVariableProvider variableProvider)
@@ -336,10 +110,55 @@ namespace Hef.Math
             }
         }
 
-        [Operator("sqrt", 50)]
+        [Operator("rand", 90)]
+        private class RandNode : ZeroNode
+        {
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return Interpreter.Random.NextDouble();
+            }
+        }
+
+        [Operator("true", 90)]
+        private class TrueNode : ZeroNode
+        {
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return TRUE;
+            }
+        }
+
+        [Operator("false", 90)]
+        private class FalseNode : ZeroNode
+        {
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return FALSE;
+            }
+        }
+
+        #endregion
+
+        #region UnaryNode
+
+        [Operator("±", 99)]
+        private class SignNode : UnaryNode
+        {
+            public SignNode(Node input) : 
+                base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return -this.input.GetValue(variableProvider);
+            }
+        }
+
+        [Operator("sqrt", 15)]
         private class SqrtNode : UnaryNode
         {
-            public SqrtNode(Node input) 
+            public SqrtNode(Node input)
                 : base(input)
             {
             }
@@ -350,10 +169,210 @@ namespace Hef.Math
             }
         }
 
+        [Operator("cos", 12)]
+        private class CosNode : UnaryNode
+        {
+            public CosNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Cos(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("sin", 12)]
+        private class SinNode : UnaryNode
+        {
+            public SinNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Sin(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("tan", 12)]
+        private class TanNode : UnaryNode
+        {
+            public TanNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Tan(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("acos", 12)]
+        private class AcosNode : UnaryNode
+        {
+            public AcosNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Acos(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("asin", 12)]
+        private class AsinNode : UnaryNode
+        {
+            public AsinNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Asin(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("atan", 12)]
+        private class AtanNode : UnaryNode
+        {
+            public AtanNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Atan(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("cosh", 12)]
+        private class CoshNode : UnaryNode
+        {
+            public CoshNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Cosh(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("sinh", 12)]
+        private class SinhNode : UnaryNode
+        {
+            public SinhNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Sinh(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("tanh", 12)]
+        private class TanhNode : UnaryNode
+        {
+            public TanhNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Tanh(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("degrad", 13)]
+        private class Deg2RadNode : UnaryNode
+        {
+            public Deg2RadNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return (this.input.GetValue(variableProvider) * System.Math.PI) / 180d;
+            }
+        }
+
+        [Operator("raddeg", 13)]
+        private class Rad2DegNode : UnaryNode
+        {
+            public Rad2DegNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return (this.input.GetValue(variableProvider) * 180d) / System.Math.PI;
+            }
+        }
+
+        [Operator("abs", 8)]
+        private class AbsNode : UnaryNode
+        {
+            public AbsNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Abs(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("round", 8)]
+        private class RoundNode : UnaryNode
+        {
+            public RoundNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Round(this.input.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("!", 50)]
+        private class NegNode : UnaryNode
+        {
+            public NegNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Abs(this.input.GetValue(variableProvider)) < double.Epsilon ? TRUE : FALSE;
+            }
+        }
+
+        #endregion
+
+        #region  BinaryNode
+
         [Operator("+", 2)]
         private class AddNode : BinaryNode
         {
-            public AddNode(Node leftInput, Node rightInput) 
+            public AddNode(Node leftInput, Node rightInput)
                 : base(leftInput, rightInput)
             {
             }
@@ -364,8 +383,233 @@ namespace Hef.Math
             }
         }
 
-        [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-        internal class OperatorAttribute : System.Attribute
+        [Operator("-", 2)]
+        private class SubNode : BinaryNode
+        {
+            public SubNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return this.leftInput.GetValue(variableProvider) - this.rightInput.GetValue(variableProvider);
+            }
+        }
+
+        [Operator("*", 5)]
+        private class MultNode : BinaryNode
+        {
+            public MultNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return this.leftInput.GetValue(variableProvider) * this.rightInput.GetValue(variableProvider);
+            }
+        }
+
+        [Operator("/", 5)]
+        private class DivNode : BinaryNode
+        {
+            public DivNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return this.leftInput.GetValue(variableProvider) / this.rightInput.GetValue(variableProvider);
+            }
+        }
+
+        [Operator("%", 10)]
+        private class ModNode : BinaryNode
+        {
+            public ModNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return (int)this.leftInput.GetValue(variableProvider) % (int)this.rightInput.GetValue(variableProvider);
+            }
+        }
+
+        [Operator("^", 15)]
+        private class PowNode : BinaryNode
+        {
+            public PowNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Pow(this.leftInput.GetValue(variableProvider), this.rightInput.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("min", 80)]
+        private class MinNode : BinaryNode
+        {
+            public MinNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Min(this.leftInput.GetValue(variableProvider), this.rightInput.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("max", 90)]
+        private class MaxNode : BinaryNode
+        {
+            public MaxNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Max(this.leftInput.GetValue(variableProvider), this.rightInput.GetValue(variableProvider));
+            }
+        }
+
+        [Operator("==", 0)]
+        [Operator("eq", 0)]
+        private class EqualNode : BinaryNode
+        {
+            public EqualNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return System.Math.Abs(this.leftInput.GetValue(variableProvider) - this.rightInput.GetValue(variableProvider)) < double.Epsilon ? TRUE : FALSE;
+            }
+        }
+
+        [Operator("lt", 0)]
+        private class LtNode : BinaryNode
+        {
+            public LtNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return this.leftInput.GetValue(variableProvider) < this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+            }
+        }
+
+        [Operator("lte", 0)]
+        private class LteNode : BinaryNode
+        {
+            public LteNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return this.leftInput.GetValue(variableProvider) <= this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+            }
+        }
+
+        [Operator("gt", 0)]
+        private class GtNode : BinaryNode
+        {
+            public GtNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return this.leftInput.GetValue(variableProvider) > this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+            }
+        }
+
+        [Operator("gte", 0)]
+        private class GteNode : BinaryNode
+        {
+            public GteNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return this.leftInput.GetValue(variableProvider) >= this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+            }
+        }
+
+        [Operator("d", 90)]
+        [Operator("D", 90)]
+        private class DiceNode : BinaryNode
+        {
+            public DiceNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                int left = (int)this.leftInput.GetValue(variableProvider);
+                int right = (int)this.rightInput.GetValue(variableProvider);
+
+                int value = 0;
+                for (int i = 0; i < left; ++i)
+                {
+                    value += Interpreter.Random.Next(1, right + 1);
+                }
+
+                return value;
+            }
+        }
+
+        [Operator("&", 0)]
+        [Operator("and", 0)]
+        private class AndNode : BinaryNode
+        {
+            public AndNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return BoolToDouble(DoubleToBool(this.leftInput.GetValue(variableProvider)) && DoubleToBool(this.rightInput.GetValue(variableProvider)));
+            }
+        }
+
+        [Operator("|", 0)]
+        [Operator("or", 0)]
+        private class OrNode : BinaryNode
+        {
+            public OrNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(IVariableProvider variableProvider)
+            {
+                return BoolToDouble(DoubleToBool(this.leftInput.GetValue(variableProvider)) || DoubleToBool(this.rightInput.GetValue(variableProvider)));
+            }
+        }
+
+        #endregion
+
+        [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
+        private class OperatorAttribute : System.Attribute
         {
             public string Symbol;
             public int Priority;
@@ -376,71 +620,5 @@ namespace Hef.Math
                 Priority = priority;
             }
         }
-
-        bool IVariableProvider.TryGerVariableValue(string varName, out double value)
-        {
-            value = 0;
-            if (this.variables.TryGetValue(varName, out value))
-            {
-                return true;
-            }
-
-            if (this.interpreterContext != null &&
-                this.interpreterContext.TryGetVariable(varName.TrimStart(Interpreter.VarPrefixChar), out value))
-            {
-                return true;
-            }
-
-            if (System.Text.RegularExpressions.Regex.IsMatch(varName, @"\$\w+.\w+"))
-            {
-                string contextName = varName.Substring(varName.IndexOf('$') + 1, varName.IndexOf('.') - 1);
-                string variableName = varName.Substring(varName.IndexOf('.') + 1);
-
-                if (this.namedContext.ContainsKey(contextName) &&
-                    this.namedContext[contextName].TryGetVariable(variableName, out value))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static void TEST_DynamicLoad()
-        {
-            System.Type nodeType = typeof (Node);
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(nodeType);
-            System.Type[] allTypes = assembly.GetTypes();
-
-            for (int i = 0; i < allTypes.Length; i++)
-            {
-                System.Type type = allTypes[i];
-                if (type.IsSubclassOf(nodeType) && !type.IsAbstract)
-                {
-                    OperatorAttribute[] attributes = (OperatorAttribute[]) type.GetCustomAttributes(typeof (OperatorAttribute), true);
-                    if (attributes != null)
-                    {
-                        for (int attrIndex = 0; attrIndex < attributes.Length; attrIndex++)
-                        {
-                            OperatorAttribute operatorAttribute = attributes[attrIndex];
-                            System.Console.WriteLine("{1} {0} ({2})", type.FullName, operatorAttribute.Symbol, operatorAttribute.Priority);
-
-                            Interpreter.operators.Add(operatorAttribute.Symbol, new OperatorDescriptor(operatorAttribute.Priority, type));
-                        }
-                    }
-                }
-            }
-        }
-
-        public void TEST_Rpn2Node()
-        {
-            Node root = RpnToNode(InfixToRpn("pi + 6 + sqrt 16 + $hundred"));
-            Console.WriteLine(root.GetValue(this));
-        }
-    }
-
-    internal interface IVariableProvider
-    {
-        bool TryGerVariableValue(string varName, out double value);
     }
 }

@@ -20,6 +20,8 @@
 // SOFTWARE.
 #endregion
 
+using System;
+
 namespace Hef.Math.Test
 {
     class Program
@@ -43,10 +45,6 @@ namespace Hef.Math.Test
             interpreter.SetVar("Foo", foo);
             interpreter.SetVar("bar", bar);
             interpreter.SetVar("hundred", hundred);
-
-            Interpreter.TEST_DynamicLoad();
-            interpreter.TEST_Rpn2Node();
-            return;
 
             bool success = true;
 
@@ -183,7 +181,19 @@ namespace Hef.Math.Test
         {
             double result = interpreter.Calculate(infix);
             bool match = System.Math.Abs(intendedResult - result) < double.Epsilon;
-            System.Console.WriteLine("{0} = {1} -> {2}", infix, result, match);
+
+            if (match)
+            {
+                System.Console.ForegroundColor = ConsoleColor.Green;
+                System.Console.WriteLine("{0} = {1} -> {2}", infix, result, match);
+            }
+            else
+            {
+                System.Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine("{0} = {1} (instead of {3}) -> {2}", infix, result, match, intendedResult);
+            }
+
+            System.Console.ForegroundColor = ConsoleColor.Gray;
 
             return match;
         }

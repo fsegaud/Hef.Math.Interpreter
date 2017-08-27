@@ -21,7 +21,9 @@
 #endregion
 
 using System;
+using System.Configuration;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Hef.Math
 {
@@ -82,6 +84,8 @@ namespace Hef.Math
         {
             Interpreter.Random = new System.Random();
             Interpreter.cachedInfixToRpn = new System.Collections.Generic.Dictionary<string, string>();
+
+            Interpreter.LoadOperators();
         }
 
         public Interpreter()
@@ -150,7 +154,9 @@ namespace Hef.Math
         public double Calculate(string infix)
         {
             //return this.CalculateRpn(Interpreter.InfixToRpn(infix));
-            throw new System.NotImplementedException();
+
+            Node root = Interpreter.RpnToNode(Interpreter.InfixToRpn(infix));
+            return root.GetValue(this);
         }
 
         #endregion
@@ -202,7 +208,7 @@ namespace Hef.Math
             string rpn = null;
             if (Interpreter.cachedInfixToRpn.TryGetValue(userInfix, out rpn))
             {
-                System.Console.WriteLine("CACHE_HIT: " + rpn);
+                //System.Console.WriteLine("CACHE_HIT: " + rpn);
                 return rpn;
             }
 
@@ -319,7 +325,7 @@ namespace Hef.Math
 
             // Store in cache for futur use.
             Interpreter.cachedInfixToRpn.Add(userInfix, rpn);
-            System.Console.WriteLine("CACHE_ADD: " + rpn);
+            //System.Console.WriteLine("CACHE_ADD: " + rpn);
 
             return rpn;
         }
@@ -364,7 +370,9 @@ namespace Hef.Math
                             ConstructorInfo constructorInfo = opeDesc.NodeType.GetConstructor(new [] {typeof (Node), typeof (Node)});
                             if (constructorInfo != null)
                             {
-                                Node node = (Node) constructorInfo.Invoke(new object[] {values.Pop(), values.Pop()});
+                                Node right = values.Pop();
+                                Node left = values.Pop();
+                                Node node = (Node) constructorInfo.Invoke(new object[] {left, right});
                                 values.Push(node);
                             }
                         }
@@ -394,121 +402,81 @@ namespace Hef.Math
             return values.Pop();
         }
 
-        /*private double CalculateRpn(string rpn)
-        {
-            string[] tokens = rpn.Split(Interpreter.WhiteSpaceChar);
-            System.Collections.Generic.Stack<double> values = new System.Collections.Generic.Stack<double>();
-
-            for (int tokenIndex = 0; tokenIndex < tokens.Length; ++tokenIndex)
-            {
-                string token = tokens[tokenIndex];
-
-                if (Interpreter.operators.ContainsKey(token))
-                {
-                    double right = 0d;
-                    double left = 0d;
-
-                    switch (Interpreter.operators[token].Type)
-                    {
-                        case OperatorType.Const:
-                            break;
-
-                        case OperatorType.Unary:
-                            {
-                                if (values.Count < 1)
-                                {
-                                    throw new System.InvalidOperationException(
-                                        string.Format("Operator '{0}' ({1}) is unary.", token, Interpreter.operators[token].Operator));
-                                }
-
-                                left = values.Pop();
-                            }
-
-                            break;
-
-                        case OperatorType.Binary:
-                            {
-                                if (values.Count < 2)
-                                {
-                                    throw new System.InvalidOperationException(
-                                        string.Format("Operator '{0}' ({1}) is binary.", token, Interpreter.operators[token].Operator));
-                                }
-
-                                right = values.Pop();
-                                left = values.Pop();
-                            }
-
-                            break;
-                    }
-
-                    values.Push(Interpreter.ComputeOperation(left, right, Interpreter.operators[token].Operator));
-                }
-                else
-                {
-                    double value;
-                    if (double.TryParse(token, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture.NumberFormat, out value))
-                    {
-                        values.Push(value);
-                    }
-                    else if (this.variables.TryGetValue(token, out value))
-                    {
-                        values.Push(value);
-                    }
-                    else if (this.interpreterContext != null &&
-                        this.interpreterContext.TryGetVariable(token.TrimStart(Interpreter.VarPrefixChar), out value))
-                    {
-                        values.Push(value);
-                    }
-                    else if (System.Text.RegularExpressions.Regex.IsMatch(token, @"\$\w+.\w+"))
-                    {
-                        string contextName = token.Substring(token.IndexOf('$') + 1, token.IndexOf('.') - 1);
-                        string variableName = token.Substring(token.IndexOf('.') + 1);
-
-                        if (this.namedContext.ContainsKey(contextName) &&
-                            this.namedContext[contextName].TryGetVariable(variableName, out value))
-                        {
-                            values.Push(value);
-                        }
-                        else
-                        {
-                            throw new System.InvalidOperationException(string.Format("Error parsing '{0}'", token));
-                        }
-                    }
-                    else
-                    {
-                        throw new System.InvalidOperationException(string.Format("Error parsing '{0}'", token));
-                    }
-                }
-            }
-
-            if (values.Count != 1)
-            {
-                throw new System.InvalidOperationException("Cannot calculate formula");
-            }
-
-            return values.Pop();
-        }*/
-
         #endregion
 
         #region Inner Types
 
         private struct OperatorDescriptor
         {
-            //public readonly Operator Operator;
-            //public readonly OperatorType Type;
             public readonly int Priority;
             public readonly System.Type NodeType;
 
-            public OperatorDescriptor(/*Operator @operator, OperatorType type,*/ int priority, Type nodeType)
+            public OperatorDescriptor(int priority, Type nodeType)
             {
-                //Operator = @operator;
-                //Type = type;
                 Priority = priority;
                 NodeType = nodeType;
             }
         }
 
         #endregion
+
+        // TODO: A ranger !
+        bool IVariableProvider.TryGerVariableValue(string varName, out double value)
+        {
+            value = 0;
+            if (this.variables.TryGetValue(varName, out value))
+            {
+                return true;
+            }
+
+            if (this.interpreterContext != null &&
+                this.interpreterContext.TryGetVariable(varName.TrimStart(Interpreter.VarPrefixChar), out value))
+            {
+                return true;
+            }
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(varName, @"\$\w+.\w+"))
+            {
+                string contextName = varName.Substring(varName.IndexOf('$') + 1, varName.IndexOf('.') - 1);
+                string variableName = varName.Substring(varName.IndexOf('.') + 1);
+
+                if (this.namedContext.ContainsKey(contextName) &&
+                    this.namedContext[contextName].TryGetVariable(variableName, out value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void LoadOperators()
+        {
+            System.Type nodeType = typeof(Node);
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(nodeType);
+            System.Type[] allTypes = assembly.GetTypes();
+
+            for (int i = 0; i < allTypes.Length; i++)
+            {
+                System.Type type = allTypes[i];
+                if (type.IsSubclassOf(nodeType) && !type.IsAbstract)
+                {
+                    OperatorAttribute[] attributes = (OperatorAttribute[])type.GetCustomAttributes(typeof(OperatorAttribute), true);
+                    if (attributes != null)
+                    {
+                        for (int attrIndex = 0; attrIndex < attributes.Length; attrIndex++)
+                        {
+                            OperatorAttribute operatorAttribute = attributes[attrIndex];
+                            Interpreter.operators.Add(operatorAttribute.Symbol, new OperatorDescriptor(operatorAttribute.Priority, type));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    internal interface IVariableProvider
+    {
+        bool TryGerVariableValue(string varName, out double value);
     }
 }
