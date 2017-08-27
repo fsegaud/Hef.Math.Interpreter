@@ -150,12 +150,7 @@ namespace Hef.Math
         {
             // Fetch cached rpn if it exists.
             Node root = null;
-            bool inCache = false;
-            if (Interpreter.cachedInfixToNode.TryGetValue(infix, out root))
-            {
-                inCache = true;
-                System.Console.WriteLine("CACHE_HIT: " + infix);
-            }
+            bool inCache = cachedInfixToNode.TryGetValue(infix, out root);
 
             // If not in cache, compute tree from infix.
             if (root == null)
@@ -167,10 +162,17 @@ namespace Hef.Math
             if (!inCache)
             {
                 Interpreter.cachedInfixToNode.Add(infix, root);
-                System.Console.WriteLine("CACHE_ADD: " + infix);
             }
 
             return root.GetValue(this);
+        }
+
+        /// <summary>
+        /// Forces the cache to be cleard.
+        /// </summary>
+        public static void ForceClearCache()
+        {
+            Interpreter.cachedInfixToNode.Clear();
         }
 
         #endregion
