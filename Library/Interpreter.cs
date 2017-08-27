@@ -53,7 +53,7 @@ namespace Hef.Math
         #region Static
 
         private static System.Random Random;
-        private static System.Collections.Generic.Dictionary<string, string> cachedInfixToRpn;
+        private static System.Collections.Generic.Dictionary<string, Node> cachedInfixToNode;
 
         #endregion
 
@@ -83,7 +83,7 @@ namespace Hef.Math
         static Interpreter()
         {
             Interpreter.Random = new System.Random();
-            Interpreter.cachedInfixToRpn = new System.Collections.Generic.Dictionary<string, string>();
+            Interpreter.cachedInfixToNode = new System.Collections.Generic.Dictionary<string, Node>();
 
             Interpreter.LoadOperators();
         }
@@ -153,9 +153,28 @@ namespace Hef.Math
         /// <returns></returns>
         public double Calculate(string infix)
         {
-            //return this.CalculateRpn(Interpreter.InfixToRpn(infix));
+            // Fetch cached rpn if it exists.
+            Node root = null;
+            bool inCache = false;
+            if (Interpreter.cachedInfixToNode.TryGetValue(infix, out root))
+            {
+                inCache = true;
+                System.Console.WriteLine("CACHE_HIT: " + infix);
+            }
 
-            Node root = Interpreter.RpnToNode(Interpreter.InfixToRpn(infix));
+            // If not in cache, compute tree from infix.
+            if (root == null)
+            {
+                root = Interpreter.RpnToNode(Interpreter.InfixToRpn(infix));
+            }
+
+            // Store in cache for futur use.
+            if (!inCache)
+            {
+                Interpreter.cachedInfixToNode.Add(infix, root);
+                System.Console.WriteLine("CACHE_ADD: " + infix);
+            }
+
             return root.GetValue(this);
         }
 
@@ -201,17 +220,6 @@ namespace Hef.Math
         
         private static string InfixToRpn(string infix)
         {
-            // For cache lookup. Because it might be altered later on.
-            string userInfix = infix;
-
-            // Fetch cached rpn if it exists.
-            string rpn = null;
-            if (Interpreter.cachedInfixToRpn.TryGetValue(userInfix, out rpn))
-            {
-                //System.Console.WriteLine("CACHE_HIT: " + rpn);
-                return rpn;
-            }
-
             // Replace comma separator with white space for function-like use of operators.
             infix = infix.Replace(Interpreter.CommaSeparatorChar, Interpreter.WhiteSpaceChar);
 
@@ -321,11 +329,7 @@ namespace Hef.Math
                 list.Add(stack.Pop());
             }
 
-            rpn = string.Join(Interpreter.WhiteSpaceStr, list.ToArray());
-
-            // Store in cache for futur use.
-            Interpreter.cachedInfixToRpn.Add(userInfix, rpn);
-            //System.Console.WriteLine("CACHE_ADD: " + rpn);
+            string rpn = string.Join(Interpreter.WhiteSpaceStr, list.ToArray());
 
             return rpn;
         }
