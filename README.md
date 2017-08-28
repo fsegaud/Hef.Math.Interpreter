@@ -55,8 +55,9 @@ double result = interpreter.Calculate("($foo + $bar) * 2"); // -> 6
 The following example highlights the use of `Hef.Math.IInterpreterContext`, that allow the interpreter to access variables provided by other objects.
 
 ```csharp
-Interpreter interpreter = new Interpreter(new Player());
-double result = interpreter.Calculate("$level - 1"); // -> 9
+Interpreter interpreter = new Interpreter();
+interpreter.SetContext("player", new Player()));
+double result = interpreter.Calculate("$player.level - 1"); // -> 9
 
 class Player : Hef.Math.IInterpreterContext
 {
@@ -150,44 +151,60 @@ class Player : Hef.Math.IInterpreterContext
 | `true`  | Boolean true  | 1       | 0.1.1   |
 | `false` | Boolean false | 0       | 0.1.1   |
 
+### Note About Caching
+
+Each time a formula is calculated, the interpreter has to breaks the formula into nodes and build a tree of operations. This is a time-consumming process.
+
+In order to make it faster, each time a new formula is processed, the intrepreder will keep the generated tree in memory. So if the same formula is used again, the tree will be reused, and only the mathematical operations will be recomputed.
+
+If for some reason the cache has to be manually cleared, the `Interpreter` provides a function to do so.
+
+```csharp
+Interpreter.ForceClearCache();
+```
 
 ## Contributing
 
 ### How To Define Additional Operations
 
-The interpreter handles the basic mathmatical operations. If you need more, everything you have to do is open the _Interpreter.Operators.cs_ file, and implement the following steps :
+The interpreter handles the basic mathmatical operations. If you need more, everything you have to do is open the _Interpreter.Operators.cs_ file, and derive from the corresponding `Node` class :
+- `ZeroNode` that takes 0 argument.
+- `UnaryNode` that takes 1 argument.
+- `BinaryNode` that takes 2 arguments.
 
-1. Add your new operator to the `Operator` enum.
-2. Add the corresponding `OperatorDescriptor` in the `operators` dictionary, along with its type and priority.
-3. Implement the operation code in the `ComputeOperation()` function.
+Then add the `OperatorAttribute` and fill the symbol and priority.
+
+> INFO: The `OperatorAttribute` is stackable.
+
+> INFO: Highest priorities are executes first.
  
-The following example show the implementation of an operator that halves an operand. Its symbol will be `#`.
+The following example show the implementation of an operator that halves an operand (unary operator). Its symbols will be `#` and `half`.
 
 ```csharp
-private enum Operator
+[Operator("#", 5)]
+[Operator("half", 5)]
+private class HalfNode : UnaryNode
 {
-    /* ... */
-    Half
-}
-
-operators = new System.Collections.Generic.Dictionary<string, OperatorDescriptor>
-{
-    /* ... */
-    { "#", new OperatorDescriptor(Operator.Half, OperatorType.Unary, 50) }
-}
-
-private static double ComputeOperation(double left, double right, Operator op)
-{
-    switch (op)
+    public HalfNode(Node input)
+        : base(input)
     {
-        /* ... */
-        case Operator.Half:
-            return left  * .5d;
+    }
+    public override double GetValue(Interpreter interpreter)
+    {
+        return this.input.GetValue(interpreter) * .5d;
     }
 }
 ```
 
-> **DO** make a pull request if you want. More operators makes the interpreter better :smile:
+The recompile the DLL, and it's done!
+
+```csharp
+Interpreter interpreter = new Interpreter();
+double a = interpreter.Calculate("#10"); // -> 5
+double b = interpreter.Calculate("half(10)"); // -> 5
+```
+
+**DO** make a pull request if you want. More operators makes the interpreter better :smile:
 
 ## License
 
