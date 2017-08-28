@@ -23,7 +23,7 @@
 namespace Hef.Math
 {
     // TODO: Move interface somewhere else.
-    public partial class Interpreter : IVariableProvider
+    public partial class Interpreter
     {
         #region Static
 
@@ -34,7 +34,7 @@ namespace Hef.Math
 
         private abstract class Node
         {
-            public abstract double GetValue(IVariableProvider variableProvider);
+            public abstract double GetValue(Interpreter interpreter);
         }
 
         private abstract class ZeroNode : Node
@@ -74,7 +74,7 @@ namespace Hef.Math
                 this.value = value;
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
                 return value;
             }
@@ -89,10 +89,10 @@ namespace Hef.Math
                 this.varName = varName;
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
                 double value = 0;
-                if (variableProvider.TryGerVariableValue(this.varName, out value))
+                if (interpreter.TryGetVariableValue(this.varName, out value))
                 {
                     return value;
                 }
@@ -104,7 +104,7 @@ namespace Hef.Math
         [Operator("pi", 90)]
         private class PiNode : ZeroNode
         {
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
                 return System.Math.PI;
             }
@@ -113,7 +113,7 @@ namespace Hef.Math
         [Operator("rand", 90)]
         private class RandNode : ZeroNode
         {
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
                 return Interpreter.Random.NextDouble();
             }
@@ -122,7 +122,7 @@ namespace Hef.Math
         [Operator("true", 90)]
         private class TrueNode : ZeroNode
         {
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
                 return TRUE;
             }
@@ -131,7 +131,7 @@ namespace Hef.Math
         [Operator("false", 90)]
         private class FalseNode : ZeroNode
         {
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
                 return FALSE;
             }
@@ -149,9 +149,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return -this.input.GetValue(variableProvider);
+                return -this.input.GetValue(interpreter);
             }
         }
 
@@ -163,9 +163,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Sqrt(this.input.GetValue(variableProvider));
+                return System.Math.Sqrt(this.input.GetValue(interpreter));
             }
         }
 
@@ -177,9 +177,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Cos(this.input.GetValue(variableProvider));
+                return System.Math.Cos(this.input.GetValue(interpreter));
             }
         }
 
@@ -191,9 +191,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Sin(this.input.GetValue(variableProvider));
+                return System.Math.Sin(this.input.GetValue(interpreter));
             }
         }
 
@@ -205,9 +205,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Tan(this.input.GetValue(variableProvider));
+                return System.Math.Tan(this.input.GetValue(interpreter));
             }
         }
 
@@ -219,9 +219,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Acos(this.input.GetValue(variableProvider));
+                return System.Math.Acos(this.input.GetValue(interpreter));
             }
         }
 
@@ -233,9 +233,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Asin(this.input.GetValue(variableProvider));
+                return System.Math.Asin(this.input.GetValue(interpreter));
             }
         }
 
@@ -247,9 +247,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Atan(this.input.GetValue(variableProvider));
+                return System.Math.Atan(this.input.GetValue(interpreter));
             }
         }
 
@@ -261,9 +261,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Cosh(this.input.GetValue(variableProvider));
+                return System.Math.Cosh(this.input.GetValue(interpreter));
             }
         }
 
@@ -275,9 +275,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Sinh(this.input.GetValue(variableProvider));
+                return System.Math.Sinh(this.input.GetValue(interpreter));
             }
         }
 
@@ -289,9 +289,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Tanh(this.input.GetValue(variableProvider));
+                return System.Math.Tanh(this.input.GetValue(interpreter));
             }
         }
 
@@ -303,9 +303,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return (this.input.GetValue(variableProvider) * System.Math.PI) / 180d;
+                return (this.input.GetValue(interpreter) * System.Math.PI) / 180d;
             }
         }
 
@@ -317,9 +317,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return (this.input.GetValue(variableProvider) * 180d) / System.Math.PI;
+                return (this.input.GetValue(interpreter) * 180d) / System.Math.PI;
             }
         }
 
@@ -331,9 +331,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Abs(this.input.GetValue(variableProvider));
+                return System.Math.Abs(this.input.GetValue(interpreter));
             }
         }
 
@@ -345,9 +345,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Round(this.input.GetValue(variableProvider));
+                return System.Math.Round(this.input.GetValue(interpreter));
             }
         }
 
@@ -359,9 +359,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Abs(this.input.GetValue(variableProvider)) < double.Epsilon ? TRUE : FALSE;
+                return System.Math.Abs(this.input.GetValue(interpreter)) < double.Epsilon ? TRUE : FALSE;
             }
         }
 
@@ -377,9 +377,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) + this.rightInput.GetValue(variableProvider);
+                return this.leftInput.GetValue(interpreter) + this.rightInput.GetValue(interpreter);
             }
         }
 
@@ -391,9 +391,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) - this.rightInput.GetValue(variableProvider);
+                return this.leftInput.GetValue(interpreter) - this.rightInput.GetValue(interpreter);
             }
         }
 
@@ -405,9 +405,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) * this.rightInput.GetValue(variableProvider);
+                return this.leftInput.GetValue(interpreter) * this.rightInput.GetValue(interpreter);
             }
         }
 
@@ -419,9 +419,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) / this.rightInput.GetValue(variableProvider);
+                return this.leftInput.GetValue(interpreter) / this.rightInput.GetValue(interpreter);
             }
         }
 
@@ -433,9 +433,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return (int)this.leftInput.GetValue(variableProvider) % (int)this.rightInput.GetValue(variableProvider);
+                return (int)this.leftInput.GetValue(interpreter) % (int)this.rightInput.GetValue(interpreter);
             }
         }
 
@@ -447,9 +447,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Pow(this.leftInput.GetValue(variableProvider), this.rightInput.GetValue(variableProvider));
+                return System.Math.Pow(this.leftInput.GetValue(interpreter), this.rightInput.GetValue(interpreter));
             }
         }
 
@@ -461,9 +461,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Min(this.leftInput.GetValue(variableProvider), this.rightInput.GetValue(variableProvider));
+                return System.Math.Min(this.leftInput.GetValue(interpreter), this.rightInput.GetValue(interpreter));
             }
         }
 
@@ -475,9 +475,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Max(this.leftInput.GetValue(variableProvider), this.rightInput.GetValue(variableProvider));
+                return System.Math.Max(this.leftInput.GetValue(interpreter), this.rightInput.GetValue(interpreter));
             }
         }
 
@@ -490,9 +490,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return System.Math.Abs(this.leftInput.GetValue(variableProvider) - this.rightInput.GetValue(variableProvider)) < double.Epsilon ? TRUE : FALSE;
+                return System.Math.Abs(this.leftInput.GetValue(interpreter) - this.rightInput.GetValue(interpreter)) < double.Epsilon ? TRUE : FALSE;
             }
         }
 
@@ -504,9 +504,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) < this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+                return this.leftInput.GetValue(interpreter) < this.rightInput.GetValue(interpreter) ? TRUE : FALSE;
             }
         }
 
@@ -518,9 +518,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) <= this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+                return this.leftInput.GetValue(interpreter) <= this.rightInput.GetValue(interpreter) ? TRUE : FALSE;
             }
         }
 
@@ -532,9 +532,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) > this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+                return this.leftInput.GetValue(interpreter) > this.rightInput.GetValue(interpreter) ? TRUE : FALSE;
             }
         }
 
@@ -546,9 +546,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return this.leftInput.GetValue(variableProvider) >= this.rightInput.GetValue(variableProvider) ? TRUE : FALSE;
+                return this.leftInput.GetValue(interpreter) >= this.rightInput.GetValue(interpreter) ? TRUE : FALSE;
             }
         }
 
@@ -561,10 +561,10 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                int left = (int)this.leftInput.GetValue(variableProvider);
-                int right = (int)this.rightInput.GetValue(variableProvider);
+                int left = (int)this.leftInput.GetValue(interpreter);
+                int right = (int)this.rightInput.GetValue(interpreter);
 
                 int value = 0;
                 for (int i = 0; i < left; ++i)
@@ -585,9 +585,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return BoolToDouble(DoubleToBool(this.leftInput.GetValue(variableProvider)) && DoubleToBool(this.rightInput.GetValue(variableProvider)));
+                return BoolToDouble(DoubleToBool(this.leftInput.GetValue(interpreter)) && DoubleToBool(this.rightInput.GetValue(interpreter)));
             }
         }
 
@@ -600,9 +600,9 @@ namespace Hef.Math
             {
             }
 
-            public override double GetValue(IVariableProvider variableProvider)
+            public override double GetValue(Interpreter interpreter)
             {
-                return BoolToDouble(DoubleToBool(this.leftInput.GetValue(variableProvider)) || DoubleToBool(this.rightInput.GetValue(variableProvider)));
+                return BoolToDouble(DoubleToBool(this.leftInput.GetValue(interpreter)) || DoubleToBool(this.rightInput.GetValue(interpreter)));
             }
         }
 

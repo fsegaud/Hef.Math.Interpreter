@@ -403,26 +403,7 @@ namespace Hef.Math
             return values.Pop();
         }
 
-        #endregion
-
-        #region Inner Types
-
-        private struct OperatorDescriptor
-        {
-            public readonly int Priority;
-            public readonly System.Type NodeType;
-
-            public OperatorDescriptor(int priority, System.Type nodeType)
-            {
-                Priority = priority;
-                NodeType = nodeType;
-            }
-        }
-
-        #endregion
-
-        // TODO: A ranger !
-        bool IVariableProvider.TryGerVariableValue(string varName, out double value)
+        private bool TryGetVariableValue(string varName, out double value)
         {
             value = 0;
             if (this.variables.TryGetValue(varName, out value))
@@ -474,10 +455,23 @@ namespace Hef.Math
                 }
             }
         }
-    }
 
-    internal interface IVariableProvider
-    {
-        bool TryGerVariableValue(string varName, out double value);
+        #endregion
+
+        #region Inner Types
+
+        private struct OperatorDescriptor
+        {
+            public readonly int Priority;
+            public readonly System.Type NodeType;
+
+            public OperatorDescriptor(int priority, System.Type nodeType)
+            {
+                Priority = priority;
+                NodeType = nodeType;
+            }
+        }
+
+        #endregion
     }
 }
