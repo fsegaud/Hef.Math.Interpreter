@@ -176,7 +176,7 @@ Then add the `OperatorAttribute` and fill the symbol and priority.
 
 > INFO: The `OperatorAttribute` is stackable.
 
-> INFO: Highest priorities are executes first.
+> INFO: Highest priorities are executed first.
  
 The following example show the implementation of an operator that halves an operand (unary operator). Its symbols will be `#` and `half`.
 
@@ -189,6 +189,7 @@ private class HalfNode : UnaryNode
         : base(input)
     {
     }
+    
     public override double GetValue(Interpreter interpreter)
     {
         return this.input.GetValue(interpreter) * .5d;
