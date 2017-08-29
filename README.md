@@ -28,7 +28,7 @@ You can also install the correpsonding _NuGet_ package at [https://www.nuget.org
 Or install it using the _NuGet_ console.
 
 ```
-Install-Package Hef.Math.Interpreter -Version 0.1.1-alpha 
+Install-Package Hef.Math.Interpreter -Version 0.2.0-alpha 
 ```
 
 ### Examples
