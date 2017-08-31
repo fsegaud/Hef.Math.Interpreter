@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - The interpreter now handles the use of multiple contexts (identified by name).
-- Some operators now accept a function-style writer (eg. `min(1, 2)` instead of `min 1 
+- Some operators now accept a function-style writer (eg. `min(1, 2)` instead of `min 1 2`.
 - Copies of all previously prcessed formulae are now kept in cache (optimization).
 
 ### Changed
