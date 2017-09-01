@@ -169,7 +169,41 @@ namespace Hef.Math.Test
             success &= Test("min 2 1", System.Math.Min(1, 2));
             success &= Test("min 2,1", System.Math.Min(1, 2));
             success &= Test("min 2, 1", System.Math.Min(1, 2));
-            
+
+            // Rounding
+            success &= Test("round(1.0)", System.Math.Round(1.0d));
+            success &= Test("round(1.1)", System.Math.Round(1.1d));
+            success &= Test("round(1.5)", System.Math.Round(1.5d));
+            success &= Test("round(1.9)", System.Math.Round(1.9d));
+            success &= Test("trunc(1.0)", System.Math.Truncate(1.0d));
+            success &= Test("trunc(1.1)", System.Math.Truncate(1.1d));
+            success &= Test("trunc(1.5)", System.Math.Truncate(1.5d));
+            success &= Test("trunc(1.9)", System.Math.Truncate(1.9d));
+            success &= Test("floor(1.0)", System.Math.Floor(1.0d));
+            success &= Test("floor(1.1)", System.Math.Floor(1.1d));
+            success &= Test("floor(1.5)", System.Math.Floor(1.5d));
+            success &= Test("floor(1.9)", System.Math.Floor(1.9d));
+            success &= Test("ceil(1.0)", System.Math.Ceiling(1.0d));
+            success &= Test("ceil(1.1)", System.Math.Ceiling(1.1d));
+            success &= Test("ceil(1.5)", System.Math.Ceiling(1.5d));
+            success &= Test("ceil(1.9)", System.Math.Ceiling(1.9d));
+
+            // Algebra.
+            success &= Test("log(0.5)", System.Math.Log(.5d));
+            success &= Test("log(1.0)", System.Math.Log(1d));
+            success &= Test("log(2.0)", System.Math.Log(2d));
+            success &= Test("log10(0.5)", System.Math.Log10(.5d));
+            success &= Test("log10(1.0)", System.Math.Log10(1d));
+            success &= Test("log10(2.0)", System.Math.Log10(2d));
+            success &= Test("e(0.0)", System.Math.Exp(0d));
+            success &= Test("e(0.5)", System.Math.Exp(.5d));
+            success &= Test("e(1.0)", System.Math.Exp(1d));
+            success &= Test("e(2.0)", System.Math.Exp(2d));
+            success &= Test("exp(0.0)", System.Math.Exp(0d));
+            success &= Test("exp(0.5)", System.Math.Exp(.5d));
+            success &= Test("exp(1.0)", System.Math.Exp(1d));
+            success &= Test("exp(2.0)", System.Math.Exp(2d));
+
             System.Console.WriteLine("--------------------\nOVERALL RESULT: " + success);
         }
 
