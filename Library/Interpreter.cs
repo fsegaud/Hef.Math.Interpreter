@@ -207,7 +207,8 @@ namespace Hef.Math
         private static int SkipString(string value, int index)
         {
             // Also alow dots for names context cariable access `$xxx.yyy`.
-            while (index < value.Length && (Interpreter.IsAlpha(value[index]) || value[index] == '.'))
+            // [#12] Operators with names containing digits fail -> Fixed by adding IsNumeric().
+            while (index < value.Length && (Interpreter.IsAlpha(value[index]) || Interpreter.IsNumeric(value[index]) || value[index] == '.'))
             {
                 ++index;
             }

@@ -43,7 +43,7 @@ namespace Hef.Math.Test
             interpreter.SetVar("Foo", foo);
             interpreter.SetVar("bar", bar);
             interpreter.SetVar("hundred", hundred);
-
+            
             bool success = true;
 
             // Old tests.
@@ -53,13 +53,14 @@ namespace Hef.Math.Test
             success &= Test("2 + 2", 2 + 2d);
             success &= Test("2+2", 2d + 2d);
             success &= Test("(2+2)", 2d + 2d);
-            success &= Test("sqrt4+3*4", System.Math.Sqrt(4) + 3 * 4);
-            success &= Test("(sqrt4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
+            success &= Test("sqrt 4 + 3 * 4", System.Math.Sqrt(4) + 3 * 4);
+            success &= Test("sqrt 4+3*4", System.Math.Sqrt(4) + 3 * 4);
+            success &= Test("(sqrt 4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
             success &= Test("5 * ±1", 5 * -1d);
             success &= Test("abs ±1", System.Math.Abs(-1d));
             success &= Test("sin(1+2)", System.Math.Sin(1 + 2));
-            success &= Test("sin1+2", System.Math.Sin(1) + 2);
-            success &= Test("sin1*cos2+cos1*sin2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
+            success &= Test("sin 1+2", System.Math.Sin(1) + 2);
+            success &= Test("sin 1*cos 2+cos 1*sin 2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
             success &= Test("(2 * 5 == 10) * 5", (2d * 5d == 10 ? 1d : 0d) * 5d);
             success &= Test("min 4 6", System.Math.Min(4d, 6d));
             success &= Test("max 4 6", System.Math.Max(4d, 6d));
@@ -71,7 +72,7 @@ namespace Hef.Math.Test
             success &= Test("sqrt($hundred^2)", System.Math.Sqrt(hundred * hundred));
             success &= Test("$Foo + $bar", foo + bar);
             success &= Test("round (rand * 10 + 90)");
-            success &= Test("1d4+1 + 1D6+1");
+            success &= Test("1 d 4+1 + 1 D 6+1");
 
             // Comparison.
             success &= Test("1 == 0", BoolToDouble(1d == 0d));
@@ -144,6 +145,16 @@ namespace Hef.Math.Test
             success &= Test("raddeg (pi)", 180d);
             success &= Test("raddeg (pi * 1.5)", 270d);
             success &= Test("raddeg (pi * 2)", 360d);
+            success &= Test("deg2rad 0", 0d);
+            success &= Test("deg2rad 90", System.Math.PI * .5d);
+            success &= Test("deg2rad 180", System.Math.PI);
+            success &= Test("deg2rad 270", System.Math.PI * 1.5d);
+            success &= Test("deg2rad 360", System.Math.PI * 2d);
+            success &= Test("rad2deg (0)", 0d);
+            success &= Test("rad2deg (pi * 0.5)", 90d);
+            success &= Test("rad2deg (pi)", 180d);
+            success &= Test("rad2deg (pi * 1.5)", 270d);
+            success &= Test("rad2deg (pi * 2)", 360d);
 
             // Writing style and comma separator.
             success &= Test("min(1,2)", System.Math.Min(1, 2));
@@ -152,19 +163,13 @@ namespace Hef.Math.Test
             success &= Test("min 1 2", System.Math.Min(1, 2));
             success &= Test("min 1,2", System.Math.Min(1, 2));
             success &= Test("min 1, 2", System.Math.Min(1, 2));
-            success &= Test("min1, 2", System.Math.Min(1, 2));
-            success &= Test("min1,2", System.Math.Min(1, 2));
-            success &= Test("min1 2", System.Math.Min(1, 2));
             success &= Test("min(2,1)", System.Math.Min(1, 2));
             success &= Test("min(2, 1)", System.Math.Min(1, 2));
             success &= Test("min(2 1)", System.Math.Min(1, 2));
             success &= Test("min 2 1", System.Math.Min(1, 2));
             success &= Test("min 2,1", System.Math.Min(1, 2));
             success &= Test("min 2, 1", System.Math.Min(1, 2));
-            success &= Test("min2, 1", System.Math.Min(1, 2));
-            success &= Test("min2,1", System.Math.Min(1, 2));
-            success &= Test("min2 1", System.Math.Min(1, 2));
-
+            
             System.Console.WriteLine("--------------------\nOVERALL RESULT: " + success);
         }
 
