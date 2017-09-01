@@ -365,6 +365,91 @@ namespace Hef.Math
             }
         }
 
+        [Operator("ceil", 8)]
+        private class CeilNode : UnaryNode
+        {
+            public CeilNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return System.Math.Ceiling(this.input.GetValue(interpreter));
+            }
+        }
+
+        [Operator("floor", 8)]
+        private class FlorrNode : UnaryNode
+        {
+            public FlorrNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return System.Math.Floor(this.input.GetValue(interpreter));
+            }
+        }
+
+        [Operator("trunc", 8)]
+        private class TruncNode : UnaryNode
+        {
+            public TruncNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return System.Math.Truncate(this.input.GetValue(interpreter));
+            }
+        }
+
+        [Operator("log", 8)]
+        private class LogNode : UnaryNode
+        {
+            public LogNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return System.Math.Log(this.input.GetValue(interpreter));
+            }
+        }
+
+        [Operator("log10", 8)]
+        private class Log10Node : UnaryNode
+        {
+            public Log10Node(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return System.Math.Log10(this.input.GetValue(interpreter));
+            }
+        }
+
+        [Operator("e", 8)]
+        [Operator("exp", 8)]
+        private class ExpNode : UnaryNode
+        {
+            public ExpNode(Node input)
+                : base(input)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return System.Math.Exp(this.input.GetValue(interpreter));
+            }
+        }
+
         #endregion
 
         #region  BinaryNode
