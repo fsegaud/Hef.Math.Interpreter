@@ -295,6 +295,7 @@ namespace Hef.Math
             }
         }
 
+        [Operator("deg2rad", 13)]
         [Operator("degrad", 13)]
         private class Deg2RadNode : UnaryNode
         {
@@ -309,6 +310,7 @@ namespace Hef.Math
             }
         }
 
+        [Operator("rad2deg", 13)]
         [Operator("raddeg", 13)]
         private class Rad2DegNode : UnaryNode
         {
