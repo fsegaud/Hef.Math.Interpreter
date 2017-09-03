@@ -215,7 +215,22 @@ namespace Hef.Math
 
             return index;
         }
-        
+
+        private static bool IsSpecial(char c)
+        {
+            return !IsNumeric(c) && !IsAlpha(c) && c != OpenBracketChar && c != ClosingBracketChar && c != VarPrefixChar && c != WhiteSpaceChar && c != '.' && c != '±';
+        }
+
+        private static int SkipSpecial(string value, int index)
+        {
+            while (index < value.Length && IsSpecial(value[index]))
+            {
+                ++index;
+            }
+
+            return index;
+        }
+
         private static string InfixToRpn(string infix)
         {
             // Replace comma separator with white space for function-like use of operators.
@@ -232,6 +247,12 @@ namespace Hef.Math
                 {
                     infix = infix.Insert(index, Interpreter.LongOpMark0Str);
                     index = Interpreter.SkipString(infix, index + 2);
+                    infix = infix.Insert(index, Interpreter.LongOpMark1Str);
+                }
+                else if (Interpreter.IsSpecial(infix[index]))
+                {
+                    infix = infix.Insert(index, Interpreter.LongOpMark0Str);
+                    index = Interpreter.SkipSpecial(infix, index + 2);
                     infix = infix.Insert(index, Interpreter.LongOpMark1Str);
                 }
             }

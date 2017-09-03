@@ -20,6 +20,8 @@
 // SOFTWARE.
 #endregion
 
+using System;
+
 namespace Hef.Math.Test
 {
     class Program
@@ -43,7 +45,7 @@ namespace Hef.Math.Test
             interpreter.SetVar("Foo", foo);
             interpreter.SetVar("bar", bar);
             interpreter.SetVar("hundred", hundred);
-            
+
             bool success = true;
             
             // Old tests.
@@ -79,6 +81,10 @@ namespace Hef.Math.Test
             success &= Test("1 == 1", BoolToDouble(1d == 1d));
             success &= Test("1 eq 0", BoolToDouble(1d == 0d));
             success &= Test("1 eq 1", BoolToDouble(1d == 1d));
+            success &= Test("1 != 0", BoolToDouble(1d != 0d));
+            success &= Test("1 != 1", BoolToDouble(1d != 1d));
+            success &= Test("1 ne 0", BoolToDouble(1d != 0d));
+            success &= Test("1 ne 1", BoolToDouble(1d != 1d));
             success &= Test("1 gt 0", BoolToDouble(1d > 0d));
             success &= Test("1 gt 1", BoolToDouble(1d > 1d));
             success &= Test("1 gt 2", BoolToDouble(1d > 2d));
@@ -91,6 +97,22 @@ namespace Hef.Math.Test
             success &= Test("1 lte 0", BoolToDouble(1d <= 0d));
             success &= Test("1 lte 1", BoolToDouble(1d <= 1d));
             success &= Test("1 lte 2", BoolToDouble(1d <= 2d));
+            success &= Test("1 > 0", BoolToDouble(1d > 0d));
+            success &= Test("1 > 1", BoolToDouble(1d > 1d));
+            success &= Test("1 > 2", BoolToDouble(1d > 2d));
+            success &= Test("1 >= 0", BoolToDouble(1d >= 0d));
+            success &= Test("1 >= 1", BoolToDouble(1d >= 1d));
+            success &= Test("1 >= 2", BoolToDouble(1d >= 2d));
+            success &= Test("1 < 0", BoolToDouble(1d < 0d));
+            success &= Test("1 < 1", BoolToDouble(1d < 1d));
+            success &= Test("1 < 2", BoolToDouble(1d < 2d));
+            success &= Test("1 <= 0", BoolToDouble(1d <= 0d));
+            success &= Test("1 <= 1", BoolToDouble(1d <= 1d));
+            success &= Test("1 <= 2", BoolToDouble(1d <= 2d));
+            success &= Test("(1 eq 1) == (1 == 1)", TRUE);
+            success &= Test("(1 eq 0) == (1 == 0)", TRUE);
+            success &= Test("(1 eq 1) eq (0 == 0)", TRUE);
+            success &= Test("(1 eq 0) eq (0 == 1)", TRUE);
 
             // Boolean.
             success &= Test("!1", FALSE);

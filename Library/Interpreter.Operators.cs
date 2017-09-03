@@ -353,7 +353,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("!")]
+        [Operator("!", 3)]
+        [Operator("not", 3)]
         private class NegNode : UnaryNode
         {
             public NegNode(Node input)
@@ -583,7 +584,23 @@ namespace Hef.Math
             }
         }
 
+        [Operator("!=", 9)]
+        [Operator("ne", 9)]
+        private class NonEqualNode : BinaryNode
+        {
+            public NonEqualNode(Node leftInput, Node rightInput)
+                : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return System.Math.Abs(this.leftInput.GetValue(interpreter) - this.rightInput.GetValue(interpreter)) < double.Epsilon ? FALSE : TRUE;
+            }
+        }
+
         [Operator("lt", 8)]
+        [Operator("<", 8)]
         private class LtNode : BinaryNode
         {
             public LtNode(Node leftInput, Node rightInput)
@@ -598,6 +615,7 @@ namespace Hef.Math
         }
 
         [Operator("lte", 8)]
+        [Operator("<=", 8)]
         private class LteNode : BinaryNode
         {
             public LteNode(Node leftInput, Node rightInput)
@@ -612,6 +630,7 @@ namespace Hef.Math
         }
 
         [Operator("gt", 8)]
+        [Operator(">", 8)]
         private class GtNode : BinaryNode
         {
             public GtNode(Node leftInput, Node rightInput)
@@ -626,6 +645,7 @@ namespace Hef.Math
         }
 
         [Operator("gte", 8)]
+        [Operator(">=", 8)]
         private class GteNode : BinaryNode
         {
             public GteNode(Node leftInput, Node rightInput)
