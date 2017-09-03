@@ -101,7 +101,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("pi", 90)]
+        [Operator("pi", 0)]
         private class PiNode : ZeroNode
         {
             public override double GetValue(Interpreter interpreter)
@@ -110,7 +110,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("rand", 90)]
+        [Operator("rand", 0)]
         private class RandNode : ZeroNode
         {
             public override double GetValue(Interpreter interpreter)
@@ -119,7 +119,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("true", 90)]
+        [Operator("true", 0)]
         private class TrueNode : ZeroNode
         {
             public override double GetValue(Interpreter interpreter)
@@ -128,7 +128,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("false", 90)]
+        [Operator("false", 0)]
         private class FalseNode : ZeroNode
         {
             public override double GetValue(Interpreter interpreter)
@@ -141,7 +141,7 @@ namespace Hef.Math
 
         #region UnaryNode
 
-        [Operator("±", 99)]
+        [Operator("±", 1)]
         private class SignNode : UnaryNode
         {
             public SignNode(Node input) : 
@@ -155,7 +155,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("sqrt", 15)]
+        [Operator("sqrt")]
         private class SqrtNode : UnaryNode
         {
             public SqrtNode(Node input)
@@ -169,7 +169,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("cos", 12)]
+        [Operator("cos")]
         private class CosNode : UnaryNode
         {
             public CosNode(Node input)
@@ -183,7 +183,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("sin", 12)]
+        [Operator("sin")]
         private class SinNode : UnaryNode
         {
             public SinNode(Node input)
@@ -197,7 +197,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("tan", 12)]
+        [Operator("tan")]
         private class TanNode : UnaryNode
         {
             public TanNode(Node input)
@@ -211,7 +211,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("acos", 12)]
+        [Operator("acos")]
         private class AcosNode : UnaryNode
         {
             public AcosNode(Node input)
@@ -225,7 +225,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("asin", 12)]
+        [Operator("asin")]
         private class AsinNode : UnaryNode
         {
             public AsinNode(Node input)
@@ -239,7 +239,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("atan", 12)]
+        [Operator("atan")]
         private class AtanNode : UnaryNode
         {
             public AtanNode(Node input)
@@ -253,7 +253,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("cosh", 12)]
+        [Operator("cosh")]
         private class CoshNode : UnaryNode
         {
             public CoshNode(Node input)
@@ -267,7 +267,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("sinh", 12)]
+        [Operator("sinh")]
         private class SinhNode : UnaryNode
         {
             public SinhNode(Node input)
@@ -281,7 +281,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("tanh", 12)]
+        [Operator("tanh")]
         private class TanhNode : UnaryNode
         {
             public TanhNode(Node input)
@@ -295,8 +295,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("deg2rad", 13)]
-        [Operator("degrad", 13)]
+        [Operator("deg2rad")]
+        [Operator("degrad")]
         private class Deg2RadNode : UnaryNode
         {
             public Deg2RadNode(Node input)
@@ -310,8 +310,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("rad2deg", 13)]
-        [Operator("raddeg", 13)]
+        [Operator("rad2deg")]
+        [Operator("raddeg")]
         private class Rad2DegNode : UnaryNode
         {
             public Rad2DegNode(Node input)
@@ -325,7 +325,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("abs", 8)]
+        [Operator("abs")]
         private class AbsNode : UnaryNode
         {
             public AbsNode(Node input)
@@ -339,7 +339,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("round", 8)]
+        [Operator("round")]
         private class RoundNode : UnaryNode
         {
             public RoundNode(Node input)
@@ -353,7 +353,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("!", 50)]
+        [Operator("!")]
         private class NegNode : UnaryNode
         {
             public NegNode(Node input)
@@ -367,7 +367,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("ceil", 8)]
+        [Operator("ceil")]
         private class CeilNode : UnaryNode
         {
             public CeilNode(Node input)
@@ -381,7 +381,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("floor", 8)]
+        [Operator("floor")]
         private class FlorrNode : UnaryNode
         {
             public FlorrNode(Node input)
@@ -395,7 +395,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("trunc", 8)]
+        [Operator("trunc")]
         private class TruncNode : UnaryNode
         {
             public TruncNode(Node input)
@@ -409,7 +409,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("log", 8)]
+        [Operator("log")]
         private class LogNode : UnaryNode
         {
             public LogNode(Node input)
@@ -423,7 +423,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("log10", 8)]
+        [Operator("log10")]
         private class Log10Node : UnaryNode
         {
             public Log10Node(Node input)
@@ -437,8 +437,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("e", 8)]
-        [Operator("exp", 8)]
+        [Operator("e")]
+        [Operator("exp")]
         private class ExpNode : UnaryNode
         {
             public ExpNode(Node input)
@@ -456,7 +456,7 @@ namespace Hef.Math
 
         #region  BinaryNode
 
-        [Operator("+", 2)]
+        [Operator("+", 6)]
         private class AddNode : BinaryNode
         {
             public AddNode(Node leftInput, Node rightInput)
@@ -470,7 +470,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("-", 2)]
+        [Operator("-", 6)]
         private class SubNode : BinaryNode
         {
             public SubNode(Node leftInput, Node rightInput)
@@ -512,7 +512,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("%", 10)]
+        [Operator("%", 5)]
         private class ModNode : BinaryNode
         {
             public ModNode(Node leftInput, Node rightInput)
@@ -526,7 +526,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("^", 15)]
+        [Operator("^")]
         private class PowNode : BinaryNode
         {
             public PowNode(Node leftInput, Node rightInput)
@@ -540,7 +540,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("min", 80)]
+        [Operator("min")]
         private class MinNode : BinaryNode
         {
             public MinNode(Node leftInput, Node rightInput)
@@ -554,7 +554,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("max", 90)]
+        [Operator("max")]
         private class MaxNode : BinaryNode
         {
             public MaxNode(Node leftInput, Node rightInput)
@@ -568,8 +568,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("==", 0)]
-        [Operator("eq", 0)]
+        [Operator("==", 9)]
+        [Operator("eq", 9)]
         private class EqualNode : BinaryNode
         {
             public EqualNode(Node leftInput, Node rightInput)
@@ -583,7 +583,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("lt", 0)]
+        [Operator("lt", 8)]
         private class LtNode : BinaryNode
         {
             public LtNode(Node leftInput, Node rightInput)
@@ -597,7 +597,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("lte", 0)]
+        [Operator("lte", 8)]
         private class LteNode : BinaryNode
         {
             public LteNode(Node leftInput, Node rightInput)
@@ -611,7 +611,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("gt", 0)]
+        [Operator("gt", 8)]
         private class GtNode : BinaryNode
         {
             public GtNode(Node leftInput, Node rightInput)
@@ -625,7 +625,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("gte", 0)]
+        [Operator("gte", 8)]
         private class GteNode : BinaryNode
         {
             public GteNode(Node leftInput, Node rightInput)
@@ -639,8 +639,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("d", 90)]
-        [Operator("D", 90)]
+        [Operator("d")]
+        [Operator("D")]
         private class DiceNode : BinaryNode
         {
             public DiceNode(Node leftInput, Node rightInput)
@@ -663,8 +663,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("&", 0)]
-        [Operator("and", 0)]
+        [Operator("&", 13)]
+        [Operator("and", 13)]
         private class AndNode : BinaryNode
         {
             public AndNode(Node leftInput, Node rightInput)
@@ -678,8 +678,8 @@ namespace Hef.Math
             }
         }
 
-        [Operator("|", 0)]
-        [Operator("or", 0)]
+        [Operator("|", 14)]
+        [Operator("or", 14)]
         private class OrNode : BinaryNode
         {
             public OrNode(Node leftInput, Node rightInput)
@@ -698,6 +698,8 @@ namespace Hef.Math
         [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
         private class OperatorAttribute : System.Attribute
         {
+            private const int FunctionPriority = 2;
+
             public string Symbol;
             public int Priority;
 
@@ -705,6 +707,11 @@ namespace Hef.Math
             {
                 Symbol = symbol;
                 Priority = priority;
+            }
+
+            public OperatorAttribute(string symbol)
+                : this(symbol, OperatorAttribute.FunctionPriority)
+            {
             }
         }
     }

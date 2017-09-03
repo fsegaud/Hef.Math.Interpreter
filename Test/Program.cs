@@ -45,7 +45,7 @@ namespace Hef.Math.Test
             interpreter.SetVar("hundred", hundred);
             
             bool success = true;
-
+            
             // Old tests.
             success &= Test("±1", -1d);
             success &= Test("1-1", 1d - 1d);

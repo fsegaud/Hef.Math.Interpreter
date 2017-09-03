@@ -191,7 +191,7 @@ namespace Hef.Math
                 throw new System.Exception(string.Format("Operator '{0}' is not registered.", b));
             }
 
-            return Interpreter.operators[a].Priority - Interpreter.operators[b].Priority;
+            return Interpreter.operators[b].Priority - Interpreter.operators[a].Priority;
         }
 
         private static bool IsAlpha(char c)
