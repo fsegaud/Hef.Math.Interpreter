@@ -75,6 +75,8 @@ namespace Hef.Math.Test
             success &= Test("$Foo + $bar", foo + bar);
             success &= Test("round (rand * 10 + 90)");
             success &= Test("1 d 4+1 + 1 D 6+1");
+            success &= Test("10^2");
+            success &= Test("pow(10, 2)");
 
             // Comparison.
             success &= Test("1 == 0", BoolToDouble(1d == 0d));

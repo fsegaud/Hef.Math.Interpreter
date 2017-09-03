@@ -528,6 +528,7 @@ namespace Hef.Math
         }
 
         [Operator("^")]
+        [Operator("pow")]
         private class PowNode : BinaryNode
         {
             public PowNode(Node leftInput, Node rightInput)
