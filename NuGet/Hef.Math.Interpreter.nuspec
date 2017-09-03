@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Hef.Math.Interpreter</id>
-    <version>0.2.0-alpha</version>
+    <version>1.0.0</version>
     <authors>François Ségaud</authors>
     <owners>fseg</owners>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
