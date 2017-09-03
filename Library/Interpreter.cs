@@ -56,10 +56,7 @@ namespace Hef.Math
 
         private readonly System.Collections.Generic.Dictionary<string, double> variables;
         private System.Collections.Generic.Dictionary<string, IInterpreterContext> namedContext;
-
-        [System.Obsolete("use Interpreter.namedContext instead.")]
-        private IInterpreterContext interpreterContext;
-
+        
         #endregion
 
         #region Enumerations
@@ -88,14 +85,7 @@ namespace Hef.Math
             this.variables = new System.Collections.Generic.Dictionary<string, double>();
             this.namedContext = new System.Collections.Generic.Dictionary<string, IInterpreterContext>();
         }
-
-        [System.Obsolete("Use Interpreter.SetContext(string, IINterpreterContext) instead.")]
-        public Interpreter(IInterpreterContext interpreterContext)
-            : this()
-        {
-            this.SetContext(interpreterContext);
-        }
-
+        
         #endregion
 
         #region Public Functions
@@ -112,16 +102,6 @@ namespace Hef.Math
                 name = name.StartsWith(Interpreter.VarPrefixStr) ? name : string.Format("{0}{1}", Interpreter.VarPrefixStr, name);
                 this.variables.Add(name, value);
             }
-        }
-
-        /// <summary>
-        /// Sets an interpreter context to be use un variables resolution.
-        /// </summary>
-        /// <param name="interpreterContext">An object that implements Hef.Math.IInterpreterContext.</param>
-        [System.Obsolete("Use Interpreter.SetContext(string, IINterpreterContext) instead.")]
-        public void SetContext(IInterpreterContext interpreterContext)
-        {
-            this.interpreterContext = interpreterContext;
         }
 
         /// <summary>
@@ -429,12 +409,6 @@ namespace Hef.Math
         {
             value = 0;
             if (this.variables.TryGetValue(varName, out value))
-            {
-                return true;
-            }
-
-            if (this.interpreterContext != null &&
-                this.interpreterContext.TryGetVariable(varName.TrimStart(Interpreter.VarPrefixChar), out value))
             {
                 return true;
             }

@@ -169,16 +169,6 @@ namespace Hef.Math.Test
             success &= Test("tan pi", System.Math.Tan(System.Math.PI));
             success &= Test("tan (pi / 4)", System.Math.Tan(System.Math.PI / 4d));
             success &= Test("tan (3 * pi / 4)", System.Math.Tan(3 * System.Math.PI / 4d));
-            success &= Test("degrad 0", 0d);
-            success &= Test("degrad 90", System.Math.PI * .5d);
-            success &= Test("degrad 180", System.Math.PI);
-            success &= Test("degrad 270", System.Math.PI * 1.5d);
-            success &= Test("degrad 360", System.Math.PI * 2d);
-            success &= Test("raddeg (0)", 0d);
-            success &= Test("raddeg (pi * 0.5)", 90d);
-            success &= Test("raddeg (pi)", 180d);
-            success &= Test("raddeg (pi * 1.5)", 270d);
-            success &= Test("raddeg (pi * 2)", 360d);
             success &= Test("deg2rad 0", 0d);
             success &= Test("deg2rad 90", System.Math.PI * .5d);
             success &= Test("deg2rad 180", System.Math.PI);
