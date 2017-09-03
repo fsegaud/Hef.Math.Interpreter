@@ -125,22 +125,32 @@ namespace Hef.Math.Test
             success &= Test("false", BoolToDouble(false));
             success &= Test("!true", BoolToDouble(!true));
             success &= Test("!false", BoolToDouble(!false));
-            success &= Test("true & true", BoolToDouble(true && true));
-            success &= Test("true & false", BoolToDouble(true && false));
-            success &= Test("false & true", BoolToDouble(false && true));
-            success &= Test("false & false", BoolToDouble(false && false));
+            success &= Test("true && true", BoolToDouble(true && true));
+            success &= Test("true && false", BoolToDouble(true && false));
+            success &= Test("false && true", BoolToDouble(false && true));
+            success &= Test("false && false", BoolToDouble(false && false));
             success &= Test("true and true", BoolToDouble(true && true));
             success &= Test("true and false", BoolToDouble(true && false));
             success &= Test("false and true", BoolToDouble(false && true));
             success &= Test("false and false", BoolToDouble(false && false));
-            success &= Test("true | true", BoolToDouble(true || true));
-            success &= Test("true | false", BoolToDouble(true || false));
-            success &= Test("false | true", BoolToDouble(false || true));
-            success &= Test("false | false", BoolToDouble(false || false));
+            success &= Test("true || true", BoolToDouble(true || true));
+            success &= Test("true || false", BoolToDouble(true || false));
+            success &= Test("false || true", BoolToDouble(false || true));
+            success &= Test("false || false", BoolToDouble(false || false));
             success &= Test("true or true", BoolToDouble(true || true));
             success &= Test("true or false", BoolToDouble(true || false));
             success &= Test("false or true", BoolToDouble(false || true));
             success &= Test("false or false", BoolToDouble(false || false));
+
+            // Binary
+            success &= Test("1 << 4", 1 << 4);
+            success &= Test("32 >> 4", 32 >> 4);
+            success &= Test("1 << 4 >> 4", 1 << 4 >> 4);
+            success &= Test("32 >> 4 << 4", 32 >> 4 << 4);
+            success &= Test("4 | 2", 4 | 2);
+            success &= Test("6 | 2", 6 | 2);
+            success &= Test("4 & 2", 4 & 2);
+            success &= Test("6 & 2", 6 & 2);
 
             // Trigonometry.
             success &= Test("cos 0", System.Math.Cos(0d));

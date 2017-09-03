@@ -684,7 +684,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("&", 13)]
+        [Operator("&&", 13)]
         [Operator("and", 13)]
         private class AndNode : BinaryNode
         {
@@ -699,7 +699,7 @@ namespace Hef.Math
             }
         }
 
-        [Operator("|", 14)]
+        [Operator("||", 14)]
         [Operator("or", 14)]
         private class OrNode : BinaryNode
         {
@@ -711,6 +711,58 @@ namespace Hef.Math
             public override double GetValue(Interpreter interpreter)
             {
                 return BoolToDouble(DoubleToBool(this.leftInput.GetValue(interpreter)) || DoubleToBool(this.rightInput.GetValue(interpreter)));
+            }
+        }
+
+        [Operator("<<", 7)]
+        private class LeftShiftNode : BinaryNode
+        {
+            public LeftShiftNode(Node leftInput, Node rightInput) : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return (double)((int)this.leftInput.GetValue(interpreter) << (int)this.rightInput.GetValue(interpreter));
+            }
+        }
+
+        [Operator(">>", 7)]
+        private class RightShiftNode : BinaryNode
+        {
+            public RightShiftNode(Node leftInput, Node rightInput) : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return (double)((int)this.leftInput.GetValue(interpreter) >> (int)this.rightInput.GetValue(interpreter));
+            }
+        }
+
+        [Operator("|", 12)]
+        private class BitOrNode : BinaryNode
+        {
+            public BitOrNode(Node leftInput, Node rightInput) : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return (double)((int)this.leftInput.GetValue(interpreter) | (int)this.rightInput.GetValue(interpreter));
+            }
+        }
+
+        [Operator("&", 10)]
+        private class BitAndNode : BinaryNode
+        {
+            public BitAndNode(Node leftInput, Node rightInput) : base(leftInput, rightInput)
+            {
+            }
+
+            public override double GetValue(Interpreter interpreter)
+            {
+                return (double)((int)this.leftInput.GetValue(interpreter) & (int)this.rightInput.GetValue(interpreter));
             }
         }
 
