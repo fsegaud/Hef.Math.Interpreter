@@ -20,6 +20,8 @@
 // SOFTWARE.
 #endregion
 
+using System;
+
 namespace Hef.Math.Test
 {
     class Program
@@ -45,7 +47,7 @@ namespace Hef.Math.Test
             interpreter.SetVar("hundred", hundred);
 
             bool success = true;
-
+            
             // Old tests.
             success &= Test("±1", -1d);
             success &= Test("1-1", 1d - 1d);
@@ -53,13 +55,14 @@ namespace Hef.Math.Test
             success &= Test("2 + 2", 2 + 2d);
             success &= Test("2+2", 2d + 2d);
             success &= Test("(2+2)", 2d + 2d);
-            success &= Test("sqrt4+3*4", System.Math.Sqrt(4) + 3 * 4);
-            success &= Test("(sqrt4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
+            success &= Test("sqrt 4 + 3 * 4", System.Math.Sqrt(4) + 3 * 4);
+            success &= Test("sqrt 4+3*4", System.Math.Sqrt(4) + 3 * 4);
+            success &= Test("(sqrt 4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
             success &= Test("5 * ±1", 5 * -1d);
             success &= Test("abs ±1", System.Math.Abs(-1d));
             success &= Test("sin(1+2)", System.Math.Sin(1 + 2));
-            success &= Test("sin1+2", System.Math.Sin(1) + 2);
-            success &= Test("sin1*cos2+cos1*sin2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
+            success &= Test("sin 1+2", System.Math.Sin(1) + 2);
+            success &= Test("sin 1*cos 2+cos 1*sin 2", System.Math.Sin(1) * System.Math.Cos(2) + System.Math.Cos(1) * System.Math.Sin(2));
             success &= Test("(2 * 5 == 10) * 5", (2d * 5d == 10 ? 1d : 0d) * 5d);
             success &= Test("min 4 6", System.Math.Min(4d, 6d));
             success &= Test("max 4 6", System.Math.Max(4d, 6d));
@@ -71,13 +74,19 @@ namespace Hef.Math.Test
             success &= Test("sqrt($hundred^2)", System.Math.Sqrt(hundred * hundred));
             success &= Test("$Foo + $bar", foo + bar);
             success &= Test("round (rand * 10 + 90)");
-            success &= Test("1d4+1 + 1D6+1");
+            success &= Test("1 d 4+1 + 1 D 6+1");
+            success &= Test("10^2");
+            success &= Test("pow(10, 2)");
 
             // Comparison.
             success &= Test("1 == 0", BoolToDouble(1d == 0d));
             success &= Test("1 == 1", BoolToDouble(1d == 1d));
             success &= Test("1 eq 0", BoolToDouble(1d == 0d));
             success &= Test("1 eq 1", BoolToDouble(1d == 1d));
+            success &= Test("1 != 0", BoolToDouble(1d != 0d));
+            success &= Test("1 != 1", BoolToDouble(1d != 1d));
+            success &= Test("1 ne 0", BoolToDouble(1d != 0d));
+            success &= Test("1 ne 1", BoolToDouble(1d != 1d));
             success &= Test("1 gt 0", BoolToDouble(1d > 0d));
             success &= Test("1 gt 1", BoolToDouble(1d > 1d));
             success &= Test("1 gt 2", BoolToDouble(1d > 2d));
@@ -90,6 +99,22 @@ namespace Hef.Math.Test
             success &= Test("1 lte 0", BoolToDouble(1d <= 0d));
             success &= Test("1 lte 1", BoolToDouble(1d <= 1d));
             success &= Test("1 lte 2", BoolToDouble(1d <= 2d));
+            success &= Test("1 > 0", BoolToDouble(1d > 0d));
+            success &= Test("1 > 1", BoolToDouble(1d > 1d));
+            success &= Test("1 > 2", BoolToDouble(1d > 2d));
+            success &= Test("1 >= 0", BoolToDouble(1d >= 0d));
+            success &= Test("1 >= 1", BoolToDouble(1d >= 1d));
+            success &= Test("1 >= 2", BoolToDouble(1d >= 2d));
+            success &= Test("1 < 0", BoolToDouble(1d < 0d));
+            success &= Test("1 < 1", BoolToDouble(1d < 1d));
+            success &= Test("1 < 2", BoolToDouble(1d < 2d));
+            success &= Test("1 <= 0", BoolToDouble(1d <= 0d));
+            success &= Test("1 <= 1", BoolToDouble(1d <= 1d));
+            success &= Test("1 <= 2", BoolToDouble(1d <= 2d));
+            success &= Test("(1 eq 1) == (1 == 1)", TRUE);
+            success &= Test("(1 eq 0) == (1 == 0)", TRUE);
+            success &= Test("(1 eq 1) eq (0 == 0)", TRUE);
+            success &= Test("(1 eq 0) eq (0 == 1)", TRUE);
 
             // Boolean.
             success &= Test("!1", FALSE);
@@ -100,22 +125,32 @@ namespace Hef.Math.Test
             success &= Test("false", BoolToDouble(false));
             success &= Test("!true", BoolToDouble(!true));
             success &= Test("!false", BoolToDouble(!false));
-            success &= Test("true & true", BoolToDouble(true && true));
-            success &= Test("true & false", BoolToDouble(true && false));
-            success &= Test("false & true", BoolToDouble(false && true));
-            success &= Test("false & false", BoolToDouble(false && false));
+            success &= Test("true && true", BoolToDouble(true && true));
+            success &= Test("true && false", BoolToDouble(true && false));
+            success &= Test("false && true", BoolToDouble(false && true));
+            success &= Test("false && false", BoolToDouble(false && false));
             success &= Test("true and true", BoolToDouble(true && true));
             success &= Test("true and false", BoolToDouble(true && false));
             success &= Test("false and true", BoolToDouble(false && true));
             success &= Test("false and false", BoolToDouble(false && false));
-            success &= Test("true | true", BoolToDouble(true || true));
-            success &= Test("true | false", BoolToDouble(true || false));
-            success &= Test("false | true", BoolToDouble(false || true));
-            success &= Test("false | false", BoolToDouble(false || false));
+            success &= Test("true || true", BoolToDouble(true || true));
+            success &= Test("true || false", BoolToDouble(true || false));
+            success &= Test("false || true", BoolToDouble(false || true));
+            success &= Test("false || false", BoolToDouble(false || false));
             success &= Test("true or true", BoolToDouble(true || true));
             success &= Test("true or false", BoolToDouble(true || false));
             success &= Test("false or true", BoolToDouble(false || true));
             success &= Test("false or false", BoolToDouble(false || false));
+
+            // Binary
+            success &= Test("1 << 4", 1 << 4);
+            success &= Test("32 >> 4", 32 >> 4);
+            success &= Test("1 << 4 >> 4", 1 << 4 >> 4);
+            success &= Test("32 >> 4 << 4", 32 >> 4 << 4);
+            success &= Test("4 | 2", 4 | 2);
+            success &= Test("6 | 2", 6 | 2);
+            success &= Test("4 & 2", 4 & 2);
+            success &= Test("6 & 2", 6 & 2);
 
             // Trigonometry.
             success &= Test("cos 0", System.Math.Cos(0d));
@@ -134,16 +169,16 @@ namespace Hef.Math.Test
             success &= Test("tan pi", System.Math.Tan(System.Math.PI));
             success &= Test("tan (pi / 4)", System.Math.Tan(System.Math.PI / 4d));
             success &= Test("tan (3 * pi / 4)", System.Math.Tan(3 * System.Math.PI / 4d));
-            success &= Test("degrad 0", 0d);
-            success &= Test("degrad 90", System.Math.PI * .5d);
-            success &= Test("degrad 180", System.Math.PI);
-            success &= Test("degrad 270", System.Math.PI * 1.5d);
-            success &= Test("degrad 360", System.Math.PI * 2d);
-            success &= Test("raddeg (0)", 0d);
-            success &= Test("raddeg (pi * 0.5)", 90d);
-            success &= Test("raddeg (pi)", 180d);
-            success &= Test("raddeg (pi * 1.5)", 270d);
-            success &= Test("raddeg (pi * 2)", 360d);
+            success &= Test("deg2rad 0", 0d);
+            success &= Test("deg2rad 90", System.Math.PI * .5d);
+            success &= Test("deg2rad 180", System.Math.PI);
+            success &= Test("deg2rad 270", System.Math.PI * 1.5d);
+            success &= Test("deg2rad 360", System.Math.PI * 2d);
+            success &= Test("rad2deg (0)", 0d);
+            success &= Test("rad2deg (pi * 0.5)", 90d);
+            success &= Test("rad2deg (pi)", 180d);
+            success &= Test("rad2deg (pi * 1.5)", 270d);
+            success &= Test("rad2deg (pi * 2)", 360d);
 
             // Writing style and comma separator.
             success &= Test("min(1,2)", System.Math.Min(1, 2));
@@ -152,18 +187,46 @@ namespace Hef.Math.Test
             success &= Test("min 1 2", System.Math.Min(1, 2));
             success &= Test("min 1,2", System.Math.Min(1, 2));
             success &= Test("min 1, 2", System.Math.Min(1, 2));
-            success &= Test("min1, 2", System.Math.Min(1, 2));
-            success &= Test("min1,2", System.Math.Min(1, 2));
-            success &= Test("min1 2", System.Math.Min(1, 2));
             success &= Test("min(2,1)", System.Math.Min(1, 2));
             success &= Test("min(2, 1)", System.Math.Min(1, 2));
             success &= Test("min(2 1)", System.Math.Min(1, 2));
             success &= Test("min 2 1", System.Math.Min(1, 2));
             success &= Test("min 2,1", System.Math.Min(1, 2));
             success &= Test("min 2, 1", System.Math.Min(1, 2));
-            success &= Test("min2, 1", System.Math.Min(1, 2));
-            success &= Test("min2,1", System.Math.Min(1, 2));
-            success &= Test("min2 1", System.Math.Min(1, 2));
+
+            // Rounding
+            success &= Test("round(1.0)", System.Math.Round(1.0d));
+            success &= Test("round(1.1)", System.Math.Round(1.1d));
+            success &= Test("round(1.5)", System.Math.Round(1.5d));
+            success &= Test("round(1.9)", System.Math.Round(1.9d));
+            success &= Test("trunc(1.0)", System.Math.Truncate(1.0d));
+            success &= Test("trunc(1.1)", System.Math.Truncate(1.1d));
+            success &= Test("trunc(1.5)", System.Math.Truncate(1.5d));
+            success &= Test("trunc(1.9)", System.Math.Truncate(1.9d));
+            success &= Test("floor(1.0)", System.Math.Floor(1.0d));
+            success &= Test("floor(1.1)", System.Math.Floor(1.1d));
+            success &= Test("floor(1.5)", System.Math.Floor(1.5d));
+            success &= Test("floor(1.9)", System.Math.Floor(1.9d));
+            success &= Test("ceil(1.0)", System.Math.Ceiling(1.0d));
+            success &= Test("ceil(1.1)", System.Math.Ceiling(1.1d));
+            success &= Test("ceil(1.5)", System.Math.Ceiling(1.5d));
+            success &= Test("ceil(1.9)", System.Math.Ceiling(1.9d));
+
+            // Algebra.
+            success &= Test("log(0.5)", System.Math.Log(.5d));
+            success &= Test("log(1.0)", System.Math.Log(1d));
+            success &= Test("log(2.0)", System.Math.Log(2d));
+            success &= Test("log10(0.5)", System.Math.Log10(.5d));
+            success &= Test("log10(1.0)", System.Math.Log10(1d));
+            success &= Test("log10(2.0)", System.Math.Log10(2d));
+            success &= Test("e(0.0)", System.Math.Exp(0d));
+            success &= Test("e(0.5)", System.Math.Exp(.5d));
+            success &= Test("e(1.0)", System.Math.Exp(1d));
+            success &= Test("e(2.0)", System.Math.Exp(2d));
+            success &= Test("exp(0.0)", System.Math.Exp(0d));
+            success &= Test("exp(0.5)", System.Math.Exp(.5d));
+            success &= Test("exp(1.0)", System.Math.Exp(1d));
+            success &= Test("exp(2.0)", System.Math.Exp(2d));
 
             System.Console.WriteLine("--------------------\nOVERALL RESULT: " + success);
         }

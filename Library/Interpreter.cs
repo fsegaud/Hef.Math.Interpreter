@@ -56,10 +56,7 @@ namespace Hef.Math
 
         private readonly System.Collections.Generic.Dictionary<string, double> variables;
         private System.Collections.Generic.Dictionary<string, IInterpreterContext> namedContext;
-
-        [System.Obsolete("use Interpreter.namedContext instead.")]
-        private IInterpreterContext interpreterContext;
-
+        
         #endregion
 
         #region Enumerations
@@ -88,14 +85,7 @@ namespace Hef.Math
             this.variables = new System.Collections.Generic.Dictionary<string, double>();
             this.namedContext = new System.Collections.Generic.Dictionary<string, IInterpreterContext>();
         }
-
-        [System.Obsolete("Use Interpreter.SetContext(string, IINterpreterContext) instead.")]
-        public Interpreter(IInterpreterContext interpreterContext)
-            : this()
-        {
-            this.SetContext(interpreterContext);
-        }
-
+        
         #endregion
 
         #region Public Functions
@@ -112,16 +102,6 @@ namespace Hef.Math
                 name = name.StartsWith(Interpreter.VarPrefixStr) ? name : string.Format("{0}{1}", Interpreter.VarPrefixStr, name);
                 this.variables.Add(name, value);
             }
-        }
-
-        /// <summary>
-        /// Sets an interpreter context to be use un variables resolution.
-        /// </summary>
-        /// <param name="interpreterContext">An object that implements Hef.Math.IInterpreterContext.</param>
-        [System.Obsolete("Use Interpreter.SetContext(string, IINterpreterContext) instead.")]
-        public void SetContext(IInterpreterContext interpreterContext)
-        {
-            this.interpreterContext = interpreterContext;
         }
 
         /// <summary>
@@ -191,7 +171,7 @@ namespace Hef.Math
                 throw new System.Exception(string.Format("Operator '{0}' is not registered.", b));
             }
 
-            return Interpreter.operators[a].Priority - Interpreter.operators[b].Priority;
+            return Interpreter.operators[b].Priority - Interpreter.operators[a].Priority;
         }
 
         private static bool IsAlpha(char c)
@@ -207,14 +187,30 @@ namespace Hef.Math
         private static int SkipString(string value, int index)
         {
             // Also alow dots for names context cariable access `$xxx.yyy`.
-            while (index < value.Length && (Interpreter.IsAlpha(value[index]) || value[index] == '.'))
+            // [#12] Operators with names containing digits fail -> Fixed by adding IsNumeric().
+            while (index < value.Length && (Interpreter.IsAlpha(value[index]) || Interpreter.IsNumeric(value[index]) || value[index] == '.'))
             {
                 ++index;
             }
 
             return index;
         }
-        
+
+        private static bool IsSpecial(char c)
+        {
+            return !IsNumeric(c) && !IsAlpha(c) && c != OpenBracketChar && c != ClosingBracketChar && c != VarPrefixChar && c != WhiteSpaceChar && c != '.' && c != '±';
+        }
+
+        private static int SkipSpecial(string value, int index)
+        {
+            while (index < value.Length && IsSpecial(value[index]))
+            {
+                ++index;
+            }
+
+            return index;
+        }
+
         private static string InfixToRpn(string infix)
         {
             // Replace comma separator with white space for function-like use of operators.
@@ -231,6 +227,12 @@ namespace Hef.Math
                 {
                     infix = infix.Insert(index, Interpreter.LongOpMark0Str);
                     index = Interpreter.SkipString(infix, index + 2);
+                    infix = infix.Insert(index, Interpreter.LongOpMark1Str);
+                }
+                else if (Interpreter.IsSpecial(infix[index]))
+                {
+                    infix = infix.Insert(index, Interpreter.LongOpMark0Str);
+                    index = Interpreter.SkipSpecial(infix, index + 2);
                     infix = infix.Insert(index, Interpreter.LongOpMark1Str);
                 }
             }
@@ -407,12 +409,6 @@ namespace Hef.Math
         {
             value = 0;
             if (this.variables.TryGetValue(varName, out value))
-            {
-                return true;
-            }
-
-            if (this.interpreterContext != null &&
-                this.interpreterContext.TryGetVariable(varName.TrimStart(Interpreter.VarPrefixChar), out value))
             {
                 return true;
             }

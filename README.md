@@ -28,7 +28,7 @@ You can also install the correpsonding _NuGet_ package at [https://www.nuget.org
 Or install it using the _NuGet_ console.
 
 ```
-Install-Package Hef.Math.Interpreter -Version 0.2.0-alpha 
+Install-Package Hef.Math.Interpreter -Version 1.0.0-alpha 
 ```
 
 ### Examples
@@ -40,7 +40,7 @@ Here is the simplest example.
 ```csharp
 Interpreter interpreter = new Interpreter();
 double result = interpreter.Calculate("sqrt(4) + 2"); // -> 4
-// "sqrt 4 + 2" or "sqrt4+2" would work as well
+// "sqrt 4 + 2" would work as well
 ```
 
 The following example highlights the use of manually registered variables.
@@ -82,66 +82,82 @@ class Player : Hef.Math.IInterpreterContext
 
 #### Basic Operators
 
-| Symbol | Operation   | Comment                            | Version |
-|:------:|-------------|------------------------------------|:-------:|
-| `±`    | Sign Change | -1 should be written ±1 (atl+0177) | 0.1.0   |
-| `+`    | Addition    |                                    | 0.1.0   |
-| `-`    | Subtraction |                                    | 0.1.0   |
-| `*`    | Product     |                                    | 0.1.0   |
-| `/`    | Division    |                                    | 0.1.0   |
-| `%`    | Modulo      |                                    | 0.1.0   |
-| `^`    | Power       |                                    | 0.1.0   |
-| `sqrt` | Square Root |                                    | 0.1.0   |
+| Symbol        | Operation   | Comment                            | Version |
+|:-------------:|-------------|------------------------------------|:-------:|
+| `±`           | Sign Change | -1 should be written ±1 (atl+0177) | 0.1.0   |
+| `+`           | Addition    |                                    | 0.1.0   |
+| `-`           | Subtraction |                                    | 0.1.0   |
+| `*`           | Product     |                                    | 0.1.0   |
+| `/`           | Division    |                                    | 0.1.0   |
+| `%`           | Modulo      |                                    | 0.1.0   |
 
 #### Advanced Operators
 
-| Symbol  | Operation      | Comment | Version |
-|:-------:|----------------|---------|:-------:|
-| `abs`   | Absolute Value |         | 0.1.0   |
-| `round` | Round          |         | 0.1.0   |
-| `min`   | Minimum        |         | 0.1.0   |
-| `max`   | Maximum        |         | 0.1.0   |
+| Symbol       | Operation                 | Comment | Version |
+|:------------:|---------------------------|---------|:-------:|
+| `^` or `pow` | Power                     |         | 0.1.0   |
+| `sqrt`       | Square Root               |         | 0.1.0   |
+| `abs`        | Absolute Value            |         | 0.1.0   |
+| `round`      | Round                     |         | 0.1.0   |
+| `min`        | Minimum                   |         | 0.1.0   |
+| `max`        | Maximum                   |         | 0.1.0   |
+| `ceil`       | Ceil to upper integer     |         | 1.0.0   |
+| `floor`      | Floot to lower integer    |         | 1.0.0   |
+| `trunc`      | Truncate the decimal part |         | 1.0.0   |
+| `log`        | Logarithm                 |         | 1.0.0   |
+| `log10`      | Logarithm base 10         |         | 1.0.0   |
+| `e` or `exp` | Exponential               |         | 1.0.0   |
 
 #### Comparison Operators
 
-| Symbol       | Operation        | Comment                    | Version |
-|:------------:|------------------|----------------------------|:-------:|
-| `==` or `eq` | Equal            | 1 == 1 -> 1, 1 eq 2 -> 0   | 0.1.0   |
-| `gt`         | Greater Than     | 1 gt 1 -> 0, 1 gt 2 -> 1   | 0.1.0   |
-| `gte`        | Greater Or Equal | 1 gte 0 -> 0, 1 gte 1 -> 1 | 0.1.0   |
-| `lt`         | Less Than        | 1 lt 1 -> 0, 1 lt 2 -> 1   | 0.1.0   |
-| `lte`        | Less Or Equal    | 1 lte 1 -> 1, 1 lte 0 -> 0 | 0.1.0   |
+| Symbol        | Operation        | Comment                    | Version |
+|:-------------:|------------------|----------------------------|:-------:|
+| `==` or `eq`  | Equal            | 1 == 1 -> 1, 1 eq 2 -> 0   | 0.1.0   |
+| `gt` or `>`   | Greater Than     | 1 gt 1 -> 0, 1 gt 2 -> 1   | 0.1.0   |
+| `gte` or `>=` | Greater Or Equal | 1 gte 0 -> 0, 1 gte 1 -> 1 | 0.1.0   |
+| `lt` or `<`   | Less Than        | 1 lt 1 -> 0, 1 lt 2 -> 1   | 0.1.0   |
+| `lte` or `<=` | Less Or Equal    | 1 lte 1 -> 1, 1 lte 0 -> 0 | 0.1.0   |
+| `!=` or `ne`  | Equal            | 1 != 1 -> 0, 1 ne 2 -> 1   | 1.0.0   |
 
 #### Logical Operators
 
-| Symbol       | Operation        | Comment                    | Version |
-|:------------:|------------------|----------------------------|:-------:|
-| `!`          | Not              | !0 -> 1, !1 -> 0           | 0.1.0   |
-| `&` or `and` | And              | true & true -> true        | 0.1.1   |
-| `\|` or `or` | Or               | true & false -> true       | 0.1.1   |
+| Symbol         | Operation        | Comment                    | Version |
+|:--------------:|------------------|----------------------------|:-------:|
+| `!`            | Not              | !0 -> 1, !1 -> 0           | 0.1.0   |
+| `&&` or `and`  | And              | true & true -> true        | 1.0.0   |
+| `\|\|` or `or` | Or               | true & false -> true       | 1.0.0   |
+
+#### Bitwise Operators
+
+| Symbol | Operation       | Comment                    | Version |
+|:------:|-----------------|----------------------------|:-------:|
+| `<<`   | Left Bitshift   |                            | 1.0.0   |
+| `>>`   | Right Bitshift  |                            | 1.0.0   |
+| `&`    | And             |                            | 1.0.0   |
+| `\|`   | Or              |                            | 1.0.0   |
 
 #### Trigonometry
 
-| Symbol   | Operation          | Comment                     | Version |
-|:--------:|--------------------|-----------------------------|:-------:|
-| `cos`    | Cosine             |                             | 0.1.0   |
-| `sin`    | Sine               |                             | 0.1.0   |
-| `tan`    | Tangent            |                             | 0.1.0   |
-| `acos`   | Arccosine          |                             | 0.1.1   |
-| `asin`   | Arcsine            |                             | 0.1.1   |
-| `atan`   | Arctangent         |                             | 0.1.1   |
-| `cosh`   | Hyperbolic Cosine  |                             | 0.1.1   |
-| `sinh`   | Hyperbolic Sine    |                             | 0.1.1   |
-| `tanh`   | Hyperbolic Tangent |                             | 0.1.1   |
-| `degrad` | Deg2Rad            | Converts degrees to radians | 0.1.1   |
-| `raddeg` | Rad2Deg            | Converts radians to degrees | 0.1.1   |
+| Symbol    | Operation          | Comment                     | Version |
+|:---------:|--------------------|-----------------------------|:-------:|
+| `cos`     | Cosine             |                             | 0.1.0   |
+| `sin`     | Sine               |                             | 0.1.0   |
+| `tan`     | Tangent            |                             | 0.1.0   |
+| `acos`    | Arccosine          |                             | 0.1.1   |
+| `asin`    | Arcsine            |                             | 0.1.1   |
+| `atan`    | Arctangent         |                             | 0.1.1   |
+| `cosh`    | Hyperbolic Cosine  |                             | 0.1.1   |
+| `sinh`    | Hyperbolic Sine    |                             | 0.1.1   |
+| `tanh`    | Hyperbolic Tangent |                             | 0.1.1   |
+| `deg2rad` | Deg2Rad            | Converts degrees to radians | 1.0.0   |
+| `rad2deg` | Rad2Deg            | Converts radians to degrees | 1.0.0   |
 
 #### Randomization
 
-| Symbol     | Operation | Comment         | Version |
-|:----------:|-----------|-----------------|:-------:|
-| `rand`     | Random    | rand 5 -> [0,5] | 0.1.0   |
-| `d` or `D` | Dice      | 2d6 -> [2,12]   | 0.1.0   |
+| Symbol     | Operation | Comment           | Version |
+|:----------:|-----------|-------------------|:-------:|
+| `rand`     | Random    | rand 5 -> [0,5]   | 0.1.0   |
+| `d` or `D` | Dice      | 2 d 6 -> [2,12]   | 0.1.0   |
 
 #### Constants
 
@@ -176,13 +192,13 @@ Then add the `OperatorAttribute` and fill the symbol and priority.
 
 > INFO: The `OperatorAttribute` is stackable.
 
-> INFO: Highest priorities are executed first.
+> INFO: Lowest priorities are executed first. Default priority is 2 (functions).
  
 The following example show the implementation of an operator that halves an operand (unary operator). Its symbols will be `#` and `half`.
 
 ```csharp
-[Operator("#", 5)]
-[Operator("half", 5)]
+[Operator("#", 2)]
+[Operator("half", 2)]
 private class HalfNode : UnaryNode
 {
     public HalfNode(Node input)
