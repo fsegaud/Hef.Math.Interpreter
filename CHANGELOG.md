@@ -10,10 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Added global variables support (variables that are common to all instances of `Interpreter`).
+- Implemented the disposal code (#24).
 
 ### Fixed
 
-- The regular expression that matches context variables now behaves as intended (#12).
+- The regular expression that matches context variables now behaves as intended (#23).
 
 ## [1.0.0] 2017.09.??
 

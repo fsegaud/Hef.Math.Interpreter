@@ -20,6 +20,7 @@
 // SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace Hef.Math
@@ -27,7 +28,7 @@ namespace Hef.Math
     /// <summary>
     /// An interpreter able to resolve a mathmatical formula.
     /// </summary>
-    public partial class Interpreter
+    public partial class Interpreter : System.IDisposable
     {
         #region Constants
 
@@ -57,9 +58,10 @@ namespace Hef.Math
 
         #region Members
 
-        private readonly System.Collections.Generic.Dictionary<string, double> variables;
+        private System.Collections.Generic.Dictionary<string, double> variables;
         private System.Collections.Generic.Dictionary<string, IInterpreterContext> namedContext;
-        
+        private bool disposed = false;
+
         #endregion
 
         #region Enumerations
@@ -84,12 +86,27 @@ namespace Hef.Math
             Interpreter.LoadOperators();
         }
 
+        /// <summary>
+        /// Instantiates a new instance of Interpreter.
+        /// </summary>
         public Interpreter()
         {
             this.variables = new System.Collections.Generic.Dictionary<string, double>();
             this.namedContext = new System.Collections.Generic.Dictionary<string, IInterpreterContext>();
         }
-        
+
+        #endregion
+
+        #region Destructor
+
+        /// <summary>
+        /// Destructor.
+        /// </summary>
+        ~Interpreter()
+        {
+            this.Dispose(false);
+        }
+
         #endregion
 
         #region Public Functions
@@ -171,6 +188,15 @@ namespace Hef.Math
         public static void ForceClearCache()
         {
             Interpreter.cachedInfixToNode.Clear();
+        }
+
+        /// <summary>
+        /// Dispose this instance of Interpreter.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            System.GC.SuppressFinalize(this);
         }
 
         #endregion
@@ -423,6 +449,30 @@ namespace Hef.Math
             return values.Pop();
         }
 
+        private static void LoadOperators()
+        {
+            System.Type nodeType = typeof(Node);
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(nodeType);
+            System.Type[] allTypes = assembly.GetTypes();
+
+            for (int i = 0; i < allTypes.Length; i++)
+            {
+                System.Type type = allTypes[i];
+                if (type.IsSubclassOf(nodeType) && !type.IsAbstract)
+                {
+                    OperatorAttribute[] attributes = (OperatorAttribute[])type.GetCustomAttributes(typeof(OperatorAttribute), true);
+                    if (attributes != null)
+                    {
+                        for (int attrIndex = 0; attrIndex < attributes.Length; attrIndex++)
+                        {
+                            OperatorAttribute operatorAttribute = attributes[attrIndex];
+                            Interpreter.operators.Add(operatorAttribute.Symbol, new OperatorDescriptor(operatorAttribute.Priority, type));
+                        }
+                    }
+                }
+            }
+        }
+
         private bool TryGetVariableValue(string varName, out double value)
         {
             // Look in local variables.
@@ -454,28 +504,29 @@ namespace Hef.Math
             return false;
         }
 
-        private static void LoadOperators()
+        private void Dispose(bool disposing)
         {
-            System.Type nodeType = typeof(Node);
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(nodeType);
-            System.Type[] allTypes = assembly.GetTypes();
-
-            for (int i = 0; i < allTypes.Length; i++)
+            if (this.disposed)
             {
-                System.Type type = allTypes[i];
-                if (type.IsSubclassOf(nodeType) && !type.IsAbstract)
+                return;
+            }
+
+            if (disposing)
+            {
+                if (this.variables != null)
                 {
-                    OperatorAttribute[] attributes = (OperatorAttribute[])type.GetCustomAttributes(typeof(OperatorAttribute), true);
-                    if (attributes != null)
-                    {
-                        for (int attrIndex = 0; attrIndex < attributes.Length; attrIndex++)
-                        {
-                            OperatorAttribute operatorAttribute = attributes[attrIndex];
-                            Interpreter.operators.Add(operatorAttribute.Symbol, new OperatorDescriptor(operatorAttribute.Priority, type));
-                        }
-                    }
+                    this.variables.Clear();
+                    this.variables = null;
+                }
+
+                if (this.namedContext != null)
+                {
+                    this.namedContext.Clear();
+                    this.namedContext = null;
                 }
             }
+
+            this.disposed = true;
         }
 
         #endregion

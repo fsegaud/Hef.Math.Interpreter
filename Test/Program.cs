@@ -232,6 +232,8 @@ namespace Hef.Math.Test
             success &= Test("exp(2.0)", System.Math.Exp(2d));
 
             System.Console.WriteLine("--------------------\nOVERALL RESULT: " + success);
+
+            interpreter.Dispose();
         }
 
         private static bool Test(string infix)
