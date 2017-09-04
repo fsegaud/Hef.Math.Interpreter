@@ -45,11 +45,11 @@ double result = interpreter.Calculate("sqrt(4) + 2"); // -> 4
 // "sqrt 4 + 2" would work as well
 ```
 
-The following example highlights the use of manually registered variables.
+The following example highlights the use of manually registered local and global variables.
 
 ```csharp
 Interpreter interpreter = new Interpreter();
-interpreter.SetVar("foo", 1d);
+Interpreter.SetGlobalVar("foo", 1d);
 interpreter.SetVar("bar", 2d);
 double result = interpreter.Calculate("($foo + $bar) * 2"); // -> 6
 ```

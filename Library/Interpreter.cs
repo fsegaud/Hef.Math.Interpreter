@@ -20,6 +20,8 @@
 // SOFTWARE.
 #endregion
 
+using System.Collections.Generic;
+
 namespace Hef.Math
 {
     /// <summary>
@@ -49,6 +51,7 @@ namespace Hef.Math
 
         private static System.Random Random;
         private static System.Collections.Generic.Dictionary<string, Node> cachedInfixToNode;
+        private static System.Collections.Generic.Dictionary<string, double> globalVariables;
 
         #endregion
 
@@ -76,6 +79,7 @@ namespace Hef.Math
         {
             Interpreter.Random = new System.Random();
             Interpreter.cachedInfixToNode = new System.Collections.Generic.Dictionary<string, Node>();
+            Interpreter.globalVariables = new Dictionary<string, double>();
 
             Interpreter.LoadOperators();
         }
@@ -101,6 +105,20 @@ namespace Hef.Math
             {
                 name = name.StartsWith(Interpreter.VarPrefixStr) ? name : string.Format("{0}{1}", Interpreter.VarPrefixStr, name);
                 this.variables.Add(name, value);
+            }
+        }
+
+        /// <summary>
+        /// Sets a variable to be used in the formula. This variable will be global to ALL interpreters.
+        /// </summary>
+        /// <param name="name">The variable name.</param>
+        /// <param name="value">The variable value.</param>
+        public static void SetGlobalVar(string name, double value)
+        {
+            if (!Interpreter.globalVariables.ContainsKey(name))
+            {
+                name = name.StartsWith(Interpreter.VarPrefixStr) ? name : string.Format("{0}{1}", Interpreter.VarPrefixStr, name);
+                Interpreter.globalVariables.Add(name, value);
             }
         }
 
@@ -407,13 +425,15 @@ namespace Hef.Math
 
         private bool TryGetVariableValue(string varName, out double value)
         {
-            value = 0;
+            // Look in local variables.
             if (this.variables.TryGetValue(varName, out value))
             {
                 return true;
             }
 
-            if (System.Text.RegularExpressions.Regex.IsMatch(varName, @"\$\w+.\w+"))
+            // Look in named contexts.
+            // Fixed #23 (bad regex).
+            if (System.Text.RegularExpressions.Regex.IsMatch(varName, @"\$\w+\.\w+"))
             {
                 string contextName = varName.Substring(varName.IndexOf('$') + 1, varName.IndexOf('.') - 1);
                 string variableName = varName.Substring(varName.IndexOf('.') + 1);
@@ -423,6 +443,12 @@ namespace Hef.Math
                 {
                     return true;
                 }
+            }
+
+            // Look in global variables;
+            if (Interpreter.globalVariables.TryGetValue(varName, out value))
+            {
+                return true;
             }
 
             return false;

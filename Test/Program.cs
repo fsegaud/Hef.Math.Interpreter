@@ -37,6 +37,7 @@ namespace Hef.Math.Test
             double foo = 40d;
             double bar = 2d;
             double hundred = 100d;
+            double global = 20d;
 
             player = new Player();
             interpreter = new Interpreter();
@@ -45,6 +46,7 @@ namespace Hef.Math.Test
             interpreter.SetVar("Foo", foo);
             interpreter.SetVar("bar", bar);
             interpreter.SetVar("hundred", hundred);
+            Interpreter.SetGlobalVar("global", global);
 
             bool success = true;
             
@@ -77,6 +79,7 @@ namespace Hef.Math.Test
             success &= Test("1 d 4+1 + 1 D 6+1");
             success &= Test("10^2");
             success &= Test("pow(10, 2)");
+            success &= Test("$global", global);
 
             // Comparison.
             success &= Test("1 == 0", BoolToDouble(1d == 0d));
