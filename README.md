@@ -82,6 +82,54 @@ class Player : Hef.Math.IInterpreterContext
 
 ### Handled Operations
 
+| Category           | Symbol             | Alias              | Operation                    | Comment                                |
+|--------------------|:------------------:|:------------------:|------------------------------|----------------------------------------|
+| BASIC              | `±`                |                    | Sign Change                  | -1 should be written ±1 (atl+0177)     |
+|                    | `+`                |                    | Addition                     |                                        |
+|                    | `-`                |                    | Subtraction                  |                                        |
+|                    | `*`                |                    | Product                      |                                        |
+|                    | `/`                |                    | Division                     |                                        |
+|                    | `%`                |                    | Modulo                       |                                        |
+| ADVACED            | `pow`              | `^`                | Power                        |                                        |
+|                    | `sqrt`             |                    | Square Root                  |                                        |
+|                    | `abs`              |                    | Absolute Value               |                                        |
+|                    | `round`            |                    | Round To Integer             |                                        |
+|                    | `min`              |                    | Minimum                      |                                        |
+|                    | `max`              |                    | Maximum                      |                                        |
+|                    | `ceil`             |                    | Ceil To Upper Integer        |                                        |
+|                    | `floor`            |                    | Floor To Lower Integer       |                                        |
+|                    | `trunc`            |                    | Truncate Decimal Part        |                                        |
+|                    | `log`              |                    | Logarithm                    |                                        |
+|                    | `log10`            |                    | Logaritme Base 10            |                                        |
+|                    | `exp`              | `e`                | Exponential                  |                                        |
+| COMPARISON         | `eq`               | `==`               | Equal                        |                                        |
+|                    | `ne`               | `!=`               | Not Equal                    |                                        |
+|                    | `gt`               | `>`                | Greater Than                 |                                        |
+|                    | `gte`              | `>=`               | Greater Or Equal             |                                        |
+|                    | `lt`               | `<`                | Less Than                    |                                        |
+|                    | `lte`              | `<=`               | Less Or Equal                |                                        |
+| LOGICAL            | ``                 | `!`                | Not                          |                                        |
+|                    | `and`              | `&&`               | And                          |                                        |
+|                    | `or`               | `\|\|`             | Or                           |                                        |
+| TRIGONOMETRY       | `cos`              |                    | Cosine                       |                                        |
+|                    | `sin`              |                    | Sine                         |                                        |
+|                    | `tan`              |                    | Tangent                      |                                        |
+|                    | `acos`             |                    | Arccosine                    |                                        |
+|                    | `asin`             |                    | Arcsine                      |                                        |
+|                    | `atan`             |                    | Arctangent                   |                                        |
+|                    | `cosh`             |                    | Hyperbolic Cosine            |                                        |
+|                    | `sinh`             |                    | Hyperbolic Sine              |                                        |
+|                    | `tanh`             |                    | Hyperbolic Tangent           |                                        |
+|                    | `deg2rad`          |                    | Converts degrees to radians  |                                        |
+|                    | `rad2deg`          |                    | Converts radians to degrees  |                                        |
+| RANDOMIZATION      | `rand`             |                    | Random                       | random(a, b) => [a, b]                 |
+|                    | `d`                |                    | Dice                         | d(a, b) => [a, a * b]                  |
+| CONSTANTS          | `pi`               |                    | Value of PI                  | 3.14...                                |
+|                    | `true`             |                    | True                         | 1                                      |
+|                    | `false`            |                    | False                        | 0                                      |
+
+
+
 #### Basic Operators
 
 | Symbol        | Operation   | Comment                            | Version |
