@@ -20,9 +20,6 @@
 // SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace Hef.Math
 {
     /// <summary>
@@ -50,9 +47,9 @@ namespace Hef.Math
 
         #region Static
 
-        private static System.Random Random;
-        private static System.Collections.Generic.Dictionary<string, Node> cachedInfixToNode;
+        private static Hef.Collection.Cache<string, Node> cache;
         private static System.Collections.Generic.Dictionary<string, double> globalVariables;
+        private static System.Random Random;
 
         #endregion
 
@@ -79,9 +76,9 @@ namespace Hef.Math
 
         static Interpreter()
         {
+            Interpreter.cache = new Hef.Collection.Cache<string, Node>(64);
+            Interpreter.globalVariables = new System.Collections.Generic.Dictionary<string, double>();
             Interpreter.Random = new System.Random();
-            Interpreter.cachedInfixToNode = new System.Collections.Generic.Dictionary<string, Node>();
-            Interpreter.globalVariables = new Dictionary<string, double>();
 
             Interpreter.LoadOperators();
         }
@@ -163,22 +160,7 @@ namespace Hef.Math
         /// <returns></returns>
         public double Calculate(string infix)
         {
-            // Fetch cached rpn if it exists.
-            Node root = null;
-            bool inCache = cachedInfixToNode.TryGetValue(infix, out root);
-
-            // If not in cache, compute tree from infix.
-            if (root == null)
-            {
-                root = Interpreter.RpnToNode(Interpreter.InfixToRpn(infix));
-            }
-
-            // Store in cache for futur use.
-            if (!inCache)
-            {
-                Interpreter.cachedInfixToNode.Add(infix, root);
-            }
-
+            Node root = Interpreter.cache.GetOrInitializeValue(infix, Interpreter.InfixToNode);
             return root.GetValue(this);
         }
 
@@ -187,7 +169,7 @@ namespace Hef.Math
         /// </summary>
         public static void ForceClearCache()
         {
-            Interpreter.cachedInfixToNode.Clear();
+            Interpreter.cache.Clear();
         }
 
         /// <summary>
@@ -447,6 +429,11 @@ namespace Hef.Math
             }
 
             return values.Pop();
+        }
+
+        private static Node InfixToNode(string infix)
+        {
+            return Interpreter.RpnToNode(Interpreter.InfixToRpn(infix));
         }
 
         private static void LoadOperators()

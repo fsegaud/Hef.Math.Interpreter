@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache.cs" />
     <Compile Include="IInterpreterContext.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="Interpreter.Helper.cs" />

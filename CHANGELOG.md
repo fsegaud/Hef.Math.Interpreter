@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added global variables support (variables that are common to all instances of `Interpreter`).
 - Implemented the disposal code (#24).
 
+### Changed
+
+- The number of cached nodes is now limited to 64. (#21).
+
 ### Fixed
 
 - The regular expression that matches context variables now behaves as intended (#23).
@@ -71,4 +75,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added new operations : `tan`, `cosh`, `sinh`, `tanh`, `acos`, `asin`, `atan`, `deg2rad`, `rad2deg`, `and`, `or`, `&`, `|`
 - Added new constants : `true`, `false`.
 
-## [0.1.1-alpha] - 2017.08.20
+## [0.1.0-alpha] - 2017.08.20

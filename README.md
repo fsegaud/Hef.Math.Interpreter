@@ -221,7 +221,7 @@ class Player : Hef.Math.IInterpreterContext
 
 Each time a formula is calculated, the interpreter has to breaks the formula into nodes and build a tree of operations. This is a time-consumming process.
 
-In order to make it faster, each time a new formula is processed, the intrepreder will keep the generated tree in memory. So if the same formula is used again, the tree will be reused, and only the mathematical operations will be recomputed.
+In order to make it faster, each time a new formula is processed, the intrepreder will keep the generated tree in memory (up to 64). So if the same formula is used again, the tree will be reused, and only the mathematical operations will be recomputed.
 
 If for some reason the cache has to be manually cleared, the `Interpreter` provides a function to do so.
 
