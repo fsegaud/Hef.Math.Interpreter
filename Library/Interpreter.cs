@@ -115,10 +115,15 @@ namespace Hef.Math
         /// <param name="value">The variable value.</param>
         public void SetVar(string name, double value)
         {
+            name = name.StartsWith(Interpreter.VarPrefixStr) ? name : string.Format("{0}{1}", Interpreter.VarPrefixStr, name);
+
             if (!this.variables.ContainsKey(name))
             {
-                name = name.StartsWith(Interpreter.VarPrefixStr) ? name : string.Format("{0}{1}", Interpreter.VarPrefixStr, name);
                 this.variables.Add(name, value);
+            }
+            else
+            {
+                this.variables[name] = value;
             }
         }
 
