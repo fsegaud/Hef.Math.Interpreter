@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added global variables support (variables that are common to all instances of `Interpreter`).
 - Implemented the disposal code (#24).
+- Added an console calculator example project (#25).
 
 ### Changed
 
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - The regular expression that matches context variables now behaves as intended (#23).
+- Setting an existing variable no longer raises an exception (#27).
 
 ## [1.0.0] 2017.09.??
 
