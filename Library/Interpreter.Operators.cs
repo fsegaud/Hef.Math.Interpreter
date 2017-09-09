@@ -142,6 +142,7 @@ namespace Hef.Math
         #region UnaryNode
 
         [Operator("±", 1)]
+        [Operator("sign", 1)]
         private class SignNode : UnaryNode
         {
             public SignNode(Node input) : 
@@ -456,6 +457,7 @@ namespace Hef.Math
         #region  BinaryNode
 
         [Operator("+", 6)]
+        [Operator("add", 6)]
         private class AddNode : BinaryNode
         {
             public AddNode(Node leftInput, Node rightInput)
@@ -470,6 +472,7 @@ namespace Hef.Math
         }
 
         [Operator("-", 6)]
+        [Operator("sub", 6)]
         private class SubNode : BinaryNode
         {
             public SubNode(Node leftInput, Node rightInput)
@@ -484,6 +487,7 @@ namespace Hef.Math
         }
 
         [Operator("*", 5)]
+        [Operator("mult", 5)]
         private class MultNode : BinaryNode
         {
             public MultNode(Node leftInput, Node rightInput)
@@ -498,6 +502,7 @@ namespace Hef.Math
         }
 
         [Operator("/", 5)]
+        [Operator("div", 5)]
         private class DivNode : BinaryNode
         {
             public DivNode(Node leftInput, Node rightInput)
@@ -512,6 +517,7 @@ namespace Hef.Math
         }
 
         [Operator("%", 5)]
+        [Operator("mod", 5)]
         private class ModNode : BinaryNode
         {
             public ModNode(Node leftInput, Node rightInput)

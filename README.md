@@ -84,12 +84,12 @@ class Player : Hef.Math.IInterpreterContext
 
 | Category           | Symbol             | Alias              | Operation                    | Comment                                |
 |--------------------|:------------------:|:------------------:|------------------------------|----------------------------------------|
-| BASIC              | `±`                |                    | Sign Change                  | -1 should be written ±1 (atl+0177)     |
-|                    | `+`                |                    | Addition                     |                                        |
-|                    | `-`                |                    | Subtraction                  |                                        |
-|                    | `*`                |                    | Product                      |                                        |
-|                    | `/`                |                    | Division                     |                                        |
-|                    | `%`                |                    | Modulo                       |                                        |
+| BASIC              | `sign`             | `±`                | Sign Change                  | -1 should be written Â±1 (atl+0177)     |
+|                    | `add`              | `+`                | Addition                     |                                        |
+|                    | `sub`              | `-`                | Subtraction                  |                                        |
+|                    | `mult`             | `*`                | Product                      |                                        |
+|                    | `div`              | `/`                | Division                     |                                        |
+|                    | `mod`              | `%`                | Modulo                       |                                        |
 | ADVACED            | `pow`              | `^`                | Power                        |                                        |
 |                    | `sqrt`             |                    | Square Root                  |                                        |
 |                    | `abs`              |                    | Absolute Value               |                                        |
@@ -110,7 +110,7 @@ class Player : Hef.Math.IInterpreterContext
 |                    | `lte`              | `<=`               | Less Or Equal                |                                        |
 | LOGICAL            | ``                 | `!`                | Not                          |                                        |
 |                    | `and`              | `&&`               | And                          |                                        |
-|                    | `or`               | `\|\|`             | Or                           |                                        |
+|                    | `or`               | `||`               | Or                           |                                        |
 | TRIGONOMETRY       | `cos`              |                    | Cosine                       |                                        |
 |                    | `sin`              |                    | Sine                         |                                        |
 |                    | `tan`              |                    | Tangent                      |                                        |
@@ -134,7 +134,7 @@ class Player : Hef.Math.IInterpreterContext
 
 | Symbol        | Operation   | Comment                            | Version |
 |:-------------:|-------------|------------------------------------|:-------:|
-| `±`           | Sign Change | -1 should be written ±1 (atl+0177) | 0.1.0   |
+| `Â±`           | Sign Change | -1 should be written Â±1 (atl+0177) | 0.1.0   |
 | `+`           | Addition    |                                    | 0.1.0   |
 | `-`           | Subtraction |                                    | 0.1.0   |
 | `*`           | Product     |                                    | 0.1.0   |

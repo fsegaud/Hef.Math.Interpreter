@@ -52,11 +52,20 @@ namespace Hef.Math.Test
             
             // Old tests.
             success &= Test("±1", -1d);
+            success &= Test("sign(1)", -1d);
             success &= Test("1-1", 1d - 1d);
+            success &= Test("sub(1, 1)", 1d - 1d);
             success &= Test("1-±1", 1d - -1d);
             success &= Test("2 + 2", 2 + 2d);
+            success &= Test("add(2, 2)", 2 + 2d);
             success &= Test("2+2", 2d + 2d);
             success &= Test("(2+2)", 2d + 2d);
+            success &= Test("2 * 2", 2d * 2d);
+            success &= Test("mult(2, 2)", 2d * 2d);
+            success &= Test("2 / 2", 2d / 2d);
+            success &= Test("div(2, 2)", 2d / 2d);
+            success &= Test("6 % 4", 6 % 4);
+            success &= Test("mod(6, 4)", 6 % 4);
             success &= Test("sqrt 4 + 3 * 4", System.Math.Sqrt(4) + 3 * 4);
             success &= Test("sqrt 4+3*4", System.Math.Sqrt(4) + 3 * 4);
             success &= Test("(sqrt 4+3)*4", (System.Math.Sqrt(4) + 3) * 4);
@@ -77,8 +86,8 @@ namespace Hef.Math.Test
             success &= Test("$Foo + $bar", foo + bar);
             success &= Test("round (rand * 10 + 90)");
             success &= Test("1 d 4+1 + 1 D 6+1");
-            success &= Test("10^2");
-            success &= Test("pow(10, 2)");
+            success &= Test("10^2", System.Math.Pow(10, 2));
+            success &= Test("pow(10, 2)", System.Math.Pow(10, 2));
             success &= Test("$global", global);
 
             // Comparison.
