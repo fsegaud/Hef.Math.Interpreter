@@ -30,7 +30,7 @@ You can also install the correpsonding _NuGet_ package at [https://www.nuget.org
 Or install it using the _NuGet_ console.
 
 ```
-Install-Package Hef.Math.Interpreter -Version 1.0.0-alpha 
+Install-Package Hef.Math.Interpreter -Version 1.1.0-alpha 
 ```
 
 ### Examples
