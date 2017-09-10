@@ -664,8 +664,9 @@ namespace Hef.Math
             }
         }
 
-        [Operator("d")]
+        [Operator("dice")]
         [Operator("D")]
+        [Operator("d")]
         private class DiceNode : BinaryNode
         {
             public DiceNode(Node leftInput, Node rightInput)
