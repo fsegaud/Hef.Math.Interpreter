@@ -35,14 +35,16 @@ Install-Package Hef.Math.Interpreter -Version 1.0.0-alpha
 
 ### Examples
 
-The interpreter accepts multiple formula coding conventions. You can uses spaces, or not. You can use parenthesis, or not. It's up to you.
+The interpreter accepts two notation styles. Operations can be written as functions with parenthesis and arguments, or like regular operations with a symbol. There is actually no difference between functions and symbols in the implementation.
+For instance, the addition can be written `add(1, 2)` or `1 + 2`. Or even `add 1 2` or `+(1, 2)` if you like it.
 
-Here is the simplest example.
+The complete list of handled operations is availablable at [Annex - Handled Operations](#annex---handled-operations).
+
+Here is a simple example.
 
 ```csharp
 Interpreter interpreter = new Interpreter();
 double result = interpreter.Calculate("sqrt(4) + 2"); // -> 4
-// "sqrt 4 + 2" would work as well
 ```
 
 The following example highlights the use of manually registered local and global variables.
@@ -54,7 +56,7 @@ interpreter.SetVar("bar", 2d);
 double result = interpreter.Calculate("($foo + $bar) * 2"); // -> 6
 ```
 
-The following example highlights the use of `Hef.Math.IInterpreterContext`, that allow the interpreter to access variables provided by other objects.
+The following example highlights the use of `Hef.Math.IInterpreterContext`, that allows the interpreter to access variables provided by other objects.
 
 ```csharp
 Interpreter interpreter = new Interpreter();
@@ -79,143 +81,6 @@ class Player : Hef.Math.IInterpreterContext
     }
 }
 ```
-
-### Handled Operations
-
-| Category           | Symbol             | Alias              | Operation                    | Comment                                |
-|--------------------|:------------------:|:------------------:|------------------------------|----------------------------------------|
-| BASIC              | `sign`             | `±`                | Sign Change                  | -1 should be written Â±1 (atl+0177)     |
-|                    | `add`              | `+`                | Addition                     |                                        |
-|                    | `sub`              | `-`                | Subtraction                  |                                        |
-|                    | `mult`             | `*`                | Product                      |                                        |
-|                    | `div`              | `/`                | Division                     |                                        |
-|                    | `mod`              | `%`                | Modulo                       |                                        |
-| ADVACED            | `pow`              | `^`                | Power                        |                                        |
-|                    | `sqrt`             |                    | Square Root                  |                                        |
-|                    | `abs`              |                    | Absolute Value               |                                        |
-|                    | `round`            |                    | Round To Integer             |                                        |
-|                    | `min`              |                    | Minimum                      |                                        |
-|                    | `max`              |                    | Maximum                      |                                        |
-|                    | `ceil`             |                    | Ceil To Upper Integer        |                                        |
-|                    | `floor`            |                    | Floor To Lower Integer       |                                        |
-|                    | `trunc`            |                    | Truncate Decimal Part        |                                        |
-|                    | `log`              |                    | Logarithm                    |                                        |
-|                    | `log10`            |                    | Logaritme Base 10            |                                        |
-|                    | `exp`              | `e`                | Exponential                  |                                        |
-| COMPARISON         | `eq`               | `==`               | Equal                        |                                        |
-|                    | `ne`               | `!=`               | Not Equal                    |                                        |
-|                    | `gt`               | `>`                | Greater Than                 |                                        |
-|                    | `gte`              | `>=`               | Greater Or Equal             |                                        |
-|                    | `lt`               | `<`                | Less Than                    |                                        |
-|                    | `lte`              | `<=`               | Less Or Equal                |                                        |
-| LOGICAL            | ``                 | `!`                | Not                          |                                        |
-|                    | `and`              | `&&`               | And                          |                                        |
-|                    | `or`               | `||`               | Or                           |                                        |
-| TRIGONOMETRY       | `cos`              |                    | Cosine                       |                                        |
-|                    | `sin`              |                    | Sine                         |                                        |
-|                    | `tan`              |                    | Tangent                      |                                        |
-|                    | `acos`             |                    | Arccosine                    |                                        |
-|                    | `asin`             |                    | Arcsine                      |                                        |
-|                    | `atan`             |                    | Arctangent                   |                                        |
-|                    | `cosh`             |                    | Hyperbolic Cosine            |                                        |
-|                    | `sinh`             |                    | Hyperbolic Sine              |                                        |
-|                    | `tanh`             |                    | Hyperbolic Tangent           |                                        |
-|                    | `deg2rad`          |                    | Converts degrees to radians  |                                        |
-|                    | `rad2deg`          |                    | Converts radians to degrees  |                                        |
-| RANDOMIZATION      | `rand`             |                    | Random                       | random(a, b) => [a, b]                 |
-|                    | `d`                |                    | Dice                         | d(a, b) => [a, a * b]                  |
-| CONSTANTS          | `pi`               |                    | Value of PI                  | 3.14...                                |
-|                    | `true`             |                    | True                         | 1                                      |
-|                    | `false`            |                    | False                        | 0                                      |
-
-
-
-#### Basic Operators
-
-| Symbol        | Operation   | Comment                            | Version |
-|:-------------:|-------------|------------------------------------|:-------:|
-| `Â±`           | Sign Change | -1 should be written Â±1 (atl+0177) | 0.1.0   |
-| `+`           | Addition    |                                    | 0.1.0   |
-| `-`           | Subtraction |                                    | 0.1.0   |
-| `*`           | Product     |                                    | 0.1.0   |
-| `/`           | Division    |                                    | 0.1.0   |
-| `%`           | Modulo      |                                    | 0.1.0   |
-
-#### Advanced Operators
-
-| Symbol       | Operation                 | Comment | Version |
-|:------------:|---------------------------|---------|:-------:|
-| `^` or `pow` | Power                     |         | 0.1.0   |
-| `sqrt`       | Square Root               |         | 0.1.0   |
-| `abs`        | Absolute Value            |         | 0.1.0   |
-| `round`      | Round                     |         | 0.1.0   |
-| `min`        | Minimum                   |         | 0.1.0   |
-| `max`        | Maximum                   |         | 0.1.0   |
-| `ceil`       | Ceil to upper integer     |         | 1.0.0   |
-| `floor`      | Floot to lower integer    |         | 1.0.0   |
-| `trunc`      | Truncate the decimal part |         | 1.0.0   |
-| `log`        | Logarithm                 |         | 1.0.0   |
-| `log10`      | Logarithm base 10         |         | 1.0.0   |
-| `e` or `exp` | Exponential               |         | 1.0.0   |
-
-#### Comparison Operators
-
-| Symbol        | Operation        | Comment                    | Version |
-|:-------------:|------------------|----------------------------|:-------:|
-| `==` or `eq`  | Equal            | 1 == 1 -> 1, 1 eq 2 -> 0   | 0.1.0   |
-| `gt` or `>`   | Greater Than     | 1 gt 1 -> 0, 1 gt 2 -> 1   | 0.1.0   |
-| `gte` or `>=` | Greater Or Equal | 1 gte 0 -> 0, 1 gte 1 -> 1 | 0.1.0   |
-| `lt` or `<`   | Less Than        | 1 lt 1 -> 0, 1 lt 2 -> 1   | 0.1.0   |
-| `lte` or `<=` | Less Or Equal    | 1 lte 1 -> 1, 1 lte 0 -> 0 | 0.1.0   |
-| `!=` or `ne`  | Equal            | 1 != 1 -> 0, 1 ne 2 -> 1   | 1.0.0   |
-
-#### Logical Operators
-
-| Symbol         | Operation        | Comment                    | Version |
-|:--------------:|------------------|----------------------------|:-------:|
-| `!`            | Not              | !0 -> 1, !1 -> 0           | 0.1.0   |
-| `&&` or `and`  | And              | true & true -> true        | 1.0.0   |
-| `\|\|` or `or` | Or               | true & false -> true       | 1.0.0   |
-
-#### Bitwise Operators
-
-| Symbol | Operation       | Comment                    | Version |
-|:------:|-----------------|----------------------------|:-------:|
-| `<<`   | Left Bitshift   |                            | 1.0.0   |
-| `>>`   | Right Bitshift  |                            | 1.0.0   |
-| `&`    | And             |                            | 1.0.0   |
-| `\|`   | Or              |                            | 1.0.0   |
-
-#### Trigonometry
-
-| Symbol    | Operation          | Comment                     | Version |
-|:---------:|--------------------|-----------------------------|:-------:|
-| `cos`     | Cosine             |                             | 0.1.0   |
-| `sin`     | Sine               |                             | 0.1.0   |
-| `tan`     | Tangent            |                             | 0.1.0   |
-| `acos`    | Arccosine          |                             | 0.1.1   |
-| `asin`    | Arcsine            |                             | 0.1.1   |
-| `atan`    | Arctangent         |                             | 0.1.1   |
-| `cosh`    | Hyperbolic Cosine  |                             | 0.1.1   |
-| `sinh`    | Hyperbolic Sine    |                             | 0.1.1   |
-| `tanh`    | Hyperbolic Tangent |                             | 0.1.1   |
-| `deg2rad` | Deg2Rad            | Converts degrees to radians | 1.0.0   |
-| `rad2deg` | Rad2Deg            | Converts radians to degrees | 1.0.0   |
-
-#### Randomization
-
-| Symbol     | Operation | Comment           | Version |
-|:----------:|-----------|-------------------|:-------:|
-| `rand`     | Random    | rand 5 -> [0,5]   | 0.1.0   |
-| `d` or `D` | Dice      | 2 d 6 -> [2,12]   | 0.1.0   |
-
-#### Constants
-
-| Symbol  | Operation     | Comment | Version |
-|:-------:|---------------|---------|:-------:|
-| `pi`    | Value of PI   | 3.14... | 0.1.0   |
-| `true`  | Boolean true  | 1       | 0.1.1   |
-| `false` | Boolean false | 0       | 0.1.1   |
 
 ### Note About Caching
 
@@ -276,3 +141,51 @@ double b = interpreter.Calculate("half(10)"); // -> 5
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/fsegaud/Hef.Math.Interpreter/blob/master/LICENSE.md) file for details
+
+## Annex - Handled Operations
+
+| Category           | Function           | Symbol             | Operation                    | Comment                                         |
+|--------------------|:------------------:|:------------------:|------------------------------|-------------------------------------------------|
+| BASIC              | `sign`             | `±`                | Sign Change                  | -1 should be written Â±1 (atl+0177)             |
+|                    | `add`              | `+`                | Addition                     |                                                 |
+|                    | `sub`              | `-`                | Subtraction                  |                                                 |
+|                    | `mult`             | `*`                | Product                      |                                                 |
+|                    | `div`              | `/`                | Division                     |                                                 |
+|                    | `mod`              | `%`                | Modulo                       |                                                 |
+| ADVACED            | `pow`              | `^`                | Power                        |                                                 |
+|                    | `sqrt`             |                    | Square Root                  |                                                 |
+|                    | `abs`              |                    | Absolute Value               |                                                 |
+|                    | `round`            |                    | Round To Integer             |                                                 |
+|                    | `min`              |                    | Minimum                      |                                                 |
+|                    | `max`              |                    | Maximum                      |                                                 |
+|                    | `ceil`             |                    | Ceil To Upper Integer        |                                                 |
+|                    | `floor`            |                    | Floor To Lower Integer       |                                                 |
+|                    | `trunc`            |                    | Truncate Decimal Part        |                                                 |
+|                    | `log`              |                    | Logarithm                    |                                                 |
+|                    | `log10`            |                    | Logaritme Base 10            |                                                 |
+|                    | `exp`              | `e`                | Exponential                  |                                                 |
+| COMPARISON         | `eq`               | `==`               | Equal                        | Returns 1 if true, 0 otherwise                  |
+|                    | `ne`               | `!=`               | Not Equal                    | Returns 1 if true, 0 otherwise                  |
+|                    | `gt`               | `>`                | Greater Than                 | Returns 1 if true, 0 otherwise                  |
+|                    | `gte`              | `>=`               | Greater Or Equal             | Returns 1 if true, 0 otherwise                  |
+|                    | `lt`               | `<`                | Less Than                    | Returns 1 if true, 0 otherwise                  |
+|                    | `lte`              | `<=`               | Less Or Equal                | Returns 1 if true, 0 otherwise                  |
+| LOGICAL            |                    | `!`                | Not                          | `!true` => 0, `!false` => 1                     |
+|                    | `and`              | `&&`               | And                          | `true && true` => 1, `true && false` => 0       |
+|                    | `or`               | `\|\|`             | Or                           | `true \|\| false` => 1, `false \|\| false` => 0 |
+| TRIGONOMETRY       | `cos`              |                    | Cosine                       |                                                 |
+|                    | `sin`              |                    | Sine                         |                                                 |
+|                    | `tan`              |                    | Tangent                      |                                                 |
+|                    | `acos`             |                    | Arccosine                    |                                                 |
+|                    | `asin`             |                    | Arcsine                      |                                                 |
+|                    | `atan`             |                    | Arctangent                   |                                                 |
+|                    | `cosh`             |                    | Hyperbolic Cosine            |                                                 |
+|                    | `sinh`             |                    | Hyperbolic Sine              |                                                 |
+|                    | `tanh`             |                    | Hyperbolic Tangent           |                                                 |
+|                    | `deg2rad`          |                    | Converts degrees to radians  |                                                 |
+|                    | `rad2deg`          |                    | Converts radians to degrees  |                                                 |
+| RANDOMIZATION      | `rand`             |                    | Random                       | `random(a, b)` => [a, b]                        |
+|                    | `dice`             | `d` or `D`         | Dice                         | `dice(a, b)` or `a D b` => [a, a * b]           |
+| CONSTANTS          | `pi`               |                    | Value of PI                  | 3.14159...                                      |
+|                    | `true`             |                    | True                         | 1                                               |
+|                    | `false`            |                    | False                        | 0                                               |
