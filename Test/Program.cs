@@ -20,8 +20,6 @@
 // SOFTWARE.
 #endregion
 
-using System;
-
 namespace Hef.Math.Test
 {
     class Program
