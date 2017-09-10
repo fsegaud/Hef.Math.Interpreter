@@ -146,7 +146,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 
 | Category           | Function           | Symbol             | Operation                    | Comment                                         |
 |--------------------|:------------------:|:------------------:|------------------------------|-------------------------------------------------|
-| BASIC              | `sign`             | `±`                | Sign Change                  | -1 should be written Â±1 (atl+0177)             |
+| BASIC              | `sign`             | `±`                | Sign Change                  | -1 should be written ±1 (atl+0177)             |
 |                    | `add`              | `+`                | Addition                     |                                                 |
 |                    | `sub`              | `-`                | Subtraction                  |                                                 |
 |                    | `mult`             | `*`                | Product                      |                                                 |
