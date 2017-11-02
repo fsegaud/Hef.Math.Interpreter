@@ -154,7 +154,14 @@ namespace Hef.Math
             }
             else
             {
-                this.namedContext.Add(name, interpreterContext);
+                if (!this.namedContext.ContainsKey(name))
+                {
+                    this.namedContext.Add(name, interpreterContext);
+                }
+                else
+                {
+                    this.namedContext[name] = interpreterContext;
+                }
             }
         }
 
