@@ -1,0 +1,49 @@
+name: Build
+
+on:
+  push:
+    branches-ignore:
+      - backup/*
+  pull_request:
+    branches-ignore:
+      - backup/*
+
+jobs:
+  build-library:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Build Library
+      run: dotnet build Library/Library.csproj --configuration Release
+
+  build-test:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Build Test
+      run: dotnet build Test/Test.csproj --configuration Release
+
+  build-example:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Build Example
+      run: dotnet build Example/Example.csproj --configuration Release

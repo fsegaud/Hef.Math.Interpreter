@@ -241,6 +241,8 @@ namespace Hef.Math.Test
             System.Console.WriteLine("--------------------\nOVERALL RESULT: " + success);
 
             interpreter.Dispose();
+
+            System.Environment.Exit(success ? 0 : 1);
         }
 
         private static bool Test(string infix)
