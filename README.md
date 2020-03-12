@@ -1,6 +1,8 @@
 # Hef.Math.Interpreter
-
-[![GitHub release](https://img.shields.io/github/release/fsegaud/Hef.Math.Interpreter.svg)](https://github.com/fsegaud/Hef.Math.Interpreter/releases) [![NuGet](https://img.shields.io/nuget/v/Hef.Math.Interpreter.svg)](https://www.nuget.org/packages/Hef.Math.Interpreter) [![license](https://img.shields.io/github/license/fsegaud/Hef.Math.Interpreter.svg)](https://github.com/fsegaud/Hef.Math.Interpreter/blob/master/LICENSE.md) [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/fseg)
+![Build](https://github.com/fsegaud/Hef.Math.Interpreter/workflows/Build/badge.svg)
+![Test](https://github.com/fsegaud/Hef.Math.Interpreter/workflows/Test/badge.svg)
+[![GitHub release](https://img.shields.io/github/release/fsegaud/Hef.Math.Interpreter.svg)](https://github.com/fsegaud/Hef.Math.Interpreter/releases)
+[![NuGet](https://img.shields.io/nuget/v/Hef.Math.Interpreter.svg)](https://www.nuget.org/packages/Hef.Math.Interpreter)
 
 An interpreter that takes a math formula (string) as input, breaks it into a chain of values and operations, and outputs a numeric result.
 It also handles variable declarations as key/value pairs.
